@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ProjektObcane</string>
+    <string name="can_t_be_empty">Nemůže být prázdné</string>
+
+
+    <string name="add_edit">Přidat/Upravit</string>
+    <string name="map">Mapa</string>
+    <string name="save_location">Uložit Lokaci</string>
+    <string name="marker_help">Klikněte pro výběr lokace pro událost</string>
+    <string name="event_name">Název události</string>
+    <string name="events">Události</string>
+    <string name="name_color">Název</string>
+
+
+    <string name="color_hex">Barva Hex</string>
+
+
+
+    <string name="priority">Priorita</string>
+    <string name="add_category">Přidat kategorii</string>
+    <string name="edit_category">Upravit kategorii</string>
+    <string name="existing_categories">Existující kategorie</string>
+    <string name="delete">Smazat</string>
+    <string name="event_description">Popis události</string>
+
+
+
+    <string name="placeholder">Zástupný znak</string>
+
+
+    <string name="start_date">Datum zahájení</string>
+    <string name="end_date">Datum ukončení</string>
+
+
+    <string name="color_category">Kategorie barvy</string>
+
+
+
+    <string name="add_new_color">+ Přidat novou barvu</string>
+    <string name="notification_date">Datum oznámení</string>
+    <string name="selected_location">Vybraná lokace</string>
+    <string name="save">Uložit</string>
+    <string name="no_events_for_this_day">Žádné události pro tento den</string>
+    <string name="previous_month">Předchozí měsíc</string>
+    <string name="next_month">Příští měsíc</string>
+
+
+
+    <string name="sun">Ne</string>
+    <string name="mon">Po</string>
+    <string name="tue">Út</string>
+    <string name="wed">St</string>
+    <string name="thu">Čt</string>
+    <string name="fri">Pá</string>
+    <string name="sat">So</string>
+
+    <string name="settings">Nastavení</string>
+
+
+
+    <string name="clear">Vyčistit</string>
+
+
+
+    <string name="cannot_save_empty_date_pls_pick">Nelze uložit prázdné datum, prosím nějaké vyberte.</string>
+    <string name="select">Vybrat</string>
+    <string name="cancel">Zrušit</string>
+    <string name="app_version">"Verze aplikace: "</string>
+    <string name="language">Jazyk</string>
+
+
+
+
+
+
+    <string name="edit">Upravit</string>
+    <string name="event_detail">Detail události</string>
+    <string name="color_management">Správa barev</string>
+
+    <string name="delete_event">Smazat událost?</string>
+    <string name="confirm_delete">Smazat</string>
+
+    <string name="must_be_more_than_0">Musí být více něž 0</string>
+    <string name="cannot_be_more_than_50">Nemůže být více než 20 znaků</string>
+    <string name="cannot_be_more_than_20">Priorita je od 1-20</string>
+    <string name="must_be_a_number">Musí být číslo</string>
+    <string name="hide">Schovat</string>
+
+
+    <string name="error_event_name_required">Název události nemůže být prázdný</string>
+    <string name="error_event_name_too_long">Název události je moc dlouhý, musí být menší než 100 znaků</string>
+    <string name="error_event_description_required">Popis události nemůže být prázdný</string>
+    <string name="error_event_description_too_long">Popis události je moc dlouhý, musí být menší než 250 znaků</string>
+    <string name="error_color_required">Barva nemůže být prázdná</string>
+    <string name="app_icon">Ikona aplikace</string>
+
+
+</resources>
