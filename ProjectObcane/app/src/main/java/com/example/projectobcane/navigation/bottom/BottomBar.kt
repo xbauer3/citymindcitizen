@@ -1,6 +1,8 @@
 package com.example.projectobcane.navigation.bottom
 
 import androidx.compose.foundation.layout.RowScope
+import androidx.compose.material3.Badge
+import androidx.compose.material3.BadgedBox
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
@@ -12,8 +14,7 @@ import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.projectobcane.navigation.INavigationRouter
-
-
+import com.example.projectobcane.ui.theme.basicMargin
 
 
 @Composable
@@ -61,16 +62,34 @@ fun RowScope.AddItem(
             Text(text = screen.title)
         },
         icon = {
-            if (currentDestination?.hierarchy?.any{
-                    it.route == screen.route
-                } == true
-            ){
-                Icon(imageVector = screen.selectedIcon, contentDescription = "Selected Navigation Icon")
-            }
-            else{
-                Icon(imageVector = screen.unselectedIcon, contentDescription = "UNSelected Navigation Icon")
+            BadgedBox(
+                badge = {
+                    if (screen.badgeCount != null){
+                        Badge {
+                            Text(text = screen.badgeCount.toString())
+                        }
+                    }
+                    else{
+                        if (screen.hasNews){
+                            Badge()
+                        }
+                    }
+                }
+            ) {
+                if (currentDestination?.hierarchy?.any{
+                        it.route == screen.route
+                    } == true
+                ){
+                    Icon(imageVector = screen.selectedIcon, contentDescription = "Selected Navigation Icon")
+                }
+                else{
+                    Icon(imageVector = screen.unselectedIcon, contentDescription = "UNSelected Navigation Icon")
 
+                }
             }
+
+
+
         },
 
 

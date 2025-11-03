@@ -4,6 +4,7 @@ package com.example.projectobcane.navigation.bottom
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Build
 import androidx.compose.material.icons.filled.DateRange
+import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material3.Icon
@@ -27,7 +28,6 @@ sealed class BottomBarScreen(
     val badgeCount: Int? = null,
 
 
-    //val action: (INavigationRouter) -> Unit // 👈 Instead of static route, use router action
 
 
 ) {
@@ -35,8 +35,8 @@ sealed class BottomBarScreen(
     object Home : BottomBarScreen(
         route = "home",
         title = "Home",
-        selectedIcon = Icons.Filled.Notifications,
-        unselectedIcon = Icons.Default.Notifications,
+        selectedIcon = Icons.Filled.Home,
+        unselectedIcon = Icons.Default.Home,
         hasNews = false,
         badgeCount = null
     )
