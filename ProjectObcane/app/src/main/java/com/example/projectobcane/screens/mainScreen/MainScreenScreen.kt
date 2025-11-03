@@ -20,7 +20,7 @@ import com.example.projectobcane.ui.elements.BaseScreen
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainScreen(navigation: INavigationRouter) {
+fun MainScreenScreen(navigation: INavigationRouter) {
 
     // Create the NavController for the bottom navigation
     val bottomNavController = rememberNavController()
