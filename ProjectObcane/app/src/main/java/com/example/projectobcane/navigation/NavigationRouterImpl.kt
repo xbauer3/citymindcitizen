@@ -1,9 +1,11 @@
 package com.example.projectobcane.navigation
 
 import androidx.navigation.NavController
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import com.example.projectobcane.constants.Constants
 import com.example.projectobcane.database.Event
 import com.example.projectobcane.database.LocationEntity
+import com.example.projectobcane.navigation.bottom.BottomBarScreen
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
 import java.net.URLEncoder
@@ -21,9 +23,6 @@ class NavigationRouterImpl(private val navController: NavController) : INavigati
         }
     }
 
-
-
-
     override fun navigateToSettingsScreen() {
         navController.navigate(Destination.SettingsScreen.route)
     }
@@ -33,14 +32,9 @@ class NavigationRouterImpl(private val navController: NavController) : INavigati
     }
 
 
-    override fun returnBack() {
-        navController.popBackStack()
-    }
-
     override fun getNavController(): NavController {
         return navController
     }
-
     override fun navigateToAddEditColor(id: Long?) {
 
 
@@ -51,12 +45,6 @@ class NavigationRouterImpl(private val navController: NavController) : INavigati
         }
 
     }
-
-    override fun navigateToMainScreen() {
-        navController.navigate(Destination.MainScreenScreen.route)
-    }
-
-
 
 
 
@@ -83,6 +71,43 @@ class NavigationRouterImpl(private val navController: NavController) : INavigati
             ?.set(Constants.LOCATION, jsonAdapter.toJson(LocationEntity(latitude, longitude)))
         returnBack()
     }
+
+
+    //both
+
+    override fun navigateToMainScreen() {
+        navController.navigate(Destination.MainScreenScreen.route)
+    }
+
+    override fun returnBack() {
+        navController.popBackStack()
+    }
+
+
+
+
+    //bottom
+
+    override fun navigateToRoute(route: String) {
+        navController.navigate(route) {
+            popUpTo(navController.graph.findStartDestination().id)
+            launchSingleTop = true
+        }
+    }
+
+    override fun navigateToMapsScreen() {
+        navController.navigate(BottomBarScreen.Maps.route)
+    }
+
+    override fun navigateToReportsScreen() {
+        navController.navigate(BottomBarScreen.Reports.route)
+    }
+
+    override fun navigateToNotificationsScreen() {
+        navController.navigate(BottomBarScreen.Notifications.route)
+    }
+
+
 
 
 
