@@ -22,8 +22,6 @@ interface INavigationRouter {
     //bottom
     fun navigateToRoute(route: String)
 
-    fun navigateToMapsScreen()
-    fun navigateToReportsScreen()
-    fun navigateToNotificationsScreen()
+
 
 }

@@ -76,7 +76,9 @@ class NavigationRouterImpl(private val navController: NavController) : INavigati
     //both
 
     override fun navigateToMainScreen() {
-        navController.navigate(Destination.MainScreenScreen.route)
+        navController.navigate(Destination.MainScreenScreen.route){
+            popUpTo(Destination.SplashScreen.route) { inclusive = true }
+        }
     }
 
     override fun returnBack() {
@@ -94,19 +96,6 @@ class NavigationRouterImpl(private val navController: NavController) : INavigati
             launchSingleTop = true
         }
     }
-
-    override fun navigateToMapsScreen() {
-        navController.navigate(BottomBarScreen.Maps.route)
-    }
-
-    override fun navigateToReportsScreen() {
-        navController.navigate(BottomBarScreen.Reports.route)
-    }
-
-    override fun navigateToNotificationsScreen() {
-        navController.navigate(BottomBarScreen.Notifications.route)
-    }
-
 
 
 
