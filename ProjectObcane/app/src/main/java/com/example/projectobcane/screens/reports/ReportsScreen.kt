@@ -40,6 +40,12 @@ import com.example.projectobcane.R
 import com.example.projectobcane.database.reports.Report
 import com.example.projectobcane.navigation.INavigationRouter
     import com.example.projectobcane.ui.elements.BaseScreen
+import com.example.projectobcane.ui.theme.GreenDark
+import com.example.projectobcane.ui.theme.GreenLight
+import com.example.projectobcane.ui.theme.RedDark
+import com.example.projectobcane.ui.theme.RedLight
+import com.example.projectobcane.ui.theme.YellowDark
+import com.example.projectobcane.ui.theme.YellowLight
 import com.example.projectobcane.ui.theme.basicMargin
 import com.example.projectobcane.ui.theme.halfMargin
 import java.time.LocalDate
@@ -89,16 +95,45 @@ fun ReportsScreen(navigation: INavigationRouter, paddingValues: PaddingValues) {
 
 @Composable
 fun ReportItem(report: Report, onClick: () -> Unit) {
+
+    val (darkColor, lightColor) = when (report.status.lowercase()) {
+        "complete", "done" -> GreenDark to GreenLight
+        "inprogress", "in progress" -> YellowDark to YellowLight
+        "new" -> RedDark to RedLight
+        else -> MaterialTheme.colorScheme.surfaceVariant to MaterialTheme.colorScheme.surface
+    }
+
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(bottom = halfMargin)
             .clickable { onClick() }
     ) {
-        Column(Modifier.padding(basicMargin)) {
-            Text(report.title, style = MaterialTheme.typography.titleMedium)
-            Text(report.description, maxLines = 1)
-            Text("Status: ${report.status}")
+        Column {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(darkColor)
+                    .padding(basicMargin)
+            ) {
+                Text(
+                    text = report.title,
+                    style = MaterialTheme.typography.titleMedium,
+                    color = Color.White
+                )
+            }
+
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(lightColor)
+                    .padding(basicMargin)
+            ) {
+                Column {
+                    Text(report.description, maxLines = 1)
+                    Text("Status: ${report.status}")
+                }
+            }
         }
     }
 }
