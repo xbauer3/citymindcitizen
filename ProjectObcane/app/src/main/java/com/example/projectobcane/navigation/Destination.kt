@@ -4,11 +4,13 @@ sealed class Destination(val route: String) {
     object MainScreenScreen : Destination("main_screen")
     object SettingsScreen : Destination("settings_screen")
 
-    object AddEventScreen : Destination("add_edit")
-    object EditEventScreen : Destination ("edit_event")
+    object AddReportScreen : Destination("add_report")
+    object EditReportScreen : Destination ("edit_report")
 
-    object EventDetailScreen : Destination("event_detail")
-    object AddEditColor : Destination("add_color")
+    object ReportDetailScreen : Destination("report_detail")
+
+
+
 
     object SplashScreen: Destination("splash_screen")
 

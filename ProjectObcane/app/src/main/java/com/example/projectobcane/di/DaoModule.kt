@@ -1,8 +1,7 @@
 package com.example.projectobcane.di
 
-import com.example.projectobcane.database.EventDao
-import com.example.projectobcane.database.EventDatabase
-import com.example.projectobcane.database.color.ColorCategoryDao
+import com.example.projectobcane.database.ProjectDatabase
+import com.example.projectobcane.database.reports.ReportDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -15,14 +14,8 @@ object DaoModule {
 
     @Provides
     @Singleton
-    fun provideDao(database: EventDatabase): EventDao {
-        return database.eventDao()
-    }
-
-    @Provides
-    @Singleton
-    fun provideColorCategoryDao(database: EventDatabase): ColorCategoryDao {
-        return database.colorCategoryDao()
+    fun provideDao(database: ProjectDatabase): ReportDao {
+        return database.reportDao()
     }
 
 }

@@ -63,6 +63,10 @@
     <string name="error_event_description_too_long">Event description too long 250 char</string>
     <string name="error_color_required">Color is Required</string>
     <string name="app_icon">App Icon</string>
+    <string name="maps">Maps</string>
+    <string name="home">Home</string>
+    <string name="reports">Reports</string>
+    <string name="notifications">Notifications</string>
 
 
 </resources>

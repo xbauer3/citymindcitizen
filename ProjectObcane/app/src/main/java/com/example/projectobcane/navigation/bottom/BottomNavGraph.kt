@@ -1,5 +1,6 @@
 package com.example.projectobcane.navigation.bottom
 
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -14,10 +15,7 @@ import com.example.projectobcane.navigation.Destination
 import com.example.projectobcane.navigation.INavigationRouter
 import com.example.projectobcane.navigation.NavigationRouterImpl
 import com.example.projectobcane.screens.SplashScreen
-import com.example.projectobcane.screens.addEditScreen.AddEditEventScreen
-import com.example.projectobcane.screens.chLocation.ChooseLocationScreen
-import com.example.projectobcane.screens.colorC.ColorCategoryScreen
-import com.example.projectobcane.screens.detailScreen.EventDetailScreen
+
 import com.example.projectobcane.screens.events.EventsScreen
 import com.example.projectobcane.screens.mainScreen.MainScreenScreen
 import com.example.projectobcane.screens.maps.MapsScreen
@@ -35,7 +33,8 @@ import java.net.URLDecoder
 fun BottomNavGraph(
     startDestination: String,
     navHostController: NavHostController,
-    navRouter: INavigationRouter
+    navRouter: INavigationRouter,
+    paddingValues: PaddingValues
 ){
     NavHost(navController = navHostController, startDestination = startDestination) {
 
@@ -43,25 +42,25 @@ fun BottomNavGraph(
 
         //mainscreen
         composable(route = BottomBarScreen.Home.route) {
-            EventsScreen(navRouter)
+            EventsScreen(navRouter, paddingValues)
         }
 
 
         //notifications
         composable(route = BottomBarScreen.Notifications.route) {
-            MapsScreen(navRouter)
+            MapsScreen(navRouter, paddingValues)
         }
 
 
         //maps
         composable(route = BottomBarScreen.Maps.route) {
-            NotificationsScreen(navRouter)
+            NotificationsScreen(navRouter, paddingValues)
         }
 
 
         //reports
         composable(route = BottomBarScreen.Reports.route) {
-            ReportsScreen(navRouter)
+            ReportsScreen(navRouter, paddingValues)
         }
 
 

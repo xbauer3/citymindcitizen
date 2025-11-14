@@ -1,13 +1,16 @@
 package com.example.projectobcane.screens.mainScreen
 
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.res.stringResource
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.projectobcane.R
 import com.example.projectobcane.navigation.INavigationRouter
@@ -22,27 +25,52 @@ import com.example.projectobcane.ui.elements.BaseScreen
 @Composable
 fun MainScreenScreen(navigation: INavigationRouter) {
 
-    // Create the NavController for the bottom navigation
     val bottomNavController = rememberNavController()
     val bottomNavRouter = remember { NavigationRouterImpl(bottomNavController) }
 
-    // Scaffold or your BaseScreen wrapper with BottomBar
+    val navBackStackEntry = bottomNavController.currentBackStackEntryAsState().value
+    val currentRoute = navBackStackEntry?.destination?.route
+
+
+    val fabVisible = currentRoute == BottomBarScreen.Reports.route
+
+    val currentTopBarTitle = when (currentRoute) {
+        BottomBarScreen.Reports.route -> stringResource(R.string.reports)
+        BottomBarScreen.Home.route -> stringResource(R.string.home)
+        BottomBarScreen.Maps.route -> stringResource(R.string.maps)
+        BottomBarScreen.Notifications.route -> stringResource(R.string.notifications)
+        else -> stringResource(R.string.app_name)
+    }
+
+
+
     BaseScreen(
-        topBarText = stringResource(R.string.events),
+        topBarText = currentTopBarTitle,
         actions = {
             IconButton(onClick = { navigation.navigateToSettingsScreen() }) {
                 Icon(imageVector = Icons.Outlined.Settings, contentDescription = null)
             }
         },
-        bottomBar = { BottomBar(navigation = bottomNavRouter) }
+        bottomBar = { BottomBar(navigation = bottomNavRouter) },
+        floatingActionButton = {
+            if (fabVisible) {
+                FloatingActionButton(
+                    onClick = { navigation.navigateToAddEditReport(null) }
+                ) {
+                    Icon(Icons.Default.Add, contentDescription = "Add Report")
+                }
+            }
+        }
     ) { paddingValues ->
         BottomNavGraph(
             startDestination = BottomBarScreen.Home.route,
             navHostController = bottomNavController,
-            navRouter = bottomNavRouter
+            navRouter = bottomNavRouter,
+            paddingValues = paddingValues
         )
     }
 }
+
 
 
 

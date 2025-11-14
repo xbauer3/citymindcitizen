@@ -2,6 +2,7 @@ package com.example.projectobcane.screens.maps
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -14,7 +15,7 @@ import com.example.projectobcane.navigation.INavigationRouter
 
 
 @Composable
-fun MapsScreen(navigation: INavigationRouter) {
+fun MapsScreen(navigation: INavigationRouter, paddingValues: PaddingValues) {
     Box(
         modifier = Modifier
             .fillMaxSize()

@@ -1,7 +1,7 @@
 package com.example.projectobcane.di
 
 import android.content.Context
-import com.example.projectobcane.database.EventDatabase
+import com.example.projectobcane.database.ProjectDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -15,7 +15,7 @@ object DatabaseModule {
 
     @Provides
     @Singleton
-    fun provideDatabase(@ApplicationContext context: Context): EventDatabase {
-        return EventDatabase.getDatabase(context)
+    fun provideDatabase(@ApplicationContext context: Context): ProjectDatabase {
+        return ProjectDatabase.getDatabase(context)
     }
 }

@@ -3,6 +3,7 @@ package com.example.projectobcane.screens.notifications
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -15,7 +16,7 @@ import com.example.projectobcane.navigation.INavigationRouter
 
 
 @Composable
-fun NotificationsScreen(navigation: INavigationRouter) {
+fun NotificationsScreen(navigation: INavigationRouter, paddingValues: PaddingValues) {
     Box(
         modifier = Modifier
             .fillMaxSize()
