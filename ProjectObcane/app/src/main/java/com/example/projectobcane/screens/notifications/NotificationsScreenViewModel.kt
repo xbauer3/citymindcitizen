@@ -27,21 +27,29 @@ class NotificationsScreenViewModel @Inject constructor (
         notificationManager.notify(id, notification)
     }
 
-    fun sendEventsNotification() =
+    fun sendEventsNotification() {
         sendNotification("events", "New Event", "A new event has been added.")
+    }
 
-    fun sendImportantAlert() =
+    fun sendImportantAlert() {
         sendNotification("important_alerts", "URGENT ALERT", "Water outage tomorrow!")
+    }
 
-    fun sendReportNotification() =
+    fun sendReportNotification() {
         sendNotification("reports", "Report Update", "Your report has changed status.")
+    }
 
-    fun sendMapNotification() =
+    fun sendMapNotification() {
         sendNotification("map_updates", "Map Update", "A new location was added.")
+    }
 
-    fun sendVotingNotification() =
+    fun sendVotingNotification() {
         sendNotification("voting", "New Voting", "Vote for the new park changes.")
+    }
 
-    fun sendAdminNotification() =
+    fun sendAdminNotification() {
         sendNotification("admin_tools", "New Report", "A new report has been submitted.")
+    }
+
+
 }
