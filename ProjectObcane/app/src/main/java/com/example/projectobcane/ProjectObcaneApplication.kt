@@ -1,7 +1,11 @@
 package com.example.projectobcane
 
 import android.app.Application
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.content.Context
+import android.os.Build
+import androidx.activity.result.contract.ActivityResultContracts
 import com.example.projectobcane.screens.settings.LanguageHolder
 import com.example.projectobcane.screens.settings.LanguagePreferences
 import com.example.projectobcane.utils.LocalizedContextWrapper
@@ -25,6 +29,7 @@ class ProjectObcaneApplication: Application() {
 
     override fun onCreate() {
         super.onCreate()
+        createNotificationChannels()
 
         CoroutineScope(Dispatchers.Default).launch {
             val savedLang = LanguagePreferences.getSavedLanguage(applicationContext)
@@ -34,7 +39,28 @@ class ProjectObcaneApplication: Application() {
 
 
 
+
+    }
+
+
+    private fun createNotificationChannels() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+
+            val channels = listOf(
+                NotificationChannel("events", "Events", NotificationManager.IMPORTANCE_DEFAULT),
+                NotificationChannel("important_alerts", "Important Alerts", NotificationManager.IMPORTANCE_HIGH),
+                NotificationChannel("reports", "Reports", NotificationManager.IMPORTANCE_DEFAULT),
+                NotificationChannel("map_updates", "Map Updates", NotificationManager.IMPORTANCE_LOW),
+                NotificationChannel("voting", "Voting", NotificationManager.IMPORTANCE_DEFAULT),
+                NotificationChannel("admin_tools", "Admin Tools", NotificationManager.IMPORTANCE_HIGH),
+            )
+
+            val manager = getSystemService(NotificationManager::class.java)
+            channels.forEach { manager.createNotificationChannel(it) }
+        }
     }
 
 
 }
+
+
