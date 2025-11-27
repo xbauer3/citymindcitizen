@@ -35,17 +35,17 @@ fun MainScreenScreen(navigation: INavigationRouter) {
     val fabVisible = currentRoute == BottomBarScreen.Reports.route
 
     val currentTopBarTitle = when (currentRoute) {
-        BottomBarScreen.Reports.route -> stringResource(R.string.reports)
-        BottomBarScreen.Home.route -> stringResource(R.string.home)
-        BottomBarScreen.Maps.route -> stringResource(R.string.maps)
-        BottomBarScreen.Notifications.route -> stringResource(R.string.notifications)
-        else -> stringResource(R.string.app_name)
+        BottomBarScreen.Reports.route -> R.string.reports
+        BottomBarScreen.Home.route -> R.string.home
+        BottomBarScreen.Maps.route -> R.string.maps
+        BottomBarScreen.Notifications.route -> R.string.notifications
+        else -> R.string.app_name
     }
 
 
 
     BaseScreen(
-        topBarText = currentTopBarTitle,
+        topBarText = stringResource(currentTopBarTitle),
         actions = {
             IconButton(onClick = { navigation.navigateToSettingsScreen() }) {
                 Icon(imageVector = Icons.Outlined.Settings, contentDescription = null)

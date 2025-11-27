@@ -96,4 +96,10 @@
     <string name="app_icon">Ikona aplikace</string>
 
 
+    <string name="maps">Mapa</string>
+    <string name="home">Domů</string>
+    <string name="reports">Hlášení</string>
+    <string name="notifications">Oznámení</string>
+
+
 </resources>

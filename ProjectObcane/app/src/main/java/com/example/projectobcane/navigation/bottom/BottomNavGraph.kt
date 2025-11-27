@@ -48,13 +48,13 @@ fun BottomNavGraph(
 
         //notifications
         composable(route = BottomBarScreen.Notifications.route) {
-            MapsScreen(navRouter, paddingValues)
+            NotificationsScreen(navRouter, paddingValues)
         }
 
 
         //maps
         composable(route = BottomBarScreen.Maps.route) {
-            NotificationsScreen(navRouter, paddingValues)
+            MapsScreen(navRouter, paddingValues)
         }
 
 

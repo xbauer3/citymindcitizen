@@ -1,9 +1,18 @@
 package com.example.projectobcane.screens.events
 
+
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -12,22 +21,61 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import com.example.projectobcane.navigation.INavigationRouter
-
+import com.example.projectobcane.ui.theme.basicMargin
 
 
 @Composable
 fun EventsScreen(navigation: INavigationRouter, paddingValues: PaddingValues) {
-    Box(
+
+    Column(
         modifier = Modifier
-            .fillMaxSize()
-            .background(Color.Cyan),
-        contentAlignment = Alignment.Center
+            .padding(paddingValues)
+            .padding(basicMargin)
+            .verticalScroll(rememberScrollState())
     ) {
-        Text(
-            text = "Events",
-            fontSize = MaterialTheme.typography.bodyMedium.fontSize,
-            fontWeight = FontWeight.Bold,
-            color = Color.White
-        )
+
+        Text("Test Notifications", style = MaterialTheme.typography.titleMedium)
+
+        Spacer(Modifier.height(basicMargin))
+
+        NotificationTestButton("Send Event Notification") {
+            //sendTestNotification("events", "New Event", "A new event was added.")
+        }
+
+        NotificationTestButton("Send Important Alert") {
+            //sendTestNotification("important_alerts", "Important Alert!", "Water outage tomorrow 8:00–14:00.")
+        }
+
+        NotificationTestButton("Send Report Update") {
+            //sendTestNotification("reports", "Report Updated", "Your pothole report is now in progress.")
+        }
+
+        NotificationTestButton("Send Map Update") {
+            //sendTestNotification("map_updates", "Map Updated", "A new parking spot has been added.")
+        }
+
+        NotificationTestButton("Send Voting Notification") {
+            //sendTestNotification("voting", "New Voting", "Vote for new park improvements!")
+        }
+
+        NotificationTestButton("Send Admin Notification") {
+            //sendTestNotification("admin_tools", "New Report", "A citizen submitted a new issue!")
+        }
+
+        Spacer(Modifier.height(basicMargin))
+
+        // ... your events list UI below this
+    }
+}
+
+
+
+@Composable
+fun NotificationTestButton(text: String, onClick: () -> Unit) {
+    Button(
+        modifier = Modifier.fillMaxWidth(),
+        onClick = onClick
+    ) {
+        Text(text)
     }
 }

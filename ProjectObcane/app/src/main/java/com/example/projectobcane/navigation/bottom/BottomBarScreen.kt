@@ -15,13 +15,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.compose.runtime.getValue
+import com.example.projectobcane.R
 import com.example.projectobcane.navigation.EventLocation
 import com.example.projectobcane.navigation.INavigationRouter
+import androidx.compose.ui.res.stringResource
 
 
 sealed class BottomBarScreen(
     val route: String,
-    val title: String,
+    val title: Int,
     val selectedIcon: ImageVector,
     val unselectedIcon: ImageVector,
     val hasNews: Boolean,
@@ -34,7 +36,7 @@ sealed class BottomBarScreen(
 
     object Home : BottomBarScreen(
         route = "home",
-        title = "Home",
+        title = R.string.home,
         selectedIcon = Icons.Filled.Home,
         unselectedIcon = Icons.Default.Home,
         hasNews = false,
@@ -42,7 +44,7 @@ sealed class BottomBarScreen(
     )
     object Notifications : BottomBarScreen(
         route = "notifications",
-        title = "Notifications",
+        title = R.string.notifications,
         selectedIcon = Icons.Filled.Notifications,
         unselectedIcon = Icons.Default.Notifications,
         hasNews = false,
@@ -50,7 +52,7 @@ sealed class BottomBarScreen(
     )
     object Maps : BottomBarScreen(
         route = "maps",
-        title = "Maps",
+        title = R.string.maps,
         selectedIcon = Icons.Filled.LocationOn,
         unselectedIcon = Icons.Default.LocationOn,
         hasNews = false,
@@ -58,7 +60,7 @@ sealed class BottomBarScreen(
     )
     object Reports : BottomBarScreen(
         route = "reports",
-        title = "Reports",
+        title = R.string.reports,
         selectedIcon = Icons.Filled.Build,
         unselectedIcon = Icons.Default.Build,
         hasNews = true,
