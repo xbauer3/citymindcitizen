@@ -16,6 +16,7 @@ import com.example.projectobcane.screens.reports.detail.ReportDetailScreen
 
 
 import com.example.projectobcane.screens.settings.SettingsScreen
+import com.example.projectobcane.ui.elements.MapPickerScreen
 
 import com.squareup.moshi.Moshi
 import java.net.URLDecoder
@@ -40,7 +41,10 @@ fun NavGraph(
         }
 
 
-
+        //map
+        composable(Destination.PickLocationScreen.route) {
+            MapPickerScreen(navRouter)
+        }
 
 
 

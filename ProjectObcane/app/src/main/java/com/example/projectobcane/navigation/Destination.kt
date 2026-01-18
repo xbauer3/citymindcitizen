@@ -9,6 +9,7 @@ sealed class Destination(val route: String) {
 
     object ReportDetailScreen : Destination("report_detail")
 
+    object PickLocationScreen : Destination("pick_location")
 
 
 

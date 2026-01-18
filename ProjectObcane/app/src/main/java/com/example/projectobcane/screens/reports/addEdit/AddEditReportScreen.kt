@@ -1,7 +1,10 @@
 package com.example.projectobcane.screens.reports.addEdit
 
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
@@ -27,9 +30,12 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.projectobcane.R
 import com.example.projectobcane.database.reports.ReportStatus
+import com.example.projectobcane.navigation.Destination
 import com.example.projectobcane.navigation.INavigationRouter
 import com.example.projectobcane.ui.elements.BaseScreen
+import com.example.projectobcane.ui.elements.sharedViewModel
 import com.example.projectobcane.ui.theme.basicMargin
+import com.example.projectobcane.ui.theme.halfMargin
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -37,10 +43,17 @@ import com.example.projectobcane.ui.theme.basicMargin
 fun AddEditReportScreen(
     navigation: INavigationRouter,
     id: Long?,
-    defaultStartDate : Long? = null
 ) {
 
-    val viewModel = hiltViewModel<AddEditReportScreenViewModel>()
+    val navController = navigation.getNavController()
+
+    val viewModel = sharedViewModel<AddEditReportScreenViewModel>(
+        navController = navController,
+        route = Destination.AddReportScreen.route
+    )
+
+
+    //val viewModel = hiltViewModel<AddEditReportScreenViewModel>()
     val state = viewModel.addEditReportUIState.collectAsStateWithLifecycle()
 
     LaunchedEffect(id) {
@@ -234,6 +247,35 @@ fun AddEditReportScreenContent(
 
 
 
+        }
+
+
+
+        //location
+
+        item {
+            val lat = data.report.latitude
+            val lng = data.report.longitude
+
+            Column {
+                Text(
+                    text = if (lat != null && lng != null)
+                        "Location: %.5f, %.5f".format(lat, lng)
+                    else
+                        "No location selected"
+                )
+
+                Spacer(Modifier.height(halfMargin))
+
+                Button(
+                    onClick = {
+                        navigation.navigateToRoute(Destination.PickLocationScreen.route)
+                    },
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text("Pick location on map")
+                }
+            }
         }
 
 

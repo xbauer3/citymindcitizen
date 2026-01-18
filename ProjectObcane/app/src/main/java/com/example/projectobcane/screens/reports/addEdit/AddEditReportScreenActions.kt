@@ -15,7 +15,7 @@ interface AddEditReportScreenActions {
 
     //fun onPhotoChanged(value: String)
 
-
+    fun onLocationPicked(lat: Double, lng: Double)
 
     fun saveReport()
     fun deleteReport()

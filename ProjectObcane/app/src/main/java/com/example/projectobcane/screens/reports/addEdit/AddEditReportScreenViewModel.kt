@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.projectobcane.R
 import com.example.projectobcane.database.reports.IReportLocalRepository
 import com.example.projectobcane.database.reports.Report
+import com.example.projectobcane.database.reports.ReportStatus
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -28,6 +29,9 @@ class AddEditReportScreenViewModel @Inject constructor (private val repository: 
 
 
     fun loadReport(id: Long?) {
+        // 🔒 already loaded → DO NOTHING
+        if (!_addEditReportUIState.value.loading) return
+
         if (id != null) {
             viewModelScope.launch {
                 val report = repository.getById(id)
@@ -37,15 +41,23 @@ class AddEditReportScreenViewModel @Inject constructor (private val repository: 
                 )
             }
         } else {
-
-
             _addEditReportUIState.value = _addEditReportUIState.value.copy(
                 loading = false,
-                report = Report(null, "", "", "", "", 0.0, 0.0,"", 0L),
+                report = Report(
+                    id = null,
+                    title = "",
+                    description = "",
+                    category = "",
+                    status = ReportStatus.NEW.value,
+                    latitude = null,   // ⬅ IMPORTANT
+                    longitude = null,  // ⬅ IMPORTANT
+                    photoUri = "",
+                    createdAt = System.currentTimeMillis()
+                )
             )
         }
-
     }
+
 
 
     override fun onTitleChanged(value: String) {
@@ -63,6 +75,17 @@ class AddEditReportScreenViewModel @Inject constructor (private val repository: 
         )
 
 
+    }
+
+
+    override fun onLocationPicked(lat: Double, lng: Double) {
+        _addEditReportUIState.value =
+            _addEditReportUIState.value.copy(
+                report = _addEditReportUIState.value.report.copy(
+                    latitude = lat,
+                    longitude = lng
+                )
+            )
     }
 
 
