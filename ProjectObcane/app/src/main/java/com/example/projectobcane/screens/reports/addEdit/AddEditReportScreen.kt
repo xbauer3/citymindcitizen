@@ -7,7 +7,10 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material3.Button
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExposedDropdownMenuBox
+import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
@@ -23,6 +26,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.projectobcane.R
+import com.example.projectobcane.database.reports.ReportStatus
 import com.example.projectobcane.navigation.INavigationRouter
 import com.example.projectobcane.ui.elements.BaseScreen
 import com.example.projectobcane.ui.theme.basicMargin
@@ -72,6 +76,7 @@ fun AddEditReportScreen(
             data = state.value,
             actions = viewModel,
             navigation = navigation,
+            id = id
         )
     }
 
@@ -85,19 +90,22 @@ fun AddEditReportScreenContent(
     data: AddEditReportScreenUIState,
     actions: AddEditReportScreenActions,
     navigation: INavigationRouter,
+    id: Long?
 
-){
+) {
 
-    //var expanded by remember { mutableStateOf(false) }
+    var expanded by remember { mutableStateOf(false) }
 
 
 
-    LazyColumn(modifier = Modifier.padding(
-        start = basicMargin,
-        end = basicMargin,
-        top = paddingValues.calculateTopPadding(),
-        bottom = paddingValues.calculateBottomPadding()
-    ))
+    LazyColumn(
+        modifier = Modifier.padding(
+            start = basicMargin,
+            end = basicMargin,
+            top = paddingValues.calculateTopPadding(),
+            bottom = paddingValues.calculateBottomPadding()
+        )
+    )
     {
 
 
@@ -111,17 +119,15 @@ fun AddEditReportScreenContent(
                 },
                 isError = data.titleError != null,
                 supportingText = {
-                    if (data.titleError != null){
+                    if (data.titleError != null) {
                         Text(text = stringResource(data.titleError!!))
                     }
 
-                }
-                , modifier = Modifier.fillMaxWidth(),
-                label = {Text(text = "Title")},
+                }, modifier = Modifier.fillMaxWidth(),
+                label = { Text(text = "Title") },
                 maxLines = 1
             )
         }
-
 
 
         // description
@@ -135,13 +141,13 @@ fun AddEditReportScreenContent(
                 },
                 isError = data.descriptionError != null,
                 supportingText = {
-                    if (data.descriptionError != null){
+                    if (data.descriptionError != null) {
                         Text(text = stringResource(data.descriptionError!!))
                     }
 
-                }
-                , modifier = Modifier.fillMaxWidth(),
-                label = {Text(text = "Description")},
+                },
+                modifier = Modifier.fillMaxWidth(),
+                label = { Text(text = "Description") },
                 maxLines = 1,
 
                 )
@@ -159,44 +165,79 @@ fun AddEditReportScreenContent(
                 },
                 isError = data.categoryError != null,
                 supportingText = {
-                    if (data.categoryError != null){
+                    if (data.categoryError != null) {
                         Text(text = stringResource(data.categoryError!!))
                     }
 
-                }
-                , modifier = Modifier.fillMaxWidth(),
-                label = {Text(text = "Category")},
+                },
+                modifier = Modifier.fillMaxWidth(),
+                label = { Text(text = "Category") },
                 maxLines = 1,
 
                 )
 
         }
-
 
 
         // status
-
-
         item {
-            OutlinedTextField(
-                value = data.report.status,
-                onValueChange = {
-                    actions.onStatusChanged(it)
-                },
-                isError = data.statusError != null,
-                supportingText = {
-                    if (data.statusError != null){
-                        Text(text = stringResource(data.statusError!!))
+
+            if (id != null) {
+
+                ExposedDropdownMenuBox(
+                    expanded = expanded,
+                    onExpandedChange = { expanded = !expanded }
+                ) {
+                    OutlinedTextField(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .menuAnchor(),
+                        value = data.report.status,
+                        onValueChange = {},
+                        readOnly = true,
+                        label = { Text("Status") },
+                        trailingIcon = {
+                            ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)
+                        }
+                    )
+
+                    ExposedDropdownMenu(
+                        expanded = expanded,
+                        onDismissRequest = { expanded = false }
+                    ) {
+                        ReportStatus.values().forEach { status ->
+                            DropdownMenuItem(
+                                text = { Text(status.label) },
+                                onClick = {
+                                    actions.onStatusChanged(status.value)
+                                    expanded = false
+                                }
+                            )
+                        }
                     }
-
                 }
-                , modifier = Modifier.fillMaxWidth(),
-                label = {Text(text = "Status")},
-                maxLines = 1,
+            }else{
+                LaunchedEffect(Unit) {
+                    actions.onStatusChanged(ReportStatus.NEW.value)
+                }
 
+                OutlinedTextField(
+                    value = ReportStatus.NEW.label, // always "New"
+                    onValueChange = {},
+                    readOnly = true,
+                    enabled = false, // optional: visually disabled
+                    modifier = Modifier.fillMaxWidth(),
+                    label = { Text("Status") }
                 )
 
+            }
+
+
+
         }
+
+
+
 
 
 
