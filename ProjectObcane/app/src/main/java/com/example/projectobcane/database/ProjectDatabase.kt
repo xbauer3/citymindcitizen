@@ -1,17 +1,19 @@
 package com.example.projectobcane.database
 
+
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.example.projectobcane.database.events.Event
 import com.example.projectobcane.database.reports.Report
 import com.example.projectobcane.database.reports.ReportDao
 
 @Database(
     entities = [
-        Report::class
+        Report::class, Event::class
     ],
-    version = 11,
+    version = 13,
     exportSchema = true
 )
 abstract class ProjectDatabase : RoomDatabase() {

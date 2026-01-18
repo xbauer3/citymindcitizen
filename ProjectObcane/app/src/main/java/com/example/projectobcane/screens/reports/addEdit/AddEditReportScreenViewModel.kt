@@ -41,7 +41,7 @@ class AddEditReportScreenViewModel @Inject constructor (private val repository: 
 
             _addEditReportUIState.value = _addEditReportUIState.value.copy(
                 loading = false,
-                report = Report(null, "", "", "", "", "", 0L),
+                report = Report(null, "", "", "", "", 0.0, 0.0,"", 0L),
             )
         }
 

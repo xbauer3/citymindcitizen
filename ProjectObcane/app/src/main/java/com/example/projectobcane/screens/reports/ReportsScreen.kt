@@ -53,7 +53,11 @@ import java.time.ZoneId
 
 
 @Composable
-fun ReportsScreen(navigation: INavigationRouter, paddingValues: PaddingValues) {
+fun ReportsScreen(
+    bottomNav: INavigationRouter,
+    rootNav: INavigationRouter,
+    paddingValues: PaddingValues
+) {
 
     val viewModel = hiltViewModel<ReportsScreenViewModel>()
     val state = viewModel.reportScreenUIState.collectAsStateWithLifecycle()
@@ -79,7 +83,7 @@ fun ReportsScreen(navigation: INavigationRouter, paddingValues: PaddingValues) {
                     ReportItem(
                         report = it
                     ) {
-                        navigation.navigateToEventDetail(it.id)
+                        rootNav.navigateToEventDetail(it.id)
                     }
                 }
 

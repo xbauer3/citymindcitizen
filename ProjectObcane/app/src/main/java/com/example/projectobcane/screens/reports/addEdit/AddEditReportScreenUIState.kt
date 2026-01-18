@@ -5,7 +5,7 @@ import com.example.projectobcane.database.reports.Report
 
 data class AddEditReportScreenUIState (
 
-    var report: Report = Report(null, "", "", "","","", 0L),
+    var report: Report = Report(null, "", "", "","",0.0,0.0, "", 0L),
 
     var loading: Boolean = true,
     var reportSaved: Boolean = false,

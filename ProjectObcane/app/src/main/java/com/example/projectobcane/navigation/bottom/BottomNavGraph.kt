@@ -33,37 +33,33 @@ import java.net.URLDecoder
 fun BottomNavGraph(
     startDestination: String,
     navHostController: NavHostController,
-    navRouter: INavigationRouter,
+    bottomNavRouter: INavigationRouter,
+    rootNavRouter: INavigationRouter,
     paddingValues: PaddingValues
-){
-    NavHost(navController = navHostController, startDestination = startDestination) {
+) {
+    NavHost(
+        navController = navHostController,
+        startDestination = startDestination
+    ) {
 
-
-
-        //mainscreen
-        composable(route = BottomBarScreen.Home.route) {
-            EventsScreen(navRouter, paddingValues)
+        composable(BottomBarScreen.Home.route) {
+            EventsScreen(bottomNavRouter, paddingValues)
         }
 
-
-        //notifications
-        composable(route = BottomBarScreen.Notifications.route) {
-            NotificationsScreen(navRouter, paddingValues)
+        composable(BottomBarScreen.Notifications.route) {
+            NotificationsScreen(bottomNavRouter, paddingValues)
         }
 
-
-        //maps
-        composable(route = BottomBarScreen.Maps.route) {
-            MapsScreen(navRouter, paddingValues)
+        composable(BottomBarScreen.Maps.route) {
+            MapsScreen(bottomNavRouter, paddingValues)
         }
 
-
-        //reports
-        composable(route = BottomBarScreen.Reports.route) {
-            ReportsScreen(navRouter, paddingValues)
+        composable(BottomBarScreen.Reports.route) {
+            ReportsScreen(
+                bottomNav = bottomNavRouter,
+                rootNav = rootNavRouter,
+                paddingValues = paddingValues
+            )
         }
-
-
     }
-
 }

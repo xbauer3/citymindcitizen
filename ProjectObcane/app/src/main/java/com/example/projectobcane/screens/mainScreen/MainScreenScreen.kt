@@ -65,7 +65,8 @@ fun MainScreenScreen(navigation: INavigationRouter) {
         BottomNavGraph(
             startDestination = BottomBarScreen.Home.route,
             navHostController = bottomNavController,
-            navRouter = bottomNavRouter,
+            bottomNavRouter = bottomNavRouter,
+            rootNavRouter = navigation,
             paddingValues = paddingValues
         )
     }
