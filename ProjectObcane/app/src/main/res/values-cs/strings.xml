@@ -100,7 +100,8 @@
     <string name="home">Domů</string>
     <string name="reports">Hlášení</string>
     <string name="notifications">Oznámení</string>
-    <string name="add_edit_event">Add/Edit Event</string>
+    <string name="add_edit_event">Přidat/Upravit Událost</string>
+    <string name="report_detail">Detail Reportu</string>
 
 
 </resources>

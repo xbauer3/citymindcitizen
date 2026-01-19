@@ -65,7 +65,7 @@ fun ReportDetailScreen(
     }
 
     BaseScreen(
-        topBarText = stringResource(R.string.event_detail),
+        topBarText = stringResource(R.string.report_detail),
         showLoading = state.value.loading,
         onBackClick = { navigation.returnBack() },
         actions = {

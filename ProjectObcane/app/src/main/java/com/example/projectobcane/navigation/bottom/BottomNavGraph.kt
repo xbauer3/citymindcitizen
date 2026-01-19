@@ -55,7 +55,10 @@ fun BottomNavGraph(
         }
 
         composable(BottomBarScreen.Maps.route) {
-            MapsScreen(bottomNavRouter, paddingValues)
+            MapsScreen(
+                bottomNav = bottomNavRouter,
+                rootNav = rootNavRouter,
+                paddingValues = paddingValues)
         }
 
         composable(BottomBarScreen.Reports.route) {

@@ -84,6 +84,12 @@ dependencies {
     implementation(libs.googlemap.compose)
     implementation(libs.googlemap.foundation)
 
+    implementation(libs.googlemap.utils)
+    implementation(libs.googlemap.widgets)
+    implementation(libs.googlemap.compose.utils)
+
+
+
     implementation(libs.moshi)
     ksp(libs.moshi.ksp)
 
