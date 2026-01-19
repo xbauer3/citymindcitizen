@@ -79,6 +79,7 @@
     <string name="add_photo">Add Photo</string>
     <string name="continue_button">Continue</string>
     <string name="pick_your_language">Pick your language</string>
+    <string name="category">Category</string>
 
 
 </resources>

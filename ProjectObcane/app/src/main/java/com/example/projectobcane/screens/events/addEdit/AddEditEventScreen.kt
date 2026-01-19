@@ -50,6 +50,7 @@ import com.example.projectobcane.screens.reports.addEdit.AddEditReportScreenView
 import com.example.projectobcane.ui.elements.BaseScreen
 import com.example.projectobcane.ui.elements.InfoElement
 import com.example.projectobcane.ui.elements.MyDatePicker
+import com.example.projectobcane.ui.elements.MyDateTimePicker
 import com.example.projectobcane.ui.theme.basicMargin
 import com.example.projectobcane.ui.theme.halfMargin
 import com.example.projectobcane.utils.DateUtils
@@ -148,15 +149,17 @@ fun AddEditReportScreenContent(
 
     var showDatePicker by remember { mutableStateOf(false) }
 
-    if (showDatePicker){
-        MyDatePicker(
-            date = data.event.date ?: System.currentTimeMillis(),
-            onDateSelected = {
-                actions.onDateChanged(it)
+    if (showDatePicker) {
+        MyDateTimePicker(
+            initialDateMillis = data.event.date ?: System.currentTimeMillis(),
+            onDateTimeSelected = { newDateTime ->
+                actions.onDateChanged(newDateTime)
+                showDatePicker = false
             },
             onDismiss = { showDatePicker = false }
         )
     }
+
 
 
 
@@ -339,15 +342,16 @@ fun AddEditReportScreenContent(
 
 
 
-        // Notification Date
+        // Date
         item {
             InfoElement(
-                value = data.event.date?.let { DateUtils.getDateString(it) },
+                value = data.event.date?.let { DateUtils.getDateTimeString(it) }, // uses new method
                 hint = stringResource(R.string.notification_date),
                 leadingIcon = Icons.Default.DateRange,
                 onClick = { showDatePicker = true },
                 onClearClick = { actions.onDateChanged(null) }
             )
+
         }
 
 

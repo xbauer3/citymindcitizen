@@ -175,6 +175,11 @@ fun ReportDetailContent(
                     Spacer(modifier = Modifier.height(halfMargin))
 
                     DetailRow(
+                        label = stringResource(R.string.category),
+                        value = report.category
+                    )
+
+                    DetailRow(
                         label = stringResource(R.string.status),
                         value = report.status
                     )
