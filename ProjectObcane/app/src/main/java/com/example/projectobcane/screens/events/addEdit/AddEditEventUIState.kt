@@ -18,7 +18,7 @@ data class AddEditEventUIState (
         category = "",
         status = "",
         placeName = "",
-        date = System.currentTimeMillis(),               // means "not set yet"
+        date = System.currentTimeMillis(),
         location = LocationEntity(0.0,0.0),
         photoUri = "",
         createdAt = System.currentTimeMillis()

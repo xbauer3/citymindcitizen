@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ChevronRight
 import androidx.compose.material.icons.filled.Create
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -48,6 +49,8 @@ import com.example.projectobcane.ui.theme.halfMargin
 import java.time.Instant
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
+
+
 
 
 @Composable
@@ -113,9 +116,9 @@ fun EventItem(
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 6.dp)
+            .padding(vertical = halfMargin)
             .clickable { onClick() },
-        shape = RoundedCornerShape(12.dp),
+        shape = RoundedCornerShape(basicMargin),
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
         Box(
@@ -183,7 +186,7 @@ fun EventItem(
 
                 // RIGHT ARROW
                 Icon(
-                    imageVector = Icons.Default.Create,
+                    imageVector = Icons.Default.ChevronRight,
                     contentDescription = null,
                     tint = MaterialTheme.colorScheme.onSurfaceVariant
                 )

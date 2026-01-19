@@ -106,7 +106,7 @@ dependencies {
     implementation("com.afollestad.material-dialogs:core:3.3.0")
 
 
-
+    implementation ("androidx.compose.material:material-icons-extended:1.5.0")
 
 
 

@@ -8,7 +8,7 @@ interface INavigationRouter {
     //other
 
     fun navigateToSettingsScreen()
-    fun navigateToEventDetail(id: Long?)
+    fun navigateToReportDetail(id: Long?)
     fun getNavController(): NavController
 
 
@@ -22,7 +22,7 @@ interface INavigationRouter {
     fun returnFromMap(latitude: Double, longitude: Double)
 
     fun navigateToAddEditEvent(id: Long?)
-
+    fun navigateToEventDetail(id: Long?)
 
     //both
     fun returnBack()
