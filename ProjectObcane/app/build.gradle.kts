@@ -141,4 +141,16 @@ dependencies {
     implementation(libs.retrofit.okhtt3)
 
 
+
+    // ML Kit Image Labeling (on-device)
+    implementation("com.google.mlkit:image-labeling:17.0.7")
+
+    // Image picker (modern)
+    implementation("androidx.activity:activity-compose:1.8.2")
+
+
+
+
+
+
 }

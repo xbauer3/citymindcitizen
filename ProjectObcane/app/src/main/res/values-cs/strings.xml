@@ -109,6 +109,7 @@
     <string name="created_at">Created at</string>
     <string name="status">Status</string>
     <string name="report_information">Report information</string>
+    <string name="add_photo">Add Photo</string>
 
 
 </resources>
