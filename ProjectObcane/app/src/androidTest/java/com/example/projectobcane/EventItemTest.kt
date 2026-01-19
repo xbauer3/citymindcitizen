@@ -17,6 +17,12 @@ class EventItemTest {
     @get:Rule
     val composeTestRule = createComposeRule()
 
+
+
+    /**
+     * Tests that an EventItem composable correctly displays
+     * the event title and place name.
+     */
     @Test
     fun eventItem_displaysTitleAndPlace() {
         val event = EventWithWeather(

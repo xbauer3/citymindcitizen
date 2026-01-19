@@ -19,6 +19,10 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 
+
+/**
+ * Tests for the local Room-based Event repository.
+ */
 @RunWith(AndroidJUnit4::class)
 class EventLocalRepositoryTest {
 
@@ -42,6 +46,12 @@ class EventLocalRepositoryTest {
         db.close()
     }
 
+
+
+    /**
+     * Tests that inserting an event works
+     * and that getAll returns the inserted event.
+     */
     @Test
     fun insertEvent_andGetAll_returnsEvent() = runTest {
         val event = Event(

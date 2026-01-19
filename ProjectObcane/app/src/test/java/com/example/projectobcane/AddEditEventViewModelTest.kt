@@ -24,6 +24,11 @@ class AddEditEventViewModelTest {
         viewModel = AddEditEventViewModel(repository)
     }
 
+
+    /**
+     * Tests that updating the event title
+     * correctly updates the UI state.
+     */
     @Test
     fun onTitleChanged_updatesTitle() {
         viewModel.onTitleChanged("Event name")
@@ -34,6 +39,11 @@ class AddEditEventViewModelTest {
         )
     }
 
+
+    /**
+     * Tests that attempting to save an event with
+     * an empty title sets a validation error.
+     */
     @Test
     fun saveEvent_withEmptyTitle_setsError() {
         viewModel.onTitleChanged("")
@@ -44,7 +54,10 @@ class AddEditEventViewModelTest {
 }
 
 
-
+/**
+ * Fake repository for testing AddEditEventViewModel.
+ * Stores events in a simple mutable list.
+ */
 class FakeEventRepository(
     initialEvents: List<Event> = emptyList()
 ) : IEventLocalRepository {

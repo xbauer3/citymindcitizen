@@ -92,7 +92,7 @@ fun OnBoardingScreen2Content(
     val coroutineScope = rememberCoroutineScope()
 
     Image(
-        painter = painterResource(id = R.drawable.infoobce),
+        painter = painterResource(id = R.drawable.flags),
         contentDescription = "ObecInfo Logo",
         modifier = Modifier
             .fillMaxWidth()

@@ -77,6 +77,11 @@ class MapScreenViewModelTest {
         Dispatchers.resetMain()
     }
 
+
+    /**
+     * Tests that loadMapItems() correctly combines
+     * reports and events into map items.
+     */
     @Test
     fun loadMapItems_combinesReportsAndEvents() = runTest(testDispatcher) {
         viewModel.loadMapItems()
