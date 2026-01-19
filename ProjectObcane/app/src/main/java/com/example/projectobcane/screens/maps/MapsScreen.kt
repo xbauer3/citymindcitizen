@@ -63,6 +63,13 @@ fun MapsScreen(
                 googleMap
             )
 
+            val renderer = MapClusterRenderer(
+                context,
+                googleMap,
+                clusterManager
+            )
+            clusterManager.renderer = renderer
+
             googleMap.setOnCameraIdleListener(clusterManager)
             googleMap.setOnMarkerClickListener(clusterManager)
 
@@ -81,7 +88,7 @@ fun MapsScreen(
                 true
             }
         }
+
     }
 }
-
 
