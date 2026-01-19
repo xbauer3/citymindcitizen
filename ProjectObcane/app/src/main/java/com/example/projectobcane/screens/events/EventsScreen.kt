@@ -84,7 +84,7 @@ fun EventsScreen(
                     EventItem(
                         event = it
                     ) {
-                        rootNav.navigateToEventDetail(it.id)
+                        rootNav.navigateToEventDetail(it.event.id)
                     }
                 }
 
@@ -105,7 +105,7 @@ fun EventsScreen(
 
 @Composable
 fun EventItem(
-    event: Event,
+    event: EventWithWeather,
     onClick: () -> Unit
 ) {
     val gradientColors = listOf(
@@ -150,7 +150,7 @@ fun EventItem(
                                 .padding(horizontal = basicMargin, vertical = halfMargin)
                         ) {
                             Text(
-                                text = formatEventDate(event.date!!),
+                                text = formatEventDate(event.event.date!!),
                                 style = MaterialTheme.typography.labelMedium,
                                 fontWeight = FontWeight.Bold
                             )
@@ -160,8 +160,8 @@ fun EventItem(
 
                         // Weather icon (placeholder)
                         Text(
-                            text = "⛈️",
-                            fontSize = 18.sp
+                            text = event.weatherEmoji ?: "…",
+                            fontSize = 22.sp
                         )
                     }
 
@@ -169,7 +169,7 @@ fun EventItem(
 
                     // TITLE
                     Text(
-                        text = event.title,
+                        text = event.event.title,
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.Bold
                     )
@@ -178,7 +178,7 @@ fun EventItem(
 
                     // SUBTITLE
                     Text(
-                        text = "${formatEventTime(event.date!!)}, ${event.placeName}",
+                        text = "${formatEventTime(event.event.date!!)}, ${event.event.placeName}",
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )

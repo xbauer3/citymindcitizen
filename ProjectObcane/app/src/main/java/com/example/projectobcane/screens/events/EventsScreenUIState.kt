@@ -1,10 +1,9 @@
 package com.example.projectobcane.screens.events
 
-import com.example.projectobcane.database.events.Event
-import com.example.projectobcane.database.reports.Report
+import com.example.projectobcane.screens.events.EventWithWeather
 
-
-data class EventsScreenUIState (
-    var events: List<Event> = emptyList(),
-    var loading: Boolean = true,
+data class EventsScreenUIState(
+    val loading: Boolean = true,
+    val events: List<EventWithWeather> = emptyList(),
+    val error: Int? = null
 )
