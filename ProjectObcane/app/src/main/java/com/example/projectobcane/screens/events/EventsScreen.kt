@@ -158,11 +158,26 @@ fun EventItem(
 
                         Spacer(modifier = Modifier.width(halfMargin))
 
-                        // Weather icon (placeholder)
-                        Text(
-                            text = event.weatherEmoji ?: "…",
-                            fontSize = 22.sp
-                        )
+
+                        Box(
+                            modifier = Modifier
+                                .background(
+                                    color = MaterialTheme.colorScheme.surfaceTint,
+                                    shape = RoundedCornerShape(halfMargin)
+                                )
+                                .padding(horizontal = basicMargin, vertical = halfMargin)
+
+                        ) {
+                            // Weather icon
+                            Text(
+                                text = event.weatherEmoji ?: "…",
+                                fontSize = 22.sp
+                            )
+                        }
+
+
+
+
                     }
 
                     Spacer(modifier = Modifier.height(halfMargin))

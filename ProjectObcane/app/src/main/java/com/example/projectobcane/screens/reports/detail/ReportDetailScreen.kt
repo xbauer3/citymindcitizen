@@ -1,6 +1,7 @@
 package com.example.projectobcane.screens.reports.detail
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -18,6 +19,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -56,7 +58,6 @@ fun ReportDetailScreen(
     navigation: INavigationRouter,
     id: Long?
 ) {
-
     val viewModel = hiltViewModel<ReportDetailViewModel>()
     val state = viewModel.eventDetailUIState.collectAsStateWithLifecycle()
 
@@ -75,7 +76,7 @@ fun ReportDetailScreen(
                 if (showDialog) {
                     AlertDialog(
                         onDismissRequest = { showDialog = false },
-                        title = { Text(stringResource(R.string.delete_event)) },
+                        title = { Text(stringResource(R.string.delete_report)) },
                         text = { Text(stringResource(R.string.confirm_delete)) },
                         confirmButton = {
                             TextButton(onClick = {
@@ -95,7 +96,7 @@ fun ReportDetailScreen(
                 }
 
                 IconButton(onClick = { showDialog = true }) {
-                    Icon(imageVector = Icons.Outlined.Delete, contentDescription = null)
+                    Icon(Icons.Outlined.Delete, contentDescription = null)
                 }
             }
         }
@@ -108,91 +109,151 @@ fun ReportDetailScreen(
     }
 }
 
+
 @Composable
 fun ReportDetailContent(
     paddingValues: PaddingValues,
     data: ReportDetailUIState,
     navigation: INavigationRouter
 ) {
+    val report = data.report
+
     LazyColumn(
-        modifier = Modifier.padding(
-            start = basicMargin,
-            end = basicMargin,
-            top = paddingValues.calculateTopPadding(),
-            bottom = paddingValues.calculateBottomPadding()
-        )
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(
+                start = basicMargin,
+                end = basicMargin,
+                top = paddingValues.calculateTopPadding(),
+                bottom = paddingValues.calculateBottomPadding()
+            ),
+        verticalArrangement = Arrangement.spacedBy(basicMargin)
     ) {
+
+        // IMAGE
         item {
-            val report = data.report
-            Card(
+            GlideImage(
+                url = if (report.photoUri.isNotEmpty()) report.photoUri
+                else "https://picsum.photos/400?random=${report.id ?: 0}",
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(vertical = halfMargin),
-                shape = RoundedCornerShape(basicMargin),
-                elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+                    .height(220.dp)
+                    .clip(RoundedCornerShape(12.dp))
+            )
+        }
+
+        // TITLE + DESCRIPTION
+        item {
+            Column {
+                Text(
+                    text = report.title,
+                    style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold)
+                )
+
+                Spacer(modifier = Modifier.height(halfMargin))
+
+                Text(
+                    text = report.description,
+                    style = MaterialTheme.typography.bodyMedium
+                )
+            }
+        }
+
+        // REPORT INFO
+        item {
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                elevation = CardDefaults.cardElevation(2.dp)
             ) {
-                Column(
-                    modifier = Modifier
-                        .background(
-                            brush = androidx.compose.ui.graphics.Brush.verticalGradient(
-                                colors = listOf(
-                                    MaterialTheme.colorScheme.surfaceVariant,
-                                    MaterialTheme.colorScheme.surface
-                                )
-                            )
-                        )
-                        .padding(basicMargin)
-                ) {
-                    // Image
-                    GlideImage(
-                        url = if (report.photoUri.isNotEmpty()) report.photoUri
-                        else "https://picsum.photos/400?random=${report.id ?: 0}",
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(200.dp)
-                            .clip(RoundedCornerShape(basicMargin))
-                    )
+                Column(modifier = Modifier.padding(basicMargin)) {
 
-                    Spacer(modifier = Modifier.height(basicMargin))
-
-                    // Title
                     Text(
-                        text = report.title,
-                        style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
-                        maxLines = 2,
-                        overflow = TextOverflow.Ellipsis
+                        text = stringResource(R.string.report_information),
+                        style = MaterialTheme.typography.titleMedium
                     )
 
                     Spacer(modifier = Modifier.height(halfMargin))
 
-                    // Description
-                    Text(
-                        text = report.description,
-                        style = MaterialTheme.typography.bodyMedium,
-                        maxLines = 3,
-                        overflow = TextOverflow.Ellipsis
+                    DetailRow(
+                        label = stringResource(R.string.status),
+                        value = report.status
                     )
 
-                    Spacer(modifier = Modifier.height(halfMargin))
-
-                    // Created date
-                    Text(
-                        text = report.createdAt?.let { DateUtils.getDateString(it) } ?: "",
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    DetailRow(
+                        label = stringResource(R.string.created_at),
+                        value = report.createdAt?.let { DateUtils.getDateString(it) } ?: "-"
                     )
-
-                    Spacer(modifier = Modifier.height(basicMargin))
-
-                    // Edit button
-                    Button(
-                        onClick = { navigation.navigateToAddEditReport(id = report.id) },
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
-                        Text(text = stringResource(R.string.edit))
-                    }
                 }
+            }
+        }
+
+        // LOCATION
+        item {
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                elevation = CardDefaults.cardElevation(2.dp)
+            ) {
+                Column(modifier = Modifier.padding(basicMargin)) {
+                    Text(
+                        text = stringResource(R.string.location),
+                        style = MaterialTheme.typography.titleMedium
+                    )
+
+                    Spacer(modifier = Modifier.height(halfMargin))
+
+                    DetailRow(
+                        label = stringResource(R.string.latitude),
+                        value = report.location.latitude.toString()
+                    )
+
+                    DetailRow(
+                        label = stringResource(R.string.longitude),
+                        value = report.location.longitude.toString()
+                    )
+                }
+            }
+        }
+
+        // ACTION BUTTONS
+        item {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(halfMargin)
+            ) {
+                Button(
+                    modifier = Modifier.weight(1f),
+                    onClick = {
+                        navigation.navigateToAddEditReport(id = report.id)
+                    }
+                ) {
+                    Text(stringResource(R.string.edit))
+                }
+
             }
         }
     }
 }
+
+@Composable
+fun DetailRow(
+    label: String,
+    value: String
+) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        Text(
+            text = label,
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onSurfaceVariant
+        )
+        Text(
+            text = value,
+            style = MaterialTheme.typography.bodyMedium,
+            fontWeight = FontWeight.Medium
+        )
+    }
+}
+
+
