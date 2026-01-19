@@ -189,7 +189,7 @@ fun AddEditReportScreenContent(
                     }
 
                 }, modifier = Modifier.fillMaxWidth(),
-                label = { Text(text = "Title") },
+                label = { Text(text = stringResource(R.string.title)) },
                 maxLines = 1
             )
         }
@@ -212,7 +212,7 @@ fun AddEditReportScreenContent(
 
                 },
                 modifier = Modifier.fillMaxWidth(),
-                label = { Text(text = "Description") },
+                label = { Text(text = stringResource(R.string.description)) },
                 maxLines = 1,
 
                 )
@@ -235,7 +235,7 @@ fun AddEditReportScreenContent(
                     value = data.event.category,
                     onValueChange = {},
                     readOnly = true,
-                    label = { Text("Category") },
+                    label = { Text(stringResource(R.string.category)) },
                     trailingIcon = {
                         ExposedDropdownMenuDefaults.TrailingIcon(expanded = expandedCategory)
                     }
@@ -276,7 +276,7 @@ fun AddEditReportScreenContent(
                         value = data.event.status,
                         onValueChange = {},
                         readOnly = true,
-                        label = { Text("Status") },
+                        label = { Text(stringResource(R.string.status)) },
                         trailingIcon = {
                             ExposedDropdownMenuDefaults.TrailingIcon(expanded = expandedStatus)
                         }
@@ -308,7 +308,7 @@ fun AddEditReportScreenContent(
                     readOnly = true,
                     enabled = false, // optional: visually disabled
                     modifier = Modifier.fillMaxWidth(),
-                    label = { Text("Status") }
+                    label = { Text(stringResource(R.string.status)) }
                 )
 
             }
@@ -332,7 +332,7 @@ fun AddEditReportScreenContent(
 
                 },
                 modifier = Modifier.fillMaxWidth(),
-                label = { Text(text = "Place Name") },
+                label = { Text(text = stringResource(R.string.place_name)) },
                 maxLines = 1,
 
                 )
@@ -346,7 +346,7 @@ fun AddEditReportScreenContent(
         item {
             InfoElement(
                 value = data.event.date?.let { DateUtils.getDateTimeString(it) }, // uses new method
-                hint = stringResource(R.string.notification_date),
+                hint = stringResource(R.string.date),
                 leadingIcon = Icons.Default.DateRange,
                 onClick = { showDatePicker = true },
                 onClearClick = { actions.onDateChanged(null) }

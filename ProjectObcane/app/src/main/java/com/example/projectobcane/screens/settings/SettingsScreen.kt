@@ -191,7 +191,7 @@ fun SettingsScreenContent(
             },
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text(text = "Reset Onboarding")
+            Text(text = stringResource(R.string.reset_onboarding))
         }
 
 

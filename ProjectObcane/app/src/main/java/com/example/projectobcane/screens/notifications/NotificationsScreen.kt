@@ -19,9 +19,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.example.projectobcane.R
 import com.example.projectobcane.navigation.INavigationRouter
 import com.example.projectobcane.screens.reports.ReportsScreenViewModel
 import com.example.projectobcane.ui.theme.basicMargin
@@ -41,7 +43,7 @@ fun NotificationsScreen(navigation: INavigationRouter, paddingValues: PaddingVal
             .verticalScroll(rememberScrollState())
     ) {
 
-        Text("Test Notifications", style = MaterialTheme.typography.titleMedium)
+        Text(stringResource(R.string.test_notifications), style = MaterialTheme.typography.titleMedium)
 
         Spacer(Modifier.height(basicMargin))
 

@@ -80,6 +80,16 @@
     <string name="continue_button">Continue</string>
     <string name="pick_your_language">Pick your language</string>
     <string name="category">Category</string>
+    <string name="reset_onboarding">Reset Onboarding</string>
+    <string name="welcome_to_obecinfo_app">Welcome to ObecInfo app</string>
+    <string name="obecinfo_logo">ObecInfo Logo</string>
+    <string name="watch_for_new_from_your_city">Watch for news from your city</string>
+    <string name="title">Title</string>
+    <string name="description">Description</string>
+    <string name="place_name">Place Name</string>
+    <string name="date">Date</string>
+    <string name="test_notifications">Test Notifications</string>
+    <string name="status_w_value">Status: %1$s</string>
 
 
 </resources>

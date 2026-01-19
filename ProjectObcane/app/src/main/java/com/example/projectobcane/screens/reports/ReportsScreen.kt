@@ -68,7 +68,9 @@ fun ReportsScreen(
 
 
     LazyColumn(
-        modifier = Modifier.fillMaxSize().padding(paddingValues)
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(paddingValues)
     ) {
 
         state.value.reports.forEach {
@@ -135,7 +137,7 @@ fun ReportItem(report: Report, onClick: () -> Unit) {
             ) {
                 Column {
                     Text(report.description, maxLines = 1)
-                    Text("Status: ${report.status}")
+                    Text(stringResource(R.string.status_w_value, report.status))
                 }
             }
         }

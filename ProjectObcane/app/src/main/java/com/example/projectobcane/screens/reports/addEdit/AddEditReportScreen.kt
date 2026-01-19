@@ -179,7 +179,7 @@ fun AddEditReportScreenContent(
                     }
 
                 }, modifier = Modifier.fillMaxWidth(),
-                label = { Text(text = "Title") },
+                label = { Text(stringResource(R.string.title)) },
                 maxLines = 1
             )
         }
@@ -202,7 +202,7 @@ fun AddEditReportScreenContent(
 
                 },
                 modifier = Modifier.fillMaxWidth(),
-                label = { Text(text = "Description") },
+                label = { Text(text = stringResource(R.string.description)) },
                 maxLines = 1,
 
                 )
@@ -258,7 +258,7 @@ fun AddEditReportScreenContent(
 
                 },
                 modifier = Modifier.fillMaxWidth(),
-                label = { Text(text = "Category") },
+                label = { Text(text = stringResource(R.string.category)) },
                 maxLines = 1,
 
                 )
@@ -282,7 +282,7 @@ fun AddEditReportScreenContent(
                         value = data.report.status,
                         onValueChange = {},
                         readOnly = true,
-                        label = { Text("Status") },
+                        label = { Text(stringResource(R.string.status)) },
                         trailingIcon = {
                             ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)
                         }
@@ -314,7 +314,7 @@ fun AddEditReportScreenContent(
                     readOnly = true,
                     enabled = false, // optional: visually disabled
                     modifier = Modifier.fillMaxWidth(),
-                    label = { Text("Status") }
+                    label = { Text(stringResource(R.string.status)) }
                 )
 
             }

@@ -62,13 +62,17 @@ fun OnBoardingScreen1Content(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(start = basicMargin, end = basicMargin, top = paddingValues.calculateTopPadding())
+            .padding(
+                start = basicMargin,
+                end = basicMargin,
+                top = paddingValues.calculateTopPadding()
+            )
     ) {
 
         // Logo
         Image(
             painter = painterResource(id = R.drawable.infoobce), // Replace with actual logo resource
-            contentDescription = "ObecInfo Logo",
+            contentDescription = stringResource(R.string.obecinfo_logo),
             modifier = Modifier
                 .fillMaxWidth()
                 .height(150.dp)
@@ -78,7 +82,7 @@ fun OnBoardingScreen1Content(
 
         // Title Text
         Text(
-            text = "Vítejte v aplikaci ObecInfo",
+            text = stringResource(R.string.welcome_to_obecinfo_app),
             style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.Bold),
             color = MaterialTheme.colorScheme.primary,
             modifier = Modifier.padding(bottom = halfMargin)
@@ -87,7 +91,7 @@ fun OnBoardingScreen1Content(
         Spacer(modifier = Modifier.height(basicMargin))
         // Subtitle Text
         Text(
-            text = "Sledujte novinky z vaší obce",
+            text = stringResource(R.string.watch_for_new_from_your_city),
             style = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.onSurface),
             modifier = Modifier.padding(bottom = halfMargin)
         )
