@@ -18,6 +18,7 @@ import java.time.Instant
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import javax.inject.Inject
+
 @HiltViewModel
 class EventsScreenViewModel @Inject constructor(
     private val eventRepository: IEventLocalRepository,

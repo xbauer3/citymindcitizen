@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.map
 
 import android.content.res.Configuration
 import android.os.Build
+import androidx.datastore.preferences.core.booleanPreferencesKey
 import java.util.Locale
 
 object LanguageManager {
@@ -56,3 +57,8 @@ object LanguagePreferences {
 object LanguageHolder {
     var language: String = Locale.getDefault().language
 }
+
+
+
+
+

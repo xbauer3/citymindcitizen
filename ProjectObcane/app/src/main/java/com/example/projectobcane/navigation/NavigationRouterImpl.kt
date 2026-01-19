@@ -61,6 +61,17 @@ class NavigationRouterImpl(private val navController: NavController) : INavigati
     }
 
 
+    override fun navigateToOnBoarding1() {
+        navController.navigate(Destination.OnBoarding1.route)
+    }
+
+    override fun navigateToOnBoarding2() {
+        navController.navigate(Destination.OnBoarding2.route)
+    }
+
+
+
+
 
 
     //bottom

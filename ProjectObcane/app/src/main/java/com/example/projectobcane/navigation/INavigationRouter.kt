@@ -27,6 +27,9 @@ interface INavigationRouter {
     //both
     fun returnBack()
     fun navigateToMainScreen()
+    fun navigateToOnBoarding1()
+    fun navigateToOnBoarding2()
+
 
     //bottom
     fun navigateToRoute(route: String)

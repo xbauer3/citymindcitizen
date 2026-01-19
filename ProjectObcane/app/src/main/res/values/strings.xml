@@ -77,6 +77,8 @@
     <string name="status">Status</string>
     <string name="report_information">Report information</string>
     <string name="add_photo">Add Photo</string>
+    <string name="continue_button">Continue</string>
+    <string name="pick_your_language">Pick your language</string>
 
 
 </resources>

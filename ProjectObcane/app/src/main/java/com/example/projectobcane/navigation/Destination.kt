@@ -16,6 +16,10 @@ sealed class Destination(val route: String) {
     object EventDetailScreen : Destination("event_detail")
 
 
+    object OnBoarding1 : Destination("on1")
+    object OnBoarding2 : Destination("on2")
+
+
     object SplashScreen: Destination("splash_screen")
 
 }

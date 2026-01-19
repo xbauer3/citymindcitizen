@@ -16,23 +16,39 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.GraphicsLayerScope
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.projectobcane.navigation.INavigationRouter
 import kotlinx.coroutines.delay
 import com.example.projectobcane.R
+import com.example.projectobcane.utils.OnboardingPreferences
 
 @Composable
 fun SplashScreen(navigation: INavigationRouter) {
     val rotation = remember { Animatable(0f) }
+
+    var context = LocalContext.current
 
     LaunchedEffect(Unit) {
         rotation.animateTo(
             targetValue = 360f,
             animationSpec = tween(durationMillis = 2000, easing = LinearEasing)
         )
-        navigation.navigateToMainScreen()
+
+        //if () is true send to splash screen
+        //else send him to main screen
+
+        val completed = OnboardingPreferences.isCompleted(context)
+
+        if (completed) {
+            navigation.navigateToMainScreen()
+        } else {
+            navigation.navigateToOnBoarding1()
+        }
+
+
     }
 
     Box(
@@ -42,7 +58,7 @@ fun SplashScreen(navigation: INavigationRouter) {
         contentAlignment = Alignment.Center
     ) {
         Image(
-            painter = painterResource(R.drawable.ic_launcher_foreground),
+            painter = painterResource(R.drawable.infoobce),
             contentDescription = stringResource(R.string.app_icon),
             modifier = Modifier
                 .size(128.dp)
