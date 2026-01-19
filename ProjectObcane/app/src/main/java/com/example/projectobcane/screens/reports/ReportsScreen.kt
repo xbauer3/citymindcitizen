@@ -83,7 +83,7 @@ fun ReportsScreen(
                     ReportItem(
                         report = it
                     ) {
-                        rootNav.navigateToEventDetail(it.id)
+                        rootNav.navigateToReportDetail(it.id)
                     }
                 }
 

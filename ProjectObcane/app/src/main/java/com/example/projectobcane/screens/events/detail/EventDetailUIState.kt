@@ -1,6 +1,8 @@
 package com.example.projectobcane.screens.events.detail
 
 import com.example.projectobcane.database.events.Event
+import com.example.projectobcane.database.events.EventCategory
+import com.example.projectobcane.database.events.EventStatus
 import com.example.projectobcane.database.reports.LocationEntity
 import com.example.projectobcane.database.reports.Report
 
@@ -11,8 +13,8 @@ data class EventDetailUIState (
         id = null,
         title = "",
         description = "",
-        category = "",
-        status = "",
+        category = EventCategory.CULTURE.name,
+        status = EventStatus.UPCOMING.name,
         placeName = "",
         date = System.currentTimeMillis(),
         location = LocationEntity(0.0,0.0),

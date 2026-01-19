@@ -138,10 +138,6 @@ fun EventDetailScreenContent(
 
 ){
 
-
-
-
-
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
