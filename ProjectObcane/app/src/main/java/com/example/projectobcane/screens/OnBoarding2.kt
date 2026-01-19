@@ -117,7 +117,7 @@ fun OnBoardingScreen2Content(
             Button(
                 onClick = {
                     viewModel.updateLanguage(locale) {
-                        coroutineScope.launch {   // ✅ TADY
+                        coroutineScope.launch {
                             OnboardingPreferences.setCompleted(context)
                             activity.recreate()
                             navigation.navigateToMainScreen()

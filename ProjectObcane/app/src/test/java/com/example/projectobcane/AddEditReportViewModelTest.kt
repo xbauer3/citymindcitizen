@@ -55,10 +55,11 @@ class AddEditReportViewModelTest {
 
 
 
-class FakeReportRepository : IReportLocalRepository {
-
-    private val reports = mutableListOf<Report>()
-    private val flow = MutableStateFlow<List<Report>>(emptyList())
+class FakeReportRepository(
+    initialReports: List<Report> = emptyList()
+) : IReportLocalRepository {
+    private val reports = initialReports.toMutableList()
+    private val flow = MutableStateFlow<List<Report>>(reports)
 
     override fun getAllReports(): Flow<List<Report>> = flow
 
@@ -67,7 +68,9 @@ class FakeReportRepository : IReportLocalRepository {
         flow.value = reports
     }
 
-    override suspend fun update(report: Report) {}
-    override suspend fun delete(report: Report) {}
-    override suspend fun getById(id: Long): Report = reports.first()
+    override suspend fun update(report: Report) { /* optional */ }
+
+    override suspend fun delete(report: Report) { reports.remove(report) }
+
+    override suspend fun getById(id: Long): Report = reports.first { it.id == id }
 }
