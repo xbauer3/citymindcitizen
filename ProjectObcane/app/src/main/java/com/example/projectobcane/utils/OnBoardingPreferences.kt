@@ -30,4 +30,14 @@ object OnboardingPreferences {
             .map { it[COMPLETED_KEY] ?: false }
             .first()
     }
+
+
+    /**
+     * Resets onboarding so i can see changes to the screens.
+     */
+    suspend fun reset(context: Context) {
+        context.dataStore.edit { prefs ->
+            prefs[COMPLETED_KEY] = false
+        }
+    }
 }

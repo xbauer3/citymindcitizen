@@ -29,9 +29,14 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.projectobcane.R
 
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.datastore.preferences.core.booleanPreferencesKey
+import androidx.datastore.preferences.core.edit
 import com.example.projectobcane.navigation.INavigationRouter
 import com.example.projectobcane.ui.elements.BaseScreen
 import com.example.projectobcane.ui.theme.basicMargin
+import com.example.projectobcane.utils.OnboardingPreferences
+import kotlinx.coroutines.launch
 
 import java.util.Locale
 
@@ -103,6 +108,7 @@ fun SettingsScreenContent(
     val context = LocalContext.current
     val activity = context as Activity
 
+    val coroutineScope = rememberCoroutineScope()
 
     val expanded = remember { mutableStateOf(false) }
 
@@ -175,6 +181,18 @@ fun SettingsScreenContent(
 
 
 
+        Spacer(modifier = Modifier.height(basicMargin))
+
+        Button(
+            onClick = {
+                coroutineScope.launch {
+                    OnboardingPreferences.reset(context) // ← use the new function
+                }
+            },
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text(text = "Reset Onboarding")
+        }
 
 
 

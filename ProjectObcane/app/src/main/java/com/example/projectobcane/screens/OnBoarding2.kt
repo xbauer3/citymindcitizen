@@ -2,8 +2,10 @@ package com.example.projectobcane.screens
 
 import android.app.Activity
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -39,6 +41,7 @@ import com.example.projectobcane.utils.OnboardingPreferences
 import kotlinx.coroutines.launch
 import java.util.Locale
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.layout.ContentScale
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -91,14 +94,6 @@ fun OnBoardingScreen2Content(
 
     val coroutineScope = rememberCoroutineScope()
 
-    Image(
-        painter = painterResource(id = R.drawable.flags),
-        contentDescription = "ObecInfo Logo",
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(150.dp)
-            .padding(bottom = basicMargin)
-    )
 
     Column(
         modifier = Modifier
@@ -111,21 +106,43 @@ fun OnBoardingScreen2Content(
             .fillMaxSize()
     ) {
 
+        // Image first
+        Image(
+            painter = painterResource(id = R.drawable.flags),
+            contentDescription = "ObecInfo Logo",
+            contentScale = ContentScale.FillWidth,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = basicMargin)
+        )
+
         Spacer(modifier = Modifier.height(basicMargin))
 
-        state.value.supportedLanguages.forEach { locale ->
-            Button(
-                onClick = {
-                    viewModel.updateLanguage(locale) {
-                        coroutineScope.launch {
-                            OnboardingPreferences.setCompleted(context)
-                            activity.recreate()
-                            navigation.navigateToMainScreen()
+
+        Spacer(modifier = Modifier.height(basicMargin))
+
+
+
+        // Row for side-by-side buttons
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(16.dp) // spacing between buttons
+        ) {
+            state.value.supportedLanguages.forEach { locale ->
+                Button(
+                    onClick = {
+                        viewModel.updateLanguage(locale) {
+                            coroutineScope.launch {
+                                OnboardingPreferences.setCompleted(context)
+                                activity.recreate()
+                                navigation.navigateToMainScreen()
+                            }
                         }
-                    }
+                    },
+                    modifier = Modifier.weight(1f) // equal width for each button
+                ) {
+                    Text(text = locale.displayLanguage)
                 }
-            ) {
-                Text(text = locale.displayLanguage)
             }
         }
     }

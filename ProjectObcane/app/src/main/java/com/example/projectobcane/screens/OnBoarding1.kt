@@ -74,6 +74,7 @@ fun OnBoardingScreen1Content(
                 .height(150.dp)
                 .padding(bottom = basicMargin)
         )
+        Spacer(modifier = Modifier.height(basicMargin))
 
         // Title Text
         Text(
@@ -83,6 +84,7 @@ fun OnBoardingScreen1Content(
             modifier = Modifier.padding(bottom = halfMargin)
         )
 
+        Spacer(modifier = Modifier.height(basicMargin))
         // Subtitle Text
         Text(
             text = "Sledujte novinky z vaší obce",
@@ -90,6 +92,7 @@ fun OnBoardingScreen1Content(
             modifier = Modifier.padding(bottom = halfMargin)
         )
 
+        Spacer(modifier = Modifier.height(basicMargin))
         // Continue Button
         Button(
             onClick = {
