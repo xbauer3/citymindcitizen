@@ -11,6 +11,7 @@ import androidx.navigation.navArgument
 import androidx.navigation.toRoute
 import com.example.projectobcane.screens.SplashScreen
 import com.example.projectobcane.screens.chLocation.ChooseLocationScreen
+import com.example.projectobcane.screens.events.addEdit.AddEditEventScreen
 import com.example.projectobcane.screens.mainScreen.MainScreenScreen
 import com.example.projectobcane.screens.reports.addEdit.AddEditReportScreen
 import com.example.projectobcane.screens.reports.detail.ReportDetailScreen
@@ -115,7 +116,7 @@ fun NavGraph(
         }
 
 
-//Detail
+//Detail report
         composable(route = "${Destination.ReportDetailScreen.route}/{id}",
             arguments = listOf(
                 navArgument("id"){
@@ -129,6 +130,29 @@ fun NavGraph(
         }
 
 
+
+
+
+
+        //ADD Event
+        composable(route = Destination.AddEditEventScreen.route) {
+            AddEditEventScreen(navigation = navRouter, id = null)
+        }
+
+
+        //Edit Event
+
+        composable(route = "${Destination.AddEditEventScreen.route}/{id}",
+            arguments = listOf(
+                navArgument("id"){
+                    type = NavType.LongType
+                    defaultValue = -1L
+                }
+            )
+        ){
+            val id = it.arguments?.getLong("id")
+            AddEditEventScreen(navRouter, id)
+        }
 
 
 

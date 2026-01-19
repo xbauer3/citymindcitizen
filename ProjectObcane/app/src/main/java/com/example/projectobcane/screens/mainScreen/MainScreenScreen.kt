@@ -53,11 +53,17 @@ fun MainScreenScreen(navigation: INavigationRouter) {
         },
         bottomBar = { BottomBar(navigation = bottomNavRouter) },
         floatingActionButton = {
-            if (fabVisible) {
+            if (currentRoute == BottomBarScreen.Reports.route) {
                 FloatingActionButton(
                     onClick = { navigation.navigateToAddEditReport(null) }
                 ) {
                     Icon(Icons.Default.Add, contentDescription = "Add Report")
+                }
+            }else if (currentRoute == BottomBarScreen.Home.route){
+                FloatingActionButton(
+                    onClick = { navigation.navigateToAddEditEvent(null) }
+                ) {
+                    Icon(Icons.Default.Add, contentDescription = "Add Event")
                 }
             }
         }

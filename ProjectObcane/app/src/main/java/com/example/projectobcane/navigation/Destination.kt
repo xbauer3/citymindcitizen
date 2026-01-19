@@ -12,6 +12,9 @@ sealed class Destination(val route: String) {
 
     object AddEditReportScreen : Destination("add_edit")
 
+    object AddEditEventScreen : Destination("add_edit_event")
+
+
     object SplashScreen: Destination("splash_screen")
 
 }

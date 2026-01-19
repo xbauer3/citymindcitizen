@@ -43,7 +43,11 @@ fun BottomNavGraph(
     ) {
 
         composable(BottomBarScreen.Home.route) {
-            EventsScreen(bottomNavRouter, paddingValues)
+            EventsScreen(
+                bottomNav = bottomNavRouter,
+                rootNav = rootNavRouter,
+                paddingValues = paddingValues
+            )
         }
 
         composable(BottomBarScreen.Notifications.route) {

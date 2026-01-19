@@ -21,6 +21,8 @@ interface INavigationRouter {
     fun navigateToChoseLocation(latitude: Double?, longitude: Double?)
     fun returnFromMap(latitude: Double, longitude: Double)
 
+    fun navigateToAddEditEvent(id: Long?)
+
 
     //both
     fun returnBack()

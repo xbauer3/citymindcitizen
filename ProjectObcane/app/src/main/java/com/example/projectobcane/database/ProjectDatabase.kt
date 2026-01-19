@@ -6,6 +6,7 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.projectobcane.database.events.Event
+import com.example.projectobcane.database.events.EventDao
 import com.example.projectobcane.database.reports.Report
 import com.example.projectobcane.database.reports.ReportDao
 
@@ -13,11 +14,12 @@ import com.example.projectobcane.database.reports.ReportDao
     entities = [
         Report::class, Event::class
     ],
-    version = 14,
+    version = 16,
     exportSchema = true
 )
 abstract class ProjectDatabase : RoomDatabase() {
     abstract fun reportDao(): ReportDao
+    abstract fun eventDao(): EventDao
 
     companion object {
         private var INSTANCE: ProjectDatabase? = null

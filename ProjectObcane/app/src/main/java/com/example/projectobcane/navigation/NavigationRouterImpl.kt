@@ -101,6 +101,14 @@ class NavigationRouterImpl(private val navController: NavController) : INavigati
         returnBack()
     }
 
+    override fun navigateToAddEditEvent(id: Long?) {
+        if (id != null) {
+            navController.navigate("${Destination.AddEditEventScreen.route}/${id}")
+
+        } else {
+            navController.navigate(Destination.AddEditEventScreen.route)
+        }
+    }
 
 
 }

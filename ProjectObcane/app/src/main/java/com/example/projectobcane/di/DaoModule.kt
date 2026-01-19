@@ -1,6 +1,7 @@
 package com.example.projectobcane.di
 
 import com.example.projectobcane.database.ProjectDatabase
+import com.example.projectobcane.database.events.EventDao
 import com.example.projectobcane.database.reports.ReportDao
 import dagger.Module
 import dagger.Provides
@@ -16,6 +17,13 @@ object DaoModule {
     @Singleton
     fun provideDao(database: ProjectDatabase): ReportDao {
         return database.reportDao()
+    }
+
+
+    @Provides
+    @Singleton
+    fun provideEventDao(database: ProjectDatabase): EventDao {
+        return database.eventDao()
     }
 
 }

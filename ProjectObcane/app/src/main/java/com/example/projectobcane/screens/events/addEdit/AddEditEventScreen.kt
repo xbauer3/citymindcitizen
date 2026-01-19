@@ -1,16 +1,15 @@
-package com.example.projectobcane.screens.reports.addEdit
+package com.example.projectobcane.screens.events.addEdit
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material3.Button
@@ -38,22 +37,31 @@ import androidx.lifecycle.compose.LifecycleEventEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.projectobcane.Constants
 import com.example.projectobcane.R
+import com.example.projectobcane.database.events.EventCategory
+import com.example.projectobcane.database.events.EventStatus
 import com.example.projectobcane.database.reports.LocationEntity
 import com.example.projectobcane.database.reports.ReportStatus
+import com.example.projectobcane.extensions.getValue
 import com.example.projectobcane.extensions.removeValue
-import com.example.projectobcane.navigation.Destination
 import com.example.projectobcane.navigation.INavigationRouter
+import com.example.projectobcane.screens.reports.addEdit.AddEditReportScreenActions
+import com.example.projectobcane.screens.reports.addEdit.AddEditReportScreenUIState
+import com.example.projectobcane.screens.reports.addEdit.AddEditReportScreenViewModel
 import com.example.projectobcane.ui.elements.BaseScreen
+import com.example.projectobcane.ui.elements.InfoElement
+import com.example.projectobcane.ui.elements.MyDatePicker
 import com.example.projectobcane.ui.theme.basicMargin
 import com.example.projectobcane.ui.theme.halfMargin
+import com.example.projectobcane.utils.DateUtils
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
-import kotlin.collections.getValue
-import com.example.projectobcane.extensions.getValue
+
+
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AddEditReportScreen(
+fun AddEditEventScreen(
     navigation: INavigationRouter,
     id: Long?,
 ) {
@@ -61,15 +69,15 @@ fun AddEditReportScreen(
 
 
 
-    val viewModel = hiltViewModel<AddEditReportScreenViewModel>()
-    val state = viewModel.addEditReportUIState.collectAsStateWithLifecycle()
+    val viewModel = hiltViewModel<AddEditEventViewModel>()
+    val state = viewModel.addEditEventUIState.collectAsStateWithLifecycle()
 
     LaunchedEffect(id) {
-        viewModel.loadReport(id)
+        viewModel.loadEvent(id)
     }
 
 
-    if (state.value.reportSaved || state.value.reportDeleted){
+    if (state.value.eventSaved || state.value.eventDeleted){
         LaunchedEffect(state) {
             navigation.returnBack()
         }
@@ -92,7 +100,7 @@ fun AddEditReportScreen(
 
 
     BaseScreen(
-        topBarText = stringResource(R.string.add_edit),
+        topBarText = stringResource(R.string.add_edit_event),
         showLoading = state.value.loading,
         onBackClick = {
             navigation.returnBack()
@@ -100,7 +108,7 @@ fun AddEditReportScreen(
         actions = {
             if (id != null) {
                 IconButton(onClick = {
-                    viewModel.deleteReport()
+                    viewModel.deleteEvent()
                 }) {
                     Icon(imageVector = Icons.Outlined.Delete, contentDescription = null)
                 }
@@ -119,18 +127,36 @@ fun AddEditReportScreen(
 
 }
 
+
+
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddEditReportScreenContent(
     paddingValues: PaddingValues,
-    data: AddEditReportScreenUIState,
-    actions: AddEditReportScreenActions,
+    data: AddEditEventUIState,
+    actions: AddEditEventActions,
     navigation: INavigationRouter,
     id: Long?
 
 ) {
 
-    var expanded by remember { mutableStateOf(false) }
+    var expandedCategory by remember { mutableStateOf(false) }
+    var expandedStatus by remember { mutableStateOf(false) }
+
+
+
+    var showDatePicker by remember { mutableStateOf(false) }
+
+    if (showDatePicker){
+        MyDatePicker(
+            date = data.event.date ?: System.currentTimeMillis(),
+            onDateSelected = {
+                actions.onDateChanged(it)
+            },
+            onDismiss = { showDatePicker = false }
+        )
+    }
 
 
 
@@ -149,7 +175,7 @@ fun AddEditReportScreenContent(
 
         item {
             OutlinedTextField(
-                value = data.report.title,
+                value = data.event.title,
                 onValueChange = {
                     actions.onTitleChanged(it)
                 },
@@ -171,7 +197,7 @@ fun AddEditReportScreenContent(
 
         item {
             OutlinedTextField(
-                value = data.report.description,
+                value = data.event.description,
                 onValueChange = {
                     actions.onDescriptionChanged(it)
                 },
@@ -194,23 +220,39 @@ fun AddEditReportScreenContent(
 
 
         item {
-            OutlinedTextField(
-                value = data.report.category,
-                onValueChange = {
-                    actions.onCategoryChanged(it)
-                },
-                isError = data.categoryError != null,
-                supportingText = {
-                    if (data.categoryError != null) {
-                        Text(text = stringResource(data.categoryError!!))
+
+            ExposedDropdownMenuBox(
+                expanded = expandedCategory,
+                onExpandedChange = { expandedCategory = !expandedCategory }
+            ) {
+                OutlinedTextField(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .menuAnchor(),
+                    value = data.event.category,
+                    onValueChange = {},
+                    readOnly = true,
+                    label = { Text("Category") },
+                    trailingIcon = {
+                        ExposedDropdownMenuDefaults.TrailingIcon(expanded = expandedCategory)
                     }
-
-                },
-                modifier = Modifier.fillMaxWidth(),
-                label = { Text(text = "Category") },
-                maxLines = 1,
-
                 )
+
+                ExposedDropdownMenu(
+                    expanded = expandedCategory,
+                    onDismissRequest = { expandedCategory = false }
+                ) {
+                    EventCategory.values().forEach { category ->
+                        DropdownMenuItem(
+                            text = { Text(category.name) },
+                            onClick = {
+                                actions.onCategoryChanged(category.name)
+                                expandedCategory = false
+                            }
+                        )
+                    }
+                }
+            }
 
         }
 
@@ -221,32 +263,32 @@ fun AddEditReportScreenContent(
             if (id != null) {
 
                 ExposedDropdownMenuBox(
-                    expanded = expanded,
-                    onExpandedChange = { expanded = !expanded }
+                    expanded = expandedStatus,
+                    onExpandedChange = { expandedStatus = !expandedStatus }
                 ) {
                     OutlinedTextField(
                         modifier = Modifier
                             .fillMaxWidth()
                             .menuAnchor(),
-                        value = data.report.status,
+                        value = data.event.status,
                         onValueChange = {},
                         readOnly = true,
                         label = { Text("Status") },
                         trailingIcon = {
-                            ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)
+                            ExposedDropdownMenuDefaults.TrailingIcon(expanded = expandedStatus)
                         }
                     )
 
                     ExposedDropdownMenu(
-                        expanded = expanded,
-                        onDismissRequest = { expanded = false }
+                        expanded = expandedStatus,
+                        onDismissRequest = { expandedStatus = false }
                     ) {
-                        ReportStatus.values().forEach { status ->
+                        EventStatus.values().forEach { status ->
                             DropdownMenuItem(
-                                text = { Text(status.label) },
+                                text = { Text(status.name) },
                                 onClick = {
-                                    actions.onStatusChanged(status.value)
-                                    expanded = false
+                                    actions.onStatusChanged(status.name)
+                                    expandedStatus = false
                                 }
                             )
                         }
@@ -254,7 +296,7 @@ fun AddEditReportScreenContent(
                 }
             }else{
                 LaunchedEffect(Unit) {
-                    actions.onStatusChanged(ReportStatus.NEW.value)
+                    actions.onStatusChanged(EventStatus.UPCOMING.name)
                 }
 
                 OutlinedTextField(
@@ -272,11 +314,48 @@ fun AddEditReportScreenContent(
 
         }
 
+        //placeName
+        item {
+            OutlinedTextField(
+                value = data.event.placeName,
+                onValueChange = {
+                    actions.onPlaceNameChanged(it)
+                },
+                isError = data.placeNameError != null,
+                supportingText = {
+                    if (data.placeNameError != null) {
+                        Text(text = stringResource(data.placeNameError!!))
+                    }
+
+                },
+                modifier = Modifier.fillMaxWidth(),
+                label = { Text(text = "Place Name") },
+                maxLines = 1,
+
+                )
+
+        }
+
+
+
+
+        // Notification Date
+        item {
+            InfoElement(
+                value = data.event.date?.let { DateUtils.getDateString(it) },
+                hint = stringResource(R.string.notification_date),
+                leadingIcon = Icons.Default.DateRange,
+                onClick = { showDatePicker = true },
+                onClearClick = { actions.onDateChanged(null) }
+            )
+        }
+
+
+
 
 
         //location
 
-        // Location
         item {
 
             Row(
@@ -284,10 +363,10 @@ fun AddEditReportScreenContent(
                     .fillMaxWidth()
                     .clickable {
                         navigation.navigateToChoseLocation(
-                            data.report.location.latitude,
-                            data.report.location.longitude,
+                            data.event.location.latitude,
+                            data.event.location.longitude,
 
-                        )
+                            )
                     }
                     .padding(all = basicMargin),
                 verticalAlignment = Alignment.CenterVertically
@@ -295,7 +374,7 @@ fun AddEditReportScreenContent(
                 Icon(Icons.Default.LocationOn, contentDescription = null)
                 Spacer(modifier = Modifier.width(halfMargin))
                 Text(
-                    text = "${stringResource(R.string.selected_location)}: ${data.report.location.latitude}, ${data.report.location.longitude}",
+                    text = "${stringResource(R.string.selected_location)}: ${data.event.location.latitude}, ${data.event.location.longitude}",
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurface
                 )
@@ -311,7 +390,7 @@ fun AddEditReportScreenContent(
         item{
 
             Button(onClick = {
-                actions.saveReport()
+                actions.saveEvent()
             },
                 modifier = Modifier.fillMaxWidth()
             ) {
@@ -326,7 +405,6 @@ fun AddEditReportScreenContent(
 
 
 }
-
 
 
 
