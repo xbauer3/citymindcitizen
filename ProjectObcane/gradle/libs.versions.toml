@@ -18,6 +18,7 @@ ksp = "2.0.21-1.0.27"
 hilt = "2.51.1"
 hilt-compose = "1.2.0"
 
+retrofit = "3.0.0"
 
 datastore = "1.1.2"
 
@@ -35,7 +36,7 @@ googlemap_widgets = "6.1.1"
 googlemap_compose_utils = "6.1.1"
 
 
-
+logging = "4.9.3"
 
 colorpicker = "1.1.2"
 
@@ -89,7 +90,7 @@ googlemap-foundation = { group = "androidx.compose.foundation", name = "foundati
 
 moshi = { group = "com.squareup.moshi", name = "moshi", version.ref = "moshi" }
 moshi-ksp = { group = "com.squareup.moshi", name = "moshi-kotlin-codegen", version.ref = "moshi" }
-
+moshi-kotlin = { group = "com.squareup.moshi", name = "moshi-kotlin", version.ref = "moshi" }
 
 
 compose-colorpicker = { module = "com.github.skydoves:colorpicker-compose", version.ref = "colorpicker" }
@@ -100,6 +101,9 @@ googlemap_widgets = { group = "com.google.maps.android", name = "maps-compose-wi
 googlemap_compose_utils = { group = "com.google.maps.android", name = "maps-compose-utils", version.ref = "googlemap_compose_utils" }
 
 
+retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
+retrofit-moshi = { group = "com.squareup.retrofit2", name = "converter-moshi", version.ref = "retrofit" }
+retrofit-okhtt3 = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "logging" }
 
 
 

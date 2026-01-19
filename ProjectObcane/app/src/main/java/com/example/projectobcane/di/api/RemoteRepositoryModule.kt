@@ -1,0 +1,21 @@
+package com.example.projectobcane.di.api
+
+import com.example.projectobcane.communication.IWeatherRemoteRepository
+import com.example.projectobcane.communication.OpenMeteoApi
+import com.example.projectobcane.communication.WeatherRemoteRepositoryImpl
+import dagger.Module
+import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
+import javax.inject.Singleton
+
+@Module
+@InstallIn(SingletonComponent::class)
+object RemoteRepositoryModule {
+
+    @Provides
+    @Singleton
+    fun provideWeatherRemoteRepository(openMeteoApi: OpenMeteoApi): IWeatherRemoteRepository {
+        return WeatherRemoteRepositoryImpl(openMeteoApi)
+    }
+}

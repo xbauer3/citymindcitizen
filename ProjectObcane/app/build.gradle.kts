@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -11,6 +13,19 @@ plugins {
 }
 
 android {
+
+    val properties = Properties()
+    properties.load(project.rootProject.file("local.properties").reader())
+
+    val server = properties.getProperty("server")
+
+    val versionMajor = 0
+    val versionMinor = 0
+    val versionPatch = 1
+    val myVersionCode = versionMajor * 10000 + versionMinor * 100 + versionPatch
+    val myVersionName = "${versionMajor}.${versionMinor}.${versionPatch}"
+
+
     namespace = "com.example.projectobcane"
     compileSdk = 35
 
@@ -32,6 +47,11 @@ android {
                 "proguard-rules.pro"
             )
         }
+        debug {
+            buildConfigField(type = "String", name = "SERVER_URL", value = server)
+        }
+
+
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
@@ -42,6 +62,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 }
 
@@ -91,6 +112,7 @@ dependencies {
 
 
     implementation(libs.moshi)
+    implementation(libs.moshi.kotlin)
     ksp(libs.moshi.ksp)
 
 
@@ -114,6 +136,9 @@ dependencies {
 
     implementation ("androidx.compose.material:material-icons-extended:1.5.0")
 
+    implementation(libs.retrofit)
+    implementation(libs.retrofit.moshi)
+    implementation(libs.retrofit.okhtt3)
 
 
 }
