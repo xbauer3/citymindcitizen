@@ -7,7 +7,6 @@ import com.squareup.moshi.JsonClass
 data class ChooseLocationDestination(
     val latitude: Double? = null,
     val longitude: Double? = null,
-    val locations: List<EventLocation> = emptyList()
 )
 
 @JsonClass(generateAdapter = true)

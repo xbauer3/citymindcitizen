@@ -1,5 +1,6 @@
 package com.example.projectobcane.screens.reports.addEdit
 
+import com.example.projectobcane.database.reports.LocationEntity
 import com.example.projectobcane.database.reports.Report
 
 
@@ -15,7 +16,7 @@ interface AddEditReportScreenActions {
 
     //fun onPhotoChanged(value: String)
 
-    fun onLocationPicked(lat: Double, lng: Double)
+    fun onLocationChanged(value: LocationEntity)
 
     fun saveReport()
     fun deleteReport()

@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.projectobcane.R
 import com.example.projectobcane.database.reports.IReportLocalRepository
+import com.example.projectobcane.database.reports.LocationEntity
 import com.example.projectobcane.database.reports.Report
 import com.example.projectobcane.database.reports.ReportStatus
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -49,8 +50,7 @@ class AddEditReportScreenViewModel @Inject constructor (private val repository: 
                     description = "",
                     category = "",
                     status = ReportStatus.NEW.value,
-                    latitude = null,   // ⬅ IMPORTANT
-                    longitude = null,  // ⬅ IMPORTANT
+                    LocationEntity(0.0,0.0),
                     photoUri = "",
                     createdAt = System.currentTimeMillis()
                 )
@@ -78,14 +78,10 @@ class AddEditReportScreenViewModel @Inject constructor (private val repository: 
     }
 
 
-    override fun onLocationPicked(lat: Double, lng: Double) {
-        _addEditReportUIState.value =
-            _addEditReportUIState.value.copy(
-                report = _addEditReportUIState.value.report.copy(
-                    latitude = lat,
-                    longitude = lng
-                )
-            )
+    override fun onLocationChanged(value: LocationEntity) {
+        _addEditReportUIState.value = _addEditReportUIState.value.copy(
+            report = _addEditReportUIState.value.report.copy(location = value)
+        )
     }
 
 

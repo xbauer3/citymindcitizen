@@ -30,9 +30,9 @@ fun MapsScreen(navigation: INavigationRouter, paddingValues: PaddingValues) {
             modifier = Modifier.fillMaxSize()
         ) {
             state.value.reports.forEach { report ->
-                if (report.latitude != null && report.longitude != null) {
+                if (report.location.latitude != null && report.location.longitude != null) {
                     Circle(
-                        center = LatLng(report.latitude, report.longitude),
+                        center = LatLng(report.location.latitude!!, report.location.longitude!!),
                         radius = 50.0,
                         fillColor = Color.Cyan,
                         strokeColor = Color.Yellow,

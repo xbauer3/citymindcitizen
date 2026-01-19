@@ -6,13 +6,20 @@ import androidx.navigation.NavController
 interface INavigationRouter {
 
     //other
-    fun navigateToAddEditEvent(id: Long?)
+
     fun navigateToSettingsScreen()
     fun navigateToEventDetail(id: Long?)
     fun getNavController(): NavController
 
 
+
     fun navigateToAddEditReport(id: Long?)
+
+   //fun navigateToPickLocation()
+
+
+    fun navigateToChoseLocation(latitude: Double?, longitude: Double?)
+    fun returnFromMap(latitude: Double, longitude: Double)
 
 
     //both

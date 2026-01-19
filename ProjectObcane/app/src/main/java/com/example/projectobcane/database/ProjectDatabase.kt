@@ -13,7 +13,7 @@ import com.example.projectobcane.database.reports.ReportDao
     entities = [
         Report::class, Event::class
     ],
-    version = 13,
+    version = 14,
     exportSchema = true
 )
 abstract class ProjectDatabase : RoomDatabase() {
