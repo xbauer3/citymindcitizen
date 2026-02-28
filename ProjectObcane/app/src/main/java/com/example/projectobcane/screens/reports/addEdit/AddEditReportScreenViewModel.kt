@@ -19,14 +19,14 @@ import kotlinx.coroutines.launch
 import java.time.Duration
 import javax.inject.Inject
 import kotlin.text.insert
-import com.example.projectobcane.ml.ImageCategoryAnalyzer
+
 
 @HiltViewModel
 class AddEditReportScreenViewModel @Inject constructor (private val repository: IReportLocalRepository) : ViewModel(), AddEditReportScreenActions {
 
     private var currentId: Long? = null
 
-    private val imageAnalyzer = ImageCategoryAnalyzer()
+
 
 
     private val _addEditReportUIState: MutableStateFlow<AddEditReportScreenUIState> =
@@ -145,16 +145,6 @@ class AddEditReportScreenViewModel @Inject constructor (private val repository: 
             )
         }
 
-        imageAnalyzer.analyze(
-            context = context,
-            imageUri = Uri.parse(uri)
-        ) { category ->
-            _addEditReportUIState.update {
-                it.copy(
-                    report = it.report.copy(category = category)
-                )
-            }
-        }
     }
 
 

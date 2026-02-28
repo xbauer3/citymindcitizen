@@ -10,7 +10,6 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import androidx.navigation.toRoute
 import com.example.projectobcane.screens.OnBoardingScreen1
-import com.example.projectobcane.screens.OnBoardingScreen2
 import com.example.projectobcane.screens.SplashScreen
 import com.example.projectobcane.screens.chLocation.ChooseLocationScreen
 import com.example.projectobcane.screens.events.addEdit.AddEditEventScreen
@@ -52,10 +51,6 @@ fun NavGraph(
         }
 
 
-        //OnBoarding2
-        composable(route = Destination.OnBoarding2.route) {
-            OnBoardingScreen2(navRouter)
-        }
 
 
 
