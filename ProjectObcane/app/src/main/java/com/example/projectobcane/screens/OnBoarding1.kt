@@ -4,37 +4,16 @@ import android.app.Activity
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ModalBottomSheet
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.material3.rememberModalBottomSheetState
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -45,6 +24,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.projectobcane.R
 import com.example.projectobcane.navigation.INavigationRouter
+import com.example.projectobcane.screens.settings.LanguageHolder
 import com.example.projectobcane.screens.settings.SettingsViewModel
 import com.example.projectobcane.utils.OnboardingPreferences
 import kotlinx.coroutines.launch
@@ -54,7 +34,6 @@ import kotlinx.coroutines.launch
 fun OnBoardingScreen1(
     navigation: INavigationRouter
 ) {
-    // Redesigned to match Figma (gradient background + language switch + municipality sheet)
     OnBoardingScreen1Content(navigation = navigation)
 }
 
@@ -63,9 +42,9 @@ fun OnBoardingScreen1(
 fun OnBoardingScreen1Content(
     navigation: INavigationRouter
 ) {
-
     val viewModel = hiltViewModel<SettingsViewModel>()
     val state by viewModel.settingsScreenUIState.collectAsStateWithLifecycle()
+
     val context = LocalContext.current
     val activity = context as Activity
     val scope = rememberCoroutineScope()
@@ -74,54 +53,75 @@ fun OnBoardingScreen1Content(
     val showSheet = remember { mutableStateOf(false) }
     val selectedMunicipality = remember { mutableStateOf<String?>(null) }
 
-    LaunchedEffect(Unit) {
-        viewModel.loadSettings()
+    LaunchedEffect(Unit) { viewModel.loadSettings() }
+
+    // ✅ reaguje na app theme (MaterialTheme), ne na systém
+    val isDark = MaterialTheme.colorScheme.background.luminance() < 0.5f
+
+    // ✅ Gradient Light/Dark
+    val gradient = if (!isDark) {
+        Brush.verticalGradient(
+            colors = listOf(
+                Color(0xFF6E56CF),
+                Color(0xFF8E77F5),
+                Color(0xFFF7F5FF)
+            )
+        )
+    } else {
+        Brush.verticalGradient(
+            colors = listOf(
+                Color(0xFF171027),
+                Color(0xFF24153E),
+                Color(0xFF0F0B16)
+            )
+        )
     }
 
-    val gradient = Brush.verticalGradient(
-        colors = listOf(
-            Color(0xFF6E56CF),
-            Color(0xFF8E77F5),
-            Color(0xFFF7F5FF)
-        )
-    )
+    val titleColor = if (!isDark) Color.White else Color(0xFFF3EEFF)
+    val bodyColor = if (!isDark) Color.White.copy(alpha = 0.92f) else Color(0xFFD7CCE9)
+    val cardOverlay = if (!isDark) Color.White.copy(alpha = 0.20f) else Color.White.copy(alpha = 0.10f)
+    val pillSelectedBg = if (!isDark) Color.White else Color(0xFFF3EEFF)
+    val pillSelectedText = if (!isDark) Color(0xFF3D2E86) else Color(0xFF24153E)
+    val pillUnselectedText = if (!isDark) Color.White else Color(0xFFE7DFFF)
+    val continueBg = if (!isDark) Color.White else Color(0xFFF3EEFF)
+    val continueText = if (!isDark) Color(0xFF3D2E86) else Color(0xFF24153E)
 
     Box(
         modifier = Modifier
             .fillMaxSize()
             .background(gradient)
             .padding(horizontal = 20.dp)
+            .statusBarsPadding()
     ) {
 
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(top = 48.dp, bottom = 24.dp)
+                .padding(top = 18.dp)
         ) {
-
-            // Logo row (CityMind)
+            // Logo row
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Image(
                     painter = painterResource(id = R.drawable.infoobce),
                     contentDescription = null,
-                    modifier = Modifier.size(36.dp)
+                    modifier = Modifier.size(32.dp)
                 )
                 Spacer(modifier = Modifier.size(10.dp))
                 Text(
                     text = "CityMind",
                     style = MaterialTheme.typography.titleLarge,
                     fontWeight = FontWeight.Bold,
-                    color = Color.White
+                    color = titleColor
                 )
             }
 
-            Spacer(modifier = Modifier.height(30.dp))
+            Spacer(modifier = Modifier.height(26.dp))
 
             Text(
                 text = "AI agent, novinky a hlášení z vaší obce",
                 style = MaterialTheme.typography.headlineMedium,
                 fontWeight = FontWeight.Bold,
-                color = Color.White
+                color = titleColor
             )
 
             Spacer(modifier = Modifier.height(12.dp))
@@ -129,12 +129,12 @@ fun OnBoardingScreen1Content(
             Text(
                 text = "Vyberte si obec a budete mít vše přehledně na jednom místě.",
                 style = MaterialTheme.typography.bodyLarge,
-                color = Color.White.copy(alpha = 0.92f)
+                color = bodyColor
             )
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            // Illustration (placeholder uses existing image)
+            // Illustration (placeholder)
             Image(
                 painter = painterResource(id = R.drawable.infoobce),
                 contentDescription = null,
@@ -142,59 +142,26 @@ fun OnBoardingScreen1Content(
                     .fillMaxWidth()
                     .height(220.dp)
                     .clip(RoundedCornerShape(24.dp))
+                    .background(Color.White.copy(alpha = if (!isDark) 0.06f else 0.04f))
             )
 
             Spacer(modifier = Modifier.weight(1f))
 
-            // Bottom controls: language toggle + continue
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                Row(
-                    modifier = Modifier
-                        .clip(RoundedCornerShape(14.dp))
-                        .background(Color.White.copy(alpha = 0.20f))
-                        .padding(4.dp)
-                ) {
-                    val langs = state.supportedLanguages
-                    langs.forEach { locale ->
-                        val selected = locale.language == com.example.projectobcane.screens.settings.LanguageHolder.language
-                        Surface(
-                            modifier = Modifier
-                                .clip(RoundedCornerShape(12.dp))
-                                .clickable {
-                                    viewModel.updateLanguage(locale) {
-                                        scope.launch {
-                                            activity.recreate()
-                                        }
-                                    }
-                                },
-                            color = if (selected) Color.White else Color.Transparent
-                        ) {
-                            Text(
-                                text = if (locale.language == "cs") "CZ" else "EN",
-                                modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp),
-                                color = if (selected) Color(0xFF3D2E86) else Color.White,
-                                fontWeight = FontWeight.SemiBold
-                            )
-                        }
-                    }
-                }
-
-                Button(
-                    onClick = { showSheet.value = true },
-                    colors = ButtonDefaults.buttonColors(containerColor = Color.White),
-                    shape = RoundedCornerShape(16.dp)
-                ) {
-                    Text(
-                        text = stringResource(R.string.continue_button),
-                        color = Color(0xFF3D2E86),
-                        fontWeight = FontWeight.Bold
-                    )
-                }
-            }
+            // ✅ Bottom controls v "safe" zóně (nezakryje se navigačními ikonami)
+            BottomControls(
+                supportedLanguages = state.supportedLanguages,
+                selectedLang = LanguageHolder.language,
+                pillBackground = cardOverlay,
+                selectedBackground = pillSelectedBg,
+                selectedTextColor = pillSelectedText,
+                unselectedTextColor = pillUnselectedText,
+                continueBackground = continueBg,
+                continueTextColor = continueText,
+                onSelectLang = { locale ->
+                    viewModel.updateLanguage(locale) { scope.launch { activity.recreate() } }
+                },
+                onContinue = { showSheet.value = true }
+            )
         }
 
         if (showSheet.value) {
@@ -219,6 +186,71 @@ fun OnBoardingScreen1Content(
     }
 }
 
+@Composable
+private fun BottomControls(
+    supportedLanguages: List<java.util.Locale>,
+    selectedLang: String,
+    pillBackground: Color,
+    selectedBackground: Color,
+    selectedTextColor: Color,
+    unselectedTextColor: Color,
+    continueBackground: Color,
+    continueTextColor: Color,
+    onSelectLang: (java.util.Locale) -> Unit,
+    onContinue: () -> Unit
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            // ✅ hlavní fix překrytí: safe padding pro nav bary
+            .navigationBarsPadding()
+            .padding(bottom = 10.dp)
+    ) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            // Language pills
+            Row(
+                modifier = Modifier
+                    .clip(RoundedCornerShape(14.dp))
+                    .background(pillBackground)
+                    .padding(4.dp)
+            ) {
+                supportedLanguages.forEach { locale ->
+                    val isSelected = locale.language == selectedLang
+                    Surface(
+                        modifier = Modifier
+                            .clip(RoundedCornerShape(12.dp))
+                            .clickable { onSelectLang(locale) },
+                        color = if (isSelected) selectedBackground else Color.Transparent
+                    ) {
+                        Text(
+                            text = if (locale.language == "cs") "CZ" else "EN",
+                            modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp),
+                            color = if (isSelected) selectedTextColor else unselectedTextColor,
+                            fontWeight = FontWeight.SemiBold
+                        )
+                    }
+                }
+            }
+
+            Button(
+                onClick = onContinue,
+                colors = ButtonDefaults.buttonColors(containerColor = continueBackground),
+                shape = RoundedCornerShape(16.dp),
+                contentPadding = PaddingValues(horizontal = 16.dp, vertical = 12.dp)
+            ) {
+                Text(
+                    text = stringResource(R.string.continue_button),
+                    color = continueTextColor,
+                    fontWeight = FontWeight.Bold
+                )
+            }
+        }
+    }
+}
 
 @Composable
 private fun MunicipalitySheet(
@@ -229,7 +261,6 @@ private fun MunicipalitySheet(
 ) {
     Column(modifier = Modifier.padding(horizontal = 20.dp, vertical = 10.dp)) {
 
-        // Header
         Row(
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
@@ -304,4 +335,3 @@ private fun MunicipalitySheet(
         }
     }
 }
-
