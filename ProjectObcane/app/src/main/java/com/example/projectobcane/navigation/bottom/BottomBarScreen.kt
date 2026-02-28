@@ -3,10 +3,8 @@ package com.example.projectobcane.navigation.bottom
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Build
+import androidx.compose.material.icons.filled.AutoAwesome
 import androidx.compose.material.icons.filled.DateRange
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.LocationOn
-import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
@@ -34,30 +32,27 @@ sealed class BottomBarScreen(
 
 ) {
 
-    object Home : BottomBarScreen(
-        route = "home",
-        title = R.string.home,
-        selectedIcon = Icons.Filled.Home,
-        unselectedIcon = Icons.Default.Home,
+    /** Novinky */
+    object News : BottomBarScreen(
+        route = "news",
+        title = R.string.news,
+        selectedIcon = Icons.Filled.DateRange,
+        unselectedIcon = Icons.Default.DateRange,
         hasNews = false,
         badgeCount = null
     )
-    object Notifications : BottomBarScreen(
-        route = "notifications",
-        title = R.string.notifications,
-        selectedIcon = Icons.Filled.Notifications,
-        unselectedIcon = Icons.Default.Notifications,
-        hasNews = false,
-        badgeCount = 45
-    )
-    object Maps : BottomBarScreen(
-        route = "maps",
-        title = R.string.maps,
-        selectedIcon = Icons.Filled.LocationOn,
-        unselectedIcon = Icons.Default.LocationOn,
+
+    /** AI Agent (chat) */
+    object AiAgent : BottomBarScreen(
+        route = "ai_agent",
+        title = R.string.ai_agent,
+        selectedIcon = Icons.Filled.AutoAwesome,
+        unselectedIcon = Icons.Default.AutoAwesome,
         hasNews = false,
         badgeCount = null
     )
+
+    /** Hlášení */
     object Reports : BottomBarScreen(
         route = "reports",
         title = R.string.reports,

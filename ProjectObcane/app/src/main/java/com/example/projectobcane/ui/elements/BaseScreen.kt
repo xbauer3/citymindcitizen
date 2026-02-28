@@ -17,6 +17,7 @@ import androidx.compose.runtime.Composable
 @Composable
 fun BaseScreen(
     topBarText: String,
+    showTopBar: Boolean = true,
     onBackClick: (() -> Unit)? = null,
     showLoading: Boolean = false,
     placeholderScreenContent: PlaceholderScreenContent? = null,
@@ -27,15 +28,22 @@ fun BaseScreen(
 ){
     Scaffold(
         topBar = {
-            TopAppBar(title = {
-                Text(text = topBarText)
-            }, navigationIcon = {
-                if(onBackClick != null){
-                    IconButton(onClick = onBackClick) {
-                        Icon(imageVector = Icons.AutoMirrored.Filled.ArrowBack, contentDescription = null)
-                    }
-                }
-            }, actions = actions)
+            if (showTopBar) {
+                TopAppBar(
+                    title = { Text(text = topBarText) },
+                    navigationIcon = {
+                        if (onBackClick != null) {
+                            IconButton(onClick = onBackClick) {
+                                Icon(
+                                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                                    contentDescription = null
+                                )
+                            }
+                        }
+                    },
+                    actions = actions
+                )
+            }
         },
         floatingActionButton = floatingActionButton,
         bottomBar = bottomBar

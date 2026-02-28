@@ -21,13 +21,12 @@ import com.example.projectobcane.ui.theme.basicMargin
 @Composable
 fun BottomBar(navigation: INavigationRouter) {
 
-    val navController = navigation.getNavController() // ✅ extract NavController once
+    val navController = navigation.getNavController()
 
 
     val items = listOf(
-        BottomBarScreen.Home,
-        BottomBarScreen.Maps,
-        BottomBarScreen.Notifications,
+        BottomBarScreen.News,
+        BottomBarScreen.AiAgent,
         BottomBarScreen.Reports
     )
 

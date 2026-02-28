@@ -31,14 +31,10 @@ fun MainScreenScreen(navigation: INavigationRouter) {
     val navBackStackEntry = bottomNavController.currentBackStackEntryAsState().value
     val currentRoute = navBackStackEntry?.destination?.route
 
-
-    val fabVisible = currentRoute == BottomBarScreen.Reports.route
-
     val currentTopBarTitle = when (currentRoute) {
         BottomBarScreen.Reports.route -> R.string.reports
-        BottomBarScreen.Home.route -> R.string.home
-        BottomBarScreen.Maps.route -> R.string.maps
-        BottomBarScreen.Notifications.route -> R.string.notifications
+        BottomBarScreen.News.route -> R.string.news
+        BottomBarScreen.AiAgent.route -> R.string.ai_agent
         else -> R.string.app_name
     }
 
@@ -46,6 +42,7 @@ fun MainScreenScreen(navigation: INavigationRouter) {
 
     BaseScreen(
         topBarText = stringResource(currentTopBarTitle),
+        showTopBar = currentRoute != BottomBarScreen.AiAgent.route,
         actions = {
             IconButton(onClick = { navigation.navigateToSettingsScreen() }) {
                 Icon(imageVector = Icons.Outlined.Settings, contentDescription = null)
@@ -59,7 +56,7 @@ fun MainScreenScreen(navigation: INavigationRouter) {
                 ) {
                     Icon(Icons.Default.Add, contentDescription = "Add Report")
                 }
-            }else if (currentRoute == BottomBarScreen.Home.route){
+            } else if (currentRoute == BottomBarScreen.News.route) {
                 FloatingActionButton(
                     onClick = { navigation.navigateToAddEditEvent(null) }
                 ) {
@@ -69,7 +66,7 @@ fun MainScreenScreen(navigation: INavigationRouter) {
         }
     ) { paddingValues ->
         BottomNavGraph(
-            startDestination = BottomBarScreen.Home.route,
+            startDestination = BottomBarScreen.News.route,
             navHostController = bottomNavController,
             bottomNavRouter = bottomNavRouter,
             rootNavRouter = navigation,

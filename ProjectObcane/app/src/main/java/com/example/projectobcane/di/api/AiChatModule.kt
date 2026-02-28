@@ -1,6 +1,6 @@
 package com.example.projectobcane.di.api
 
-import com.example.projectobcane.communication.OpenMeteoApi
+import com.example.projectobcane.communication.AiChatApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -11,12 +11,11 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object WeatherModule {
+object AiChatModule {
 
     @Provides
     @Singleton
-    fun provideStationAPI(retrofit: Retrofit): OpenMeteoApi {
-        return retrofit.create(OpenMeteoApi::class.java)
+    fun provideAiChatApi(retrofit: Retrofit): AiChatApi {
+        return retrofit.create(AiChatApi::class.java)
     }
-
 }

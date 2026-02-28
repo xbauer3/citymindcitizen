@@ -1,8 +1,8 @@
 package com.example.projectobcane.di.api
 
-import com.example.projectobcane.communication.IWeatherRemoteRepository
-import com.example.projectobcane.communication.OpenMeteoApi
-import com.example.projectobcane.communication.WeatherRemoteRepositoryImpl
+import com.example.projectobcane.communication.AiChatApi
+import com.example.projectobcane.communication.AiChatRemoteRepositoryImpl
+import com.example.projectobcane.communication.IAiChatRemoteRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -15,7 +15,7 @@ object RemoteRepositoryModule {
 
     @Provides
     @Singleton
-    fun provideWeatherRemoteRepository(openMeteoApi: OpenMeteoApi): IWeatherRemoteRepository {
-        return WeatherRemoteRepositoryImpl(openMeteoApi)
+    fun provideAiChatRemoteRepository(api: AiChatApi): IAiChatRemoteRepository {
+        return AiChatRemoteRepositoryImpl(api)
     }
 }

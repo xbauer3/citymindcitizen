@@ -77,12 +77,19 @@ class NavigationRouterImpl(private val navController: NavController) : INavigati
     //bottom
 
     override fun navigateToRoute(route: String) {
+        val currentRoute = navController.currentBackStackEntry?.destination?.route
+
+        // 1) když už jsme na stejné obrazovce, nic nedělej (zabrání resetu při opětovném tapu)
+        if (currentRoute == route) return
+
         navController.navigate(route) {
-            popUpTo(navController.graph.findStartDestination().id)
+            popUpTo(navController.graph.findStartDestination().id) {
+                saveState = true
+            }
             launchSingleTop = true
+            restoreState = true
         }
     }
-
 
 
 

@@ -66,6 +66,8 @@
     <string name="maps">Maps</string>
     <string name="home">Home</string>
     <string name="reports">Reports</string>
+    <string name="news">News</string>
+    <string name="ai_agent">AI Agent</string>
     <string name="notifications">Notifications</string>
     <string name="add_edit_event">Add/Edit Event</string>
     <string name="report_detail">Report Detail</string>

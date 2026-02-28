@@ -17,11 +17,8 @@ import com.example.projectobcane.navigation.NavigationRouterImpl
 import com.example.projectobcane.screens.SplashScreen
 
 import com.example.projectobcane.screens.events.EventsScreen
-import com.example.projectobcane.screens.mainScreen.MainScreenScreen
-import com.example.projectobcane.screens.maps.MapsScreen
-import com.example.projectobcane.screens.notifications.NotificationsScreen
+import com.example.projectobcane.screens.chat.AiChatScreen
 import com.example.projectobcane.screens.reports.ReportsScreen
-import com.example.projectobcane.screens.settings.SettingsScreen
 import com.squareup.moshi.Moshi
 import java.net.URLDecoder
 
@@ -42,7 +39,7 @@ fun BottomNavGraph(
         startDestination = startDestination
     ) {
 
-        composable(BottomBarScreen.Home.route) {
+        composable(BottomBarScreen.News.route) {
             EventsScreen(
                 bottomNav = bottomNavRouter,
                 rootNav = rootNavRouter,
@@ -50,15 +47,11 @@ fun BottomNavGraph(
             )
         }
 
-        composable(BottomBarScreen.Notifications.route) {
-            NotificationsScreen(bottomNavRouter, paddingValues)
-        }
-
-        composable(BottomBarScreen.Maps.route) {
-            MapsScreen(
-                bottomNav = bottomNavRouter,
-                rootNav = rootNavRouter,
-                paddingValues = paddingValues)
+        composable(BottomBarScreen.AiAgent.route) {
+            AiChatScreen(
+                paddingValues = paddingValues,
+                rootNav = rootNavRouter
+            )
         }
 
         composable(BottomBarScreen.Reports.route) {
