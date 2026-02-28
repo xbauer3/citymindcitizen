@@ -50,7 +50,7 @@ fun BottomNavGraph(
         composable(BottomBarScreen.AiAgent.route) {
             AiChatScreen(
                 paddingValues = paddingValues,
-                rootNav = rootNavRouter
+                //rootNav = rootNavRouter
             )
         }
 
