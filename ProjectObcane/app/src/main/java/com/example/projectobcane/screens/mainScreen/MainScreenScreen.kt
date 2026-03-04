@@ -42,7 +42,9 @@ fun MainScreenScreen(navigation: INavigationRouter) {
 
     BaseScreen(
         topBarText = stringResource(currentTopBarTitle),
-        showTopBar = currentRoute != BottomBarScreen.AiAgent.route,
+        //If i want to hide a nav bar in the future
+        //showTopBar = currentRoute != BottomBarScreen.AiAgent.route,
+        showTopBar = true,
         actions = {
             IconButton(onClick = { navigation.navigateToSettingsScreen() }) {
                 Icon(imageVector = Icons.Outlined.Settings, contentDescription = null)

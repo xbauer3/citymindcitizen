@@ -2,7 +2,10 @@ package com.example.projectobcane.screens.reports.addEdit
 
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -10,6 +13,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
@@ -59,6 +63,14 @@ import kotlin.collections.getValue
 import com.example.projectobcane.extensions.getValue
 import com.example.projectobcane.ui.elements.GlideImage
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
+
+
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -213,7 +225,7 @@ fun AddEditReportScreenContent(
 
 
 
-
+        //Images
 
 
 
@@ -228,16 +240,45 @@ fun AddEditReportScreenContent(
                 }
 
                 if (data.images.isNotEmpty()) {
-                    Spacer(modifier = Modifier.height(halfMargin))
+                    val pagerState = rememberPagerState(initialPage = 0) {
+                        data.images.size // <- this replaces pageCount
+                    }
 
-                    LazyRow {
-                        items(data.images) { uri ->
+                    Column {
+                        HorizontalPager(
+                            state = pagerState,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(250.dp)
+                        ) { page ->
                             GlideImage(
-                                url = uri,
+                                url = data.images[page],
                                 modifier = Modifier
-                                    .height(200.dp)
+                                    .fillMaxWidth()
                                     .clip(RoundedCornerShape(12.dp))
                             )
+                        }
+
+                        Spacer(modifier = Modifier.height(8.dp))
+
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.Center
+                        ) {
+                            repeat(data.images.size) { index ->
+                                Box(
+                                    modifier = Modifier
+                                        .padding(4.dp)
+                                        .size(8.dp)
+                                        .clip(CircleShape)
+                                        .background(
+                                            if (pagerState.currentPage == index)
+                                                MaterialTheme.colorScheme.primary
+                                            else
+                                                MaterialTheme.colorScheme.onSurface.copy(alpha = 0.3f)
+                                        )
+                                )
+                            }
                         }
                     }
                 }

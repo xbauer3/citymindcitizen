@@ -77,15 +77,6 @@ fun AiChatScreen(
                 .padding(horizontal = 20.dp, vertical = 16.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(
-                text = "Ahoj, Xxxxx",
-                style = MaterialTheme.typography.headlineSmall.copy(
-                    fontWeight = FontWeight.SemiBold,
-                    color = White
-                ),
-                modifier = Modifier.weight(1f)
-            )
-
             IconButton(onClick = { viewModel.resetConversation() }) {
                 Icon(
                     imageVector = Icons.Default.Refresh,

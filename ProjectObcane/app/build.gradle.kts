@@ -167,6 +167,7 @@ dependencies {
 
 
     implementation("io.coil-kt:coil-compose:2.5.0")
+    implementation("androidx.compose.foundation:foundation:1.5.0")
 
 
 

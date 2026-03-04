@@ -55,7 +55,8 @@ import com.example.projectobcane.utils.DateUtils
 
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.LazyRow
-
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
 
 
 
@@ -141,18 +142,47 @@ fun ReportDetailContent(
         item {
 
             if (data.images.isNotEmpty()) {
+                val pagerState = rememberPagerState(initialPage = 0) {
+                    data.images.size // <- this replaces pageCount
+                }
 
-                LazyRow {
-                    items(data.images) { uri ->
+                Column {
+                    HorizontalPager(
+                        state = pagerState,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(250.dp)
+                    ) { page ->
                         GlideImage(
-                            url = uri,
+                            url = data.images[page],
                             modifier = Modifier
-                                .height(220.dp)
+                                .fillMaxWidth()
                                 .clip(RoundedCornerShape(12.dp))
                         )
                     }
-                }
 
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.Center
+                    ) {
+                        repeat(data.images.size) { index ->
+                            Box(
+                                modifier = Modifier
+                                    .padding(4.dp)
+                                    .size(8.dp)
+                                    .clip(CircleShape)
+                                    .background(
+                                        if (pagerState.currentPage == index)
+                                            MaterialTheme.colorScheme.primary
+                                        else
+                                            MaterialTheme.colorScheme.onSurface.copy(alpha = 0.3f)
+                                    )
+                            )
+                        }
+                    }
+                }
             }
         }
 
