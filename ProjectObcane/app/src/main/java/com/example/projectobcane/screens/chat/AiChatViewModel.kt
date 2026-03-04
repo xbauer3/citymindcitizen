@@ -80,7 +80,7 @@ class AiChatViewModel @Inject constructor(
                 webConfig = emptyMap()
             )
 
-            // ✅ FIX: sendMessage místo ask
+
             when (val res = repo.sendMessage(req)) {
                 is CommunicationResult.Success -> {
                     val a = res.data.trim().ifEmpty { "Omlouvám se, nedostal jsem odpověď." }

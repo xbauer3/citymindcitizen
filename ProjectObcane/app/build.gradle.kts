@@ -166,6 +166,8 @@ dependencies {
 
 
 
+    implementation("io.coil-kt:coil-compose:2.5.0")
+
 
 
 }

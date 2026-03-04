@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.LocationOn
@@ -57,6 +58,7 @@ import com.squareup.moshi.Moshi
 import kotlin.collections.getValue
 import com.example.projectobcane.extensions.getValue
 import com.example.projectobcane.ui.elements.GlideImage
+import androidx.compose.foundation.lazy.items
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -142,9 +144,9 @@ fun AddEditReportScreenContent(
 
     val photoPickerLauncher =
         rememberLauncherForActivityResult(
-            contract = ActivityResultContracts.GetContent()
-        ) { uri ->
-            uri?.let {
+            contract = ActivityResultContracts.GetMultipleContents()
+        ) { uris ->
+            uris.forEach {
                 actions.onPhotoSelected(
                     context = context,
                     uri = it.toString()
@@ -225,16 +227,19 @@ fun AddEditReportScreenContent(
                     Text(stringResource(R.string.add_photo))
                 }
 
-                if (data.report.photoUri.isNotEmpty()) {
+                if (data.images.isNotEmpty()) {
                     Spacer(modifier = Modifier.height(halfMargin))
 
-                    GlideImage(
-                        url = data.report.photoUri,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(200.dp)
-                            .clip(RoundedCornerShape(12.dp))
-                    )
+                    LazyRow {
+                        items(data.images) { uri ->
+                            GlideImage(
+                                url = uri,
+                                modifier = Modifier
+                                    .height(200.dp)
+                                    .clip(RoundedCornerShape(12.dp))
+                            )
+                        }
+                    }
                 }
             }
         }
@@ -246,7 +251,7 @@ fun AddEditReportScreenContent(
 
         item {
             OutlinedTextField(
-                value = data.report.category,
+                value = data.report.reportType,
                 onValueChange = {
                     actions.onCategoryChanged(it)
                 },
@@ -335,8 +340,8 @@ fun AddEditReportScreenContent(
                     .fillMaxWidth()
                     .clickable {
                         navigation.navigateToChoseLocation(
-                            data.report.location.latitude,
-                            data.report.location.longitude,
+                            data.report.location?.latitude,
+                            data.report.location?.longitude,
 
                         )
                     }
@@ -346,7 +351,7 @@ fun AddEditReportScreenContent(
                 Icon(Icons.Default.LocationOn, contentDescription = null)
                 Spacer(modifier = Modifier.width(halfMargin))
                 Text(
-                    text = "${stringResource(R.string.selected_location)}: ${data.report.location.latitude}, ${data.report.location.longitude}",
+                    text = "${stringResource(R.string.selected_location)}: ${data.report.location?.latitude}, ${data.report.location?.longitude}",
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurface
                 )

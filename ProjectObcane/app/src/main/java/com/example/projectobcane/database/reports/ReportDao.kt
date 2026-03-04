@@ -5,6 +5,7 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Transaction
 import androidx.room.Update
 import kotlinx.coroutines.flow.Flow
 
@@ -12,17 +13,25 @@ import kotlinx.coroutines.flow.Flow
 interface ReportDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(report: Report)
+    suspend fun insertReport(report: ReportEntity): Long
 
     @Update
-    suspend fun update(report: Report)
+    suspend fun updateReport(report: ReportEntity)
 
     @Delete
-    suspend fun delete(report: Report)
+    suspend fun deleteReport(report: ReportEntity)
 
+    @Insert
+    suspend fun insertImages(images: List<ReportImageEntity>)
+
+    @Query("DELETE FROM report_images WHERE reportLocalId = :reportId")
+    suspend fun deleteImagesForReport(reportId: Long)
+
+    @Transaction
     @Query("SELECT * FROM reports ORDER BY createdAt DESC")
-    fun getAllReports(): Flow<List<Report>>
+    fun getAllReports(): Flow<List<ReportWithImages>>
 
-    @Query("SELECT * FROM reports WHERE id = :id")
-    suspend fun getById(id: Long): Report
+    @Transaction
+    @Query("SELECT * FROM reports WHERE localId = :id")
+    suspend fun getReportWithImages(id: Long): ReportWithImages?
 }

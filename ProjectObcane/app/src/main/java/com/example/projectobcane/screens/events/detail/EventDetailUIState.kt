@@ -4,7 +4,7 @@ import com.example.projectobcane.database.events.Event
 import com.example.projectobcane.database.events.EventCategory
 import com.example.projectobcane.database.events.EventStatus
 import com.example.projectobcane.database.reports.LocationEntity
-import com.example.projectobcane.database.reports.Report
+
 
 
 data class EventDetailUIState (

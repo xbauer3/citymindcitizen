@@ -5,16 +5,21 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -31,13 +36,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.projectobcane.R
-import com.example.projectobcane.database.reports.Report
+import com.example.projectobcane.database.reports.ReportEntity
+import com.example.projectobcane.database.reports.ReportWithImages
 import com.example.projectobcane.navigation.INavigationRouter
     import com.example.projectobcane.ui.elements.BaseScreen
 import com.example.projectobcane.ui.theme.GreenDark
@@ -50,6 +57,8 @@ import com.example.projectobcane.ui.theme.basicMargin
 import com.example.projectobcane.ui.theme.halfMargin
 import java.time.LocalDate
 import java.time.ZoneId
+import androidx.compose.foundation.lazy.items
+import coil.compose.AsyncImage
 
 
 @Composable
@@ -75,32 +84,105 @@ fun ReportsScreen(
 
         state.value.reports.forEach {
             item {
-                Box(modifier = Modifier
-                    .clip(RoundedCornerShape(6.dp))
-                    .fillMaxWidth()
-                    .padding(bottom = 2.dp)
+                Box(
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(6.dp))
+                        .fillMaxWidth()
+                        .padding(bottom = basicMargin)
 
                 ) {
 
-                    ReportItem(
-                        report = it
-                    ) {
-                        rootNav.navigateToReportDetail(it.id)
-                    }
-                }
+                    ReportCard(
+                        reportWithImages = it,
+                        onClick = {
+                            rootNav.navigateToReportDetail(it.report.localId)
+                        }
+                    )
 
+                }
             }
+
         }
 
+
     }
+}
 
+@Composable
+fun ReportCard(
+    reportWithImages: ReportWithImages,
+    onClick: () -> Unit
+){
 
+    val report = reportWithImages.report
+    val images = reportWithImages.images
+
+    Card(
+        shape = RoundedCornerShape(20.dp),
+        modifier = Modifier.fillMaxWidth().clickable { onClick() },
+        elevation = CardDefaults.cardElevation(6.dp)
+    ) {
+
+        Column {
+
+            // Galerie (horizontal scroll)
+            if (images.isNotEmpty()) {
+                LazyRow(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(180.dp)
+                ) {
+                    items(images) { image ->
+                        AsyncImage(
+                            model = image.imageUri,
+                            contentDescription = null,
+                            contentScale = ContentScale.Crop,
+                            modifier = Modifier
+                                .padding(4.dp)
+                                .fillParentMaxHeight()
+                                .aspectRatio(1f)
+                                .clip(RoundedCornerShape(12.dp))
+                        )
+                    }
+                }
+            }
+
+            Column(
+                modifier = Modifier.padding(16.dp)
+            ) {
+
+                Text(
+                    text = report.title,
+                    style = MaterialTheme.typography.titleMedium
+                )
+
+                Spacer(modifier = Modifier.height(8.dp))
+
+                Text(
+                    text = report.description,
+                    style = MaterialTheme.typography.bodyMedium
+                )
+
+                Spacer(modifier = Modifier.height(8.dp))
+
+                Text(
+                    text = report.status,
+                    color = when (report.status) {
+                        "OPEN" -> Color.Red
+                        "IN_PROGRESS" -> Color(0xFFFFA000)
+                        else -> Color.Green
+                    }
+                )
+            }
+        }
+    }
 }
 
 
 
+/*
 @Composable
-fun ReportItem(report: Report, onClick: () -> Unit) {
+fun ReportItem(report: ReportEntity, onClick: () -> Unit) {
 
     val (darkColor, lightColor) = when (report.status.lowercase()) {
         "complete", "done" -> GreenDark to GreenLight
@@ -143,3 +225,4 @@ fun ReportItem(report: Report, onClick: () -> Unit) {
         }
     }
 }
+*/

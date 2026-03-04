@@ -26,12 +26,18 @@ class ReportDetailViewModel @Inject constructor (private val repository: IReport
     fun loadEvent(id: Long?) {
         if (id != null) {
             viewModelScope.launch {
-                val event = repository.getById(id)
-                _eventDetailUIState.value = _eventDetailUIState.value.copy(
-                    report = event,
 
-                    loading = false
-                )
+                val reportWithImages = repository.getReportWithImages(id)
+
+                reportWithImages?.let {
+
+                    _eventDetailUIState.value =
+                        _eventDetailUIState.value.copy(
+                            report = it.report,
+                            images = it.images.map { image -> image.imageUri },
+                            loading = false
+                        )
+                }
             }
         }
 
@@ -41,7 +47,7 @@ class ReportDetailViewModel @Inject constructor (private val repository: IReport
 
     fun deleteEvent() {
         viewModelScope.launch {
-            repository.delete(_eventDetailUIState.value.report)
+            repository.deleteReport(_eventDetailUIState.value.report)
 
             _eventDetailUIState.value = _eventDetailUIState.value.copy(eventDeleted = true)
 

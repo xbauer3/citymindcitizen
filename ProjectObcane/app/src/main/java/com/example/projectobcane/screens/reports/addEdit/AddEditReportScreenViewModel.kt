@@ -9,7 +9,8 @@ import androidx.lifecycle.viewModelScope
 import com.example.projectobcane.R
 import com.example.projectobcane.database.reports.IReportLocalRepository
 import com.example.projectobcane.database.reports.LocationEntity
-import com.example.projectobcane.database.reports.Report
+import com.example.projectobcane.database.reports.ReportEntity
+import com.example.projectobcane.database.reports.ReportImageEntity
 import com.example.projectobcane.database.reports.ReportStatus
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -19,6 +20,7 @@ import kotlinx.coroutines.launch
 import java.time.Duration
 import javax.inject.Inject
 import kotlin.text.insert
+
 
 
 @HiltViewModel
@@ -41,25 +43,30 @@ class AddEditReportScreenViewModel @Inject constructor (private val repository: 
 
         if (id != null) {
             viewModelScope.launch {
-                val report = repository.getById(id)
+                val reportWithImages = repository.getReportWithImages(id)
                 _addEditReportUIState.value = _addEditReportUIState.value.copy(
-                    report = report,
+                    report = reportWithImages?.report ?: return@launch,
+                    images = reportWithImages.images.map { it.imageUri },
                     loading = false
                 )
             }
         } else {
             _addEditReportUIState.value = _addEditReportUIState.value.copy(
                 loading = false,
-                report = Report(
-                    id = null,
+                report = ReportEntity(
+                    localId = null,
+                    remoteId = null,
                     title = "",
                     description = "",
-                    category = "",
+                    reportType = "",
                     status = ReportStatus.NEW.value,
-                    LocationEntity(0.0,0.0),
-                    photoUri = "",
+                    location = LocationEntity(0.0, 0.0),
+                    entityId = 1942,
+                    hashedEmail = null,
+                    dateAdded = null,
                     createdAt = System.currentTimeMillis()
-                )
+                ),
+                images = emptyList()
             )
         }
     }
@@ -113,7 +120,7 @@ class AddEditReportScreenViewModel @Inject constructor (private val repository: 
         }
 
         _addEditReportUIState.value = _addEditReportUIState.value.copy(
-            report = _addEditReportUIState.value.report.copy(category = value),
+            report = _addEditReportUIState.value.report.copy(reportType = value),
             categoryError = error
         )
     }
@@ -141,10 +148,9 @@ class AddEditReportScreenViewModel @Inject constructor (private val repository: 
     ) {
         _addEditReportUIState.update {
             it.copy(
-                report = it.report.copy(photoUri = uri)
+                images = it.images + uri
             )
         }
-
     }
 
 
@@ -170,10 +176,10 @@ class AddEditReportScreenViewModel @Inject constructor (private val repository: 
         }
 
         //category
-        else if (_addEditReportUIState.value.report.category.isEmpty()){
+        else if (_addEditReportUIState.value.report.reportType.isEmpty()){
             _addEditReportUIState.value = _addEditReportUIState.value.copy(categoryError = R.string.error_event_description_required)
         }
-        else if (_addEditReportUIState.value.report.category.length > 250){
+        else if (_addEditReportUIState.value.report.reportType.length > 250){
             _addEditReportUIState.value = _addEditReportUIState.value.copy(categoryError = R.string.error_event_description_too_long)
         }
 
@@ -190,14 +196,35 @@ class AddEditReportScreenViewModel @Inject constructor (private val repository: 
 
 
             viewModelScope.launch {
-                if (_addEditReportUIState.value.report.id != null) {
-                    // update
-                    repository.update(_addEditReportUIState.value.report)
+
+                val state = _addEditReportUIState.value
+                val report = state.report
+
+                val reportId = if (report.localId != null && report.localId!! > 0) {
+
+                    repository.updateReport(report)
+                    report.localId!!
+
                 } else {
-                    // insert
-                    repository.insert(_addEditReportUIState.value.report)
+
+                    repository.insertReport(report)
                 }
-                _addEditReportUIState.value = _addEditReportUIState.value.copy(reportSaved = true)
+
+                // 🔥 Delete old images (important when editing)
+                repository.deleteImagesForReport(reportId)
+
+                // 🔥 Insert new images
+                val imageEntities = state.images.map { uri ->
+                    ReportImageEntity(
+                        reportLocalId = reportId,
+                        imageUri = uri
+                    )
+                }
+
+                repository.insertImages(imageEntities)
+
+                _addEditReportUIState.value =
+                    _addEditReportUIState.value.copy(reportSaved = true)
             }
 
         }
@@ -208,7 +235,7 @@ class AddEditReportScreenViewModel @Inject constructor (private val repository: 
 
     override fun deleteReport() {
         viewModelScope.launch {
-            repository.delete(_addEditReportUIState.value.report)
+            repository.deleteReport(_addEditReportUIState.value.report)
             _addEditReportUIState.value = _addEditReportUIState.value.copy(reportDeleted = true)
         }
     }

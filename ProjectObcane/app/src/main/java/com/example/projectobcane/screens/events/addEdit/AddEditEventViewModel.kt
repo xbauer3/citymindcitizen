@@ -9,7 +9,6 @@ import com.example.projectobcane.database.events.EventStatus
 import com.example.projectobcane.database.events.IEventLocalRepository
 import com.example.projectobcane.database.reports.IReportLocalRepository
 import com.example.projectobcane.database.reports.LocationEntity
-import com.example.projectobcane.database.reports.Report
 import com.example.projectobcane.database.reports.ReportStatus
 import com.example.projectobcane.screens.reports.addEdit.AddEditReportScreenActions
 import com.example.projectobcane.screens.reports.addEdit.AddEditReportScreenUIState

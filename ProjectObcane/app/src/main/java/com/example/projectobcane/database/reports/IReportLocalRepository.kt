@@ -6,11 +6,17 @@ import kotlinx.coroutines.flow.Flow
 
 interface IReportLocalRepository {
 
-    fun getAllReports(): Flow<List<Report>>
+    fun getAllReports(): Flow<List<ReportWithImages>>
 
-    suspend fun insert(report: Report)
-    suspend fun update(report: Report)
-    suspend fun delete(report: Report)
-    suspend fun getById(id: Long): Report
+    suspend fun getReportWithImages(id: Long): ReportWithImages?
+
+    suspend fun insertReport(report: ReportEntity): Long
+
+    suspend fun updateReport(report: ReportEntity)
+
+    suspend fun deleteReport(report: ReportEntity)
+
+    suspend fun insertImages(images: List<ReportImageEntity>)
+
+    suspend fun deleteImagesForReport(reportLocalId: Long)
 }
-

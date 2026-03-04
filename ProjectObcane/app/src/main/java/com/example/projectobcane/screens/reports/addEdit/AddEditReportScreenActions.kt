@@ -2,7 +2,7 @@ package com.example.projectobcane.screens.reports.addEdit
 
 import android.content.Context
 import com.example.projectobcane.database.reports.LocationEntity
-import com.example.projectobcane.database.reports.Report
+
 
 
 interface AddEditReportScreenActions {

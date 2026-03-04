@@ -52,6 +52,13 @@ import com.example.projectobcane.ui.theme.basicMargin
 import com.example.projectobcane.ui.theme.halfMargin
 import com.example.projectobcane.utils.DateUtils
 
+
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.LazyRow
+
+
+
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ReportDetailScreen(
@@ -132,14 +139,21 @@ fun ReportDetailContent(
 
         // IMAGE
         item {
-            GlideImage(
-                url = if (report.photoUri.isNotEmpty()) report.photoUri
-                else "https://picsum.photos/400?random=${report.id ?: 0}",
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(220.dp)
-                    .clip(RoundedCornerShape(12.dp))
-            )
+
+            if (data.images.isNotEmpty()) {
+
+                LazyRow {
+                    items(data.images) { uri ->
+                        GlideImage(
+                            url = uri,
+                            modifier = Modifier
+                                .height(220.dp)
+                                .clip(RoundedCornerShape(12.dp))
+                        )
+                    }
+                }
+
+            }
         }
 
         // TITLE + DESCRIPTION
@@ -176,7 +190,7 @@ fun ReportDetailContent(
 
                     DetailRow(
                         label = stringResource(R.string.category),
-                        value = report.category
+                        value = report.reportType
                     )
 
                     DetailRow(
@@ -208,12 +222,12 @@ fun ReportDetailContent(
 
                     DetailRow(
                         label = stringResource(R.string.latitude),
-                        value = report.location.latitude.toString()
+                        value = report.location?.latitude.toString()
                     )
 
                     DetailRow(
                         label = stringResource(R.string.longitude),
-                        value = report.location.longitude.toString()
+                        value = report.location?.longitude.toString()
                     )
                 }
             }
@@ -228,7 +242,7 @@ fun ReportDetailContent(
                 Button(
                     modifier = Modifier.weight(1f),
                     onClick = {
-                        navigation.navigateToAddEditReport(id = report.id)
+                        navigation.navigateToAddEditReport(id = report.localId)
                     }
                 ) {
                     Text(stringResource(R.string.edit))

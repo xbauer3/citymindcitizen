@@ -28,13 +28,13 @@ class MapScreenViewModel @Inject constructor(
             ) { reports, events ->
 
                 val reportItems = reports
-                    .filter { it.location.latitude != null && it.location.longitude != null }
+                    .filter { it.report.location?.latitude != null && it.report.location.longitude != null  }
                     .map {
                         MapItem.ReportItem(
-                            reportId = it.id!!,
-                            lat = it.location.latitude!!,
-                            lng = it.location.longitude!!,
-                            reportTitle = it.title
+                            reportId = it.report.localId!!,
+                            lat = it.report.location?.latitude!!,
+                            lng = it.report.location?.longitude!!,
+                            reportTitle = it.report.title
                         )
                     }
 

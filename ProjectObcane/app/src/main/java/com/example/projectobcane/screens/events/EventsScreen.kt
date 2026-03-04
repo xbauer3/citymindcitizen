@@ -35,7 +35,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.projectobcane.database.events.Event
-import com.example.projectobcane.database.reports.Report
+
 import com.example.projectobcane.navigation.INavigationRouter
 import com.example.projectobcane.screens.reports.ReportsScreenViewModel
 import com.example.projectobcane.ui.theme.GreenDark

@@ -8,25 +8,33 @@ import kotlin.text.insert
 class ReportRepository @Inject constructor(
     private val dao: ReportDao
 ) : IReportLocalRepository  {
-    override fun getAllReports(): Flow<List<Report>> {
+
+    override fun getAllReports(): Flow<List<ReportWithImages>> {
         return dao.getAllReports()
     }
 
-
-    override suspend fun insert(report: Report) {
-        dao.insert(report)
+    override suspend fun getReportWithImages(id: Long): ReportWithImages? {
+        return dao.getReportWithImages(id)
     }
 
-    override suspend fun update(report: Report) {
-        dao.update(report)
+    override suspend fun insertReport(report: ReportEntity): Long {
+        return dao.insertReport(report)
     }
 
-    override suspend fun delete(report: Report) {
-        dao.delete(report)
+    override suspend fun updateReport(report: ReportEntity) {
+        dao.updateReport(report)
     }
 
-    override suspend fun getById(id: Long): Report {
-        return dao.getById(id)
+    override suspend fun deleteReport(report: ReportEntity) {
+        dao.deleteReport(report)
+        dao.deleteImagesForReport(report.localId!!)
     }
 
+    override suspend fun insertImages(images: List<ReportImageEntity>) {
+        dao.insertImages(images)
+    }
+
+    override suspend fun deleteImagesForReport(reportLocalId: Long) {
+        dao.deleteImagesForReport(reportLocalId)
+    }
 }

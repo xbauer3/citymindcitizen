@@ -19,17 +19,30 @@ data class LocationEntity(
 
 
 @Entity(tableName = "reports")
-data class Report(
-    @PrimaryKey(autoGenerate = true) val id: Long? = 0,
+data class ReportEntity(
+
+    @PrimaryKey(autoGenerate = true)
+    val localId: Long? = 0,
+
+    // budoucí ID z API
+    val remoteId: Long? = null,
+
     val title: String,
     val description: String,
-    val category: String,
+
+    // bude odpovídat reportType z API
+    val reportType: String,
+
     val status: String,
 
-    @Embedded val location: LocationEntity,
+    @Embedded
+    val location: LocationEntity?,
 
-    val photoUri: String,
+    val entityId: Int = 1942,
+
+    val hashedEmail: String? = null,
+
+    val dateAdded: String? = null,
+
     val createdAt: Long = System.currentTimeMillis()
-
-
 )

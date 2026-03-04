@@ -7,19 +7,21 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.projectobcane.database.events.Event
 import com.example.projectobcane.database.events.EventDao
-import com.example.projectobcane.database.reports.Report
 import com.example.projectobcane.database.reports.ReportDao
+import com.example.projectobcane.database.reports.ReportEntity
+import com.example.projectobcane.database.reports.ReportImageEntity
 
 @Database(
     entities = [
-        Report::class, Event::class
+        ReportEntity::class, ReportImageEntity::class,Event::class
     ],
-    version = 16,
+    version = 17,
     exportSchema = true
 )
 abstract class ProjectDatabase : RoomDatabase() {
     abstract fun reportDao(): ReportDao
     abstract fun eventDao(): EventDao
+
 
     companion object {
         private var INSTANCE: ProjectDatabase? = null
