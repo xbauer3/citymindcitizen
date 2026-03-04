@@ -27,6 +27,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.ui.graphics.luminance
+import com.example.projectobcane.ui.elements.BaseScreen
 
 private val Purple = Color(0xFF7A3CFF)
 
@@ -56,6 +59,7 @@ fun AiChatScreen(
         if (ui.items.isNotEmpty()) listState.animateScrollToItem(ui.items.size - 1)
     }
 
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -74,7 +78,7 @@ fun AiChatScreen(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = "Ahoj, Eliška",
+                text = "Ahoj, Xxxxx",
                 style = MaterialTheme.typography.headlineSmall.copy(
                     fontWeight = FontWeight.SemiBold,
                     color = White
@@ -102,7 +106,7 @@ fun AiChatScreen(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 HighlightedTitle(
-                    text = "Ahoj, Eliška",
+                    text = "Ahoj, Xxxxx",
                     modifier = Modifier.weight(1f)
                 )
             }
