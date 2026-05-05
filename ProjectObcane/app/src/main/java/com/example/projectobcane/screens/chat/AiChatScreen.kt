@@ -1,5 +1,6 @@
 package com.example.projectobcane.screens.chat
 
+import androidx.compose.animation.core.*
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -7,7 +8,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Mic
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Send
 import androidx.compose.material3.*
@@ -18,18 +18,12 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.compose.ui.text.style.TextDecoration
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.ui.graphics.luminance
-import com.example.projectobcane.ui.elements.BaseScreen
 
 private val Purple = Color(0xFF7A3CFF)
 
@@ -40,11 +34,13 @@ fun AiChatScreen(
 ) {
     val ui by viewModel.state.collectAsStateWithLifecycle()
     val listState = rememberLazyListState()
-
-    // app theme (ne systém)
     val isDark = MaterialTheme.colorScheme.background.luminance() < 0.5f
 
-    // Background: dark = jemný violet glow, light = white + soft violet
+    val totalItemCount = ui.items.size + if (ui.isSending) 2 else 0
+    LaunchedEffect(totalItemCount) {
+        if (totalItemCount > 0) listState.animateScrollToItem(totalItemCount - 1)
+    }
+
     val bg = if (!isDark) {
         Brush.verticalGradient(
             listOf(Color.White, Color.White, Color(0xFFEFE7FF).copy(alpha = 0.45f))
@@ -55,12 +51,7 @@ fun AiChatScreen(
         )
     }
 
-    LaunchedEffect(ui.items.size, ui.isSending) {
-        if (ui.items.isNotEmpty()) listState.animateScrollToItem(ui.items.size - 1)
-    }
-
-
-    Box(
+    Column(
         modifier = Modifier
             .fillMaxSize()
             .background(bg)
@@ -69,64 +60,56 @@ fun AiChatScreen(
                 bottom = paddingValues.calculateBottomPadding()
             )
     ) {
-
-        // ===== HEADER =====
+        // ── Thin header row with reset button ────────────────────────────
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 20.dp, vertical = 16.dp),
+                .padding(horizontal = 8.dp, vertical = 4.dp),
+            horizontalArrangement = Arrangement.End,
             verticalAlignment = Alignment.CenterVertically
         ) {
             IconButton(onClick = { viewModel.resetConversation() }) {
                 Icon(
                     imageVector = Icons.Default.Refresh,
-                    contentDescription = "Reset",
-                    tint = Purple
+                    contentDescription = "Reset conversation",
+                    tint = Purple,
+                    modifier = Modifier.size(22.dp)
                 )
             }
         }
 
-        // ===== CONTENT =====
-        if (ui.items.isEmpty() && !ui.isSending) {
-            // empty state (center hello)
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(horizontal = 22.dp),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
+        // ── Content: empty state or chat list ────────────────────────────
+        Box(modifier = Modifier.weight(1f)) {
+            if (ui.items.isEmpty() && !ui.isSending) {
                 HighlightedTitle(
-                    text = "Ahoj, Xxxxx",
-                    modifier = Modifier.weight(1f)
+                    text = "Ahoj, Jak vám mohu pomoci",
+                    modifier = Modifier.fillMaxSize()
                 )
-            }
-        } else {
-            LazyColumn(
-                state = listState,
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(horizontal = 16.dp)
-                    .padding(top = 64.dp, bottom = 100.dp),
-                verticalArrangement = Arrangement.spacedBy(14.dp)
-            ) {
-                items(ui.items, key = { it.id }) { m ->
-                    when (m.role) {
-                        ChatRole.User -> UserBubble(m.text, isDark)
-                        ChatRole.Assistant -> AiCard(m.text, isDark)
+            } else {
+                LazyColumn(
+                    state = listState,
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(horizontal = 16.dp),
+                    contentPadding = PaddingValues(top = 8.dp, bottom = 16.dp),
+                    verticalArrangement = Arrangement.spacedBy(16.dp)
+                ) {
+                    items(ui.items, key = { it.id }) { m ->
+                        when (m.role) {
+                            ChatRole.User -> UserBubble(m.displayText, isDark)
+                            ChatRole.Assistant -> AiCard(m.displayText, isDark)
+                        }
+                    }
+                    if (ui.isSending) {
+                        item(key = "thinking_label") { ThinkingLabel(isDark) }
+                        item(key = "thinking_dots") { AnimatedDotsBubble(isDark) }
                     }
                 }
-
-                if (ui.isSending) {
-                    item { ThinkingLabel(isDark) }
-                    item { TypingDotsBubble(isDark) }
-                }
             }
         }
 
-        // ===== INPUT =====
+        // ── Input bar pinned at bottom ────────────────────────────────────
         BottomInputBar(
-            modifier = Modifier.align(Alignment.BottomCenter),
             value = ui.input,
             onValueChange = viewModel::onInputChange,
             sending = ui.isSending,
@@ -136,14 +119,12 @@ fun AiChatScreen(
     }
 }
 
+// ─── Bubbles ─────────────────────────────────────────────────────────────────
+
 @Composable
 private fun UserBubble(text: String, isDark: Boolean) {
     Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
-        Surface(
-            color = Purple,
-            shape = RoundedCornerShape(20.dp),
-            shadowElevation = if (isDark) 0.dp else 0.dp
-        ) {
+        Surface(color = Purple, shape = RoundedCornerShape(20.dp)) {
             Text(
                 text = text,
                 modifier = Modifier.padding(horizontal = 16.dp, vertical = 10.dp),
@@ -153,25 +134,15 @@ private fun UserBubble(text: String, isDark: Boolean) {
     }
 }
 
-/**
- * AI karta:
- * - light: bílá karta
- * - dark: tmavá karta s "white highlight" gradientem (stejné jako News cards)
- */
 @Composable
 private fun AiCard(text: String, isDark: Boolean) {
     val shape = RoundedCornerShape(20.dp)
-
     Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Start) {
         if (!isDark) {
-            Surface(
-                color = Color.White,
-                shape = shape,
-                shadowElevation = 6.dp
-            ) {
+            Surface(color = Color.White, shape = shape, shadowElevation = 6.dp) {
                 Column(
                     modifier = Modifier
-                        .widthIn(max = 320.dp)
+                        .widthIn(max = 300.dp)
                         .padding(16.dp),
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
@@ -180,11 +151,7 @@ private fun AiCard(text: String, isDark: Boolean) {
                 }
             }
         } else {
-            // dark highlight card
-            HighlightCard(
-                modifier = Modifier.widthIn(max = 320.dp),
-                shape = shape
-            ) {
+            HighlightCard(modifier = Modifier.widthIn(max = 300.dp), shape = shape) {
                 Column(
                     modifier = Modifier.padding(16.dp),
                     verticalArrangement = Arrangement.spacedBy(8.dp)
@@ -207,7 +174,34 @@ private fun ThinkingLabel(isDark: Boolean) {
 }
 
 @Composable
-private fun TypingDotsBubble(isDark: Boolean) {
+private fun AnimatedDotsBubble(isDark: Boolean) {
+    val infiniteTransition = rememberInfiniteTransition(label = "dots")
+
+    @Composable
+    fun dotAlpha(delayMs: Int): Float {
+        val alpha by infiniteTransition.animateFloat(
+            initialValue = 0.2f,
+            targetValue = 1f,
+            animationSpec = infiniteRepeatable(
+                animation = keyframes {
+                    durationMillis = 900
+                    0.2f at 0
+                    1f at 300
+                    0.2f at 600
+                    0.2f at 900
+                },
+                repeatMode = RepeatMode.Restart,
+                initialStartOffset = StartOffset(delayMs)
+            ),
+            label = "dot_$delayMs"
+        )
+        return alpha
+    }
+
+    val alpha1 = dotAlpha(0)
+    val alpha2 = dotAlpha(200)
+    val alpha3 = dotAlpha(400)
+
     Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Start) {
         if (!isDark) {
             Surface(
@@ -215,30 +209,38 @@ private fun TypingDotsBubble(isDark: Boolean) {
                 shape = RoundedCornerShape(16.dp),
                 shadowElevation = 4.dp
             ) {
-                Text(
-                    text = "•••",
-                    modifier = Modifier.padding(horizontal = 14.dp, vertical = 8.dp),
-                    color = Purple
-                )
+                DotsRow(alpha1, alpha2, alpha3)
             }
         } else {
-            HighlightCard(
-                modifier = Modifier,
-                shape = RoundedCornerShape(16.dp)
-            ) {
-                Text(
-                    text = "•••",
-                    modifier = Modifier.padding(horizontal = 14.dp, vertical = 8.dp),
-                    color = Purple
-                )
+            HighlightCard(modifier = Modifier, shape = RoundedCornerShape(16.dp)) {
+                DotsRow(alpha1, alpha2, alpha3)
             }
         }
     }
 }
 
 @Composable
+private fun DotsRow(alpha1: Float, alpha2: Float, alpha3: Float) {
+    Row(
+        modifier = Modifier.padding(horizontal = 18.dp, vertical = 14.dp),
+        horizontalArrangement = Arrangement.spacedBy(6.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        listOf(alpha1, alpha2, alpha3).forEach { alpha ->
+            Box(
+                modifier = Modifier
+                    .size(8.dp)
+                    .clip(RoundedCornerShape(50))
+                    .background(Purple.copy(alpha = alpha))
+            )
+        }
+    }
+}
+
+// ─── Input bar ───────────────────────────────────────────────────────────────
+
+@Composable
 private fun BottomInputBar(
-    modifier: Modifier,
     value: String,
     onValueChange: (String) -> Unit,
     sending: Boolean,
@@ -249,35 +251,27 @@ private fun BottomInputBar(
     val shape = RoundedCornerShape(999.dp)
 
     Box(
-        modifier = modifier
+        modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 16.dp)
+            .padding(horizontal = 16.dp, vertical = 12.dp)
     ) {
         if (!isDark) {
-            Surface(
-                color = Color.White,
-                shape = shape,
-                shadowElevation = 10.dp
-            ) {
+            Surface(color = Color.White, shape = shape, shadowElevation = 10.dp) {
                 InputRow(
                     value = value,
                     onValueChange = onValueChange,
-                    placeholderColor = Purple,
+                    placeholderColor = Purple.copy(alpha = 0.5f),
                     textColor = Color(0xFF2D2D2D),
                     onSend = onSend,
                     canSend = canSend
                 )
             }
         } else {
-            // dark input se stejným highlightem jako News
-            HighlightCard(
-                modifier = Modifier.fillMaxWidth(),
-                shape = shape
-            ) {
+            HighlightCard(modifier = Modifier.fillMaxWidth(), shape = shape) {
                 InputRow(
                     value = value,
                     onValueChange = onValueChange,
-                    placeholderColor = Purple.copy(alpha = 0.75f),
+                    placeholderColor = Purple.copy(alpha = 0.5f),
                     textColor = Color(0xFFF1ECFF),
                     onSend = onSend,
                     canSend = canSend
@@ -319,20 +313,23 @@ private fun InputRow(
             maxLines = 4
         )
 
-        IconButton(onClick = { if (canSend) onSend() }) {
-            if (value.isBlank()) {
-                Icon(Icons.Default.Mic, null, tint = Purple)
-            } else {
-                Icon(Icons.Default.Send, null, tint = Purple)
-            }
+        // Send icon: purple when can send, faded purple when disabled — no background ever
+        IconButton(
+            onClick = { if (canSend) onSend() },
+            enabled = canSend
+        ) {
+            Icon(
+                imageVector = Icons.Default.Send,
+                contentDescription = "Send",
+                tint = if (canSend) Purple else Purple.copy(alpha = 0.3f),
+                modifier = Modifier.size(22.dp)
+            )
         }
     }
 }
 
-/**
- * Card style jako News:
- * tmavý podklad + jemný světlejší gradient highlight (shora zleva)
- */
+// ─── Shared components ────────────────────────────────────────────────────────
+
 @Composable
 private fun HighlightCard(
     modifier: Modifier,
@@ -340,13 +337,7 @@ private fun HighlightCard(
     content: @Composable ColumnScope.() -> Unit
 ) {
     val base = Color(0xFF1A1526)
-
-    Box(
-        modifier = modifier
-            .clip(shape)
-            .background(base)
-    ) {
-        // highlight overlay
+    Box(modifier = modifier.clip(shape).background(base)) {
         Box(
             modifier = Modifier
                 .matchParentSize()
@@ -360,11 +351,7 @@ private fun HighlightCard(
                     )
                 )
         )
-
-        Column(
-            modifier = Modifier.padding(0.dp),
-            content = content
-        )
+        Column(modifier = Modifier.padding(0.dp), content = content)
     }
 }
 
@@ -374,36 +361,30 @@ private fun HighlightedTitle(
     modifier: Modifier = Modifier
 ) {
     val isDark = MaterialTheme.colorScheme.background.luminance() < 0.5f
+    val glowColor = if (!isDark) Color(0xFF8E77F5).copy(alpha = 0.45f)
+    else Color.White.copy(alpha = 0.18f)
 
-    val glowColor = if (!isDark) {
-        Color(0xFF8E77F5).copy(alpha = 0.45f)
-    } else {
-        Color.White.copy(alpha = 0.18f)   // ↓ jemnější glow
-    }
-
-    Box(
-        modifier = modifier,
-        contentAlignment = Alignment.CenterStart
-    ) {
+    Box(modifier = modifier, contentAlignment = Alignment.Center) {
+        Box(
+            modifier = Modifier
+                .size(360.dp)
+                .drawBehind {
+                    drawCircle(
+                        brush = Brush.radialGradient(
+                            colors = listOf(glowColor, Color.Transparent)
+                        ),
+                        radius = size.minDimension / 2
+                    )
+                }
+        )
         Text(
             text = text,
             style = MaterialTheme.typography.headlineSmall.copy(
                 fontWeight = FontWeight.SemiBold,
                 color = Purple
             ),
-            modifier = Modifier
-                .drawBehind {
-                    drawCircle(
-                        brush = Brush.radialGradient(
-                            colors = listOf(
-                                glowColor,
-                                Color.Transparent
-                            ),
-                            radius = size.width * 1.7f
-                        ),
-                        radius = size.width * 1.7f
-                    )
-                }
+            textAlign = TextAlign.Center,
+            modifier = Modifier.padding(horizontal = 24.dp)
         )
     }
 }

@@ -61,7 +61,7 @@ class AddEditReportScreenViewModel @Inject constructor (private val repository: 
                     reportType = "",
                     status = ReportStatus.NEW.value,
                     location = LocationEntity(0.0, 0.0),
-                    entityId = 1942,
+                    entityId = 1932,
                     hashedEmail = null,
                     dateAdded = null,
                     createdAt = System.currentTimeMillis()

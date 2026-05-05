@@ -1,1 +1,2 @@
-# server = "https://api.open-meteo.com/"
+# server = "https://api.citymind.tech/"
+

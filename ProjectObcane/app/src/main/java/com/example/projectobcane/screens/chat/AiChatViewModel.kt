@@ -6,6 +6,7 @@ import com.example.projectobcane.communication.AiChatRequest
 import com.example.projectobcane.communication.CommunicationResult
 import com.example.projectobcane.communication.IAiChatRemoteRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -17,7 +18,9 @@ enum class ChatRole { User, Assistant }
 data class ChatMessage(
     val id: String,
     val role: ChatRole,
-    val text: String
+    val text: String,           // full final text
+    val displayText: String = "",  // what's currently shown (drives the typing effect)
+    val isTyping: Boolean = false
 )
 
 data class AiChatUiState(
@@ -25,8 +28,6 @@ data class AiChatUiState(
     val isSending: Boolean = false,
     val items: List<ChatMessage> = emptyList()
 )
-
-
 
 @HiltViewModel
 class AiChatViewModel @Inject constructor(
@@ -58,7 +59,8 @@ class AiChatViewModel @Inject constructor(
         val userMsg = ChatMessage(
             id = "u_${System.currentTimeMillis()}",
             role = ChatRole.User,
-            text = msg
+            text = msg,
+            displayText = msg
         )
 
         _state.value = _state.value.copy(
@@ -69,7 +71,7 @@ class AiChatViewModel @Inject constructor(
 
         viewModelScope.launch {
             val req = AiChatRequest(
-                entityId = 1911,
+                entityId = 1932,
                 msg = msg,
                 questions = questions.toList(),
                 answers = answers.toList(),
@@ -80,39 +82,97 @@ class AiChatViewModel @Inject constructor(
                 webConfig = emptyMap()
             )
 
-
             when (val res = repo.sendMessage(req)) {
                 is CommunicationResult.Success -> {
-                    val a = res.data.trim().ifEmpty { "Omlouvám se, nedostal jsem odpověď." }
-                    val botMsg = ChatMessage(
-                        id = "a_${System.currentTimeMillis()}",
-                        role = ChatRole.Assistant,
-                        text = a
-                    )
-                    questions.add(msg)
-                    answers.add(a)
+                    val fullText = res.data.trim().ifEmpty { "Omlouvám se, nedostal jsem odpověď." }
 
+                    val botMsgId = "a_${System.currentTimeMillis()}"
+                    val botMsg = ChatMessage(
+                        id = botMsgId,
+                        role = ChatRole.Assistant,
+                        text = fullText,
+                        displayText = "",
+                        isTyping = true
+                    )
+
+                    questions.add(msg)
+                    answers.add(fullText)
+
+                    // Add the bubble immediately (empty), hide the thinking dots
                     _state.value = _state.value.copy(
                         isSending = false,
                         items = _state.value.items + botMsg
                     )
+
+                    // Type out the characters
+                    typeOutMessage(botMsgId, fullText)
                 }
 
                 is CommunicationResult.Error -> {
-                    val botMsg = ChatMessage(
+                    val errorMsg = ChatMessage(
                         id = "a_${System.currentTimeMillis()}",
                         role = ChatRole.Assistant,
-                        text = "Omlouvám se, nepodařilo se mi odpovědět."
+                        text = "Omlouvám se, nepodařilo se mi odpovědět.",
+                        displayText = "Omlouvám se, nepodařilo se mi odpovědět."
                     )
                     _state.value = _state.value.copy(
                         isSending = false,
-                        items = _state.value.items + botMsg
+                        items = _state.value.items + errorMsg
                     )
                 }
 
-                is CommunicationResult.ConnectionError -> TODO()
-                is CommunicationResult.Exception -> TODO()
+                is CommunicationResult.ConnectionError -> {
+                    val errorMsg = ChatMessage(
+                        id = "a_${System.currentTimeMillis()}",
+                        role = ChatRole.Assistant,
+                        text = "Chyba připojení.",
+                        displayText = "Chyba připojení."
+                    )
+                    _state.value = _state.value.copy(
+                        isSending = false,
+                        items = _state.value.items + errorMsg
+                    )
+                }
+
+                is CommunicationResult.Exception -> {
+                    val errorMsg = ChatMessage(
+                        id = "a_${System.currentTimeMillis()}",
+                        role = ChatRole.Assistant,
+                        text = "Nastala neočekávaná chyba.",
+                        displayText = "Nastala neočekávaná chyba."
+                    )
+                    _state.value = _state.value.copy(
+                        isSending = false,
+                        items = _state.value.items + errorMsg
+                    )
+                }
             }
+        }
+    }
+
+    private suspend fun typeOutMessage(msgId: String, fullText: String) {
+        // Chunk characters into small groups so it feels fast but smooth
+        // Short texts type faster, long texts slightly faster per chunk
+        val chunkSize = if (fullText.length > 200) 3 else 2
+        val delayMs = 18L
+
+        var charIndex = 0
+        while (charIndex < fullText.length) {
+            val end = minOf(charIndex + chunkSize, fullText.length)
+            val revealed = fullText.substring(0, end)
+
+            val currentItems = _state.value.items
+            val updatedItems = currentItems.map { item ->
+                if (item.id == msgId && item is ChatMessage && item.role == ChatRole.Assistant) {
+                    item.copy(displayText = revealed, isTyping = end < fullText.length)
+                } else {
+                    item
+                }
+            }
+            _state.value = _state.value.copy(items = updatedItems)
+
+            charIndex = end
+            delay(delayMs)
         }
     }
 

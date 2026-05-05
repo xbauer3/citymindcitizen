@@ -18,6 +18,7 @@ import com.example.projectobcane.screens.SplashScreen
 
 import com.example.projectobcane.screens.events.EventsScreen
 import com.example.projectobcane.screens.chat.AiChatScreen
+import com.example.projectobcane.screens.maps.MapsScreen
 import com.example.projectobcane.screens.reports.ReportsScreen
 import com.squareup.moshi.Moshi
 import java.net.URLDecoder
@@ -56,6 +57,14 @@ fun BottomNavGraph(
 
         composable(BottomBarScreen.Reports.route) {
             ReportsScreen(
+                bottomNav = bottomNavRouter,
+                rootNav = rootNavRouter,
+                paddingValues = paddingValues
+            )
+        }
+
+        composable(BottomBarScreen.Maps.route) {
+            MapsScreen(
                 bottomNav = bottomNavRouter,
                 rootNav = rootNavRouter,
                 paddingValues = paddingValues

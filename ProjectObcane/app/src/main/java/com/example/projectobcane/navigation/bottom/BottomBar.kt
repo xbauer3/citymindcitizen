@@ -27,7 +27,8 @@ fun BottomBar(navigation: INavigationRouter) {
     val items = listOf(
         BottomBarScreen.News,
         BottomBarScreen.AiAgent,
-        BottomBarScreen.Reports
+        BottomBarScreen.Reports,
+        BottomBarScreen.Maps,
     )
 
 

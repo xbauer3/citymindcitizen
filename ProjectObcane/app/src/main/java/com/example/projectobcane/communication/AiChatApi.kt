@@ -12,6 +12,6 @@ import retrofit2.http.POST
  */
 interface AiChatApi {
 
-    @POST("chat")
+    @POST("get")
     suspend fun chat(@Body request: AiChatRequest): Response<ResponseBody>
 }

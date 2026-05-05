@@ -5,6 +5,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Build
 import androidx.compose.material.icons.filled.AutoAwesome
 import androidx.compose.material.icons.filled.DateRange
+import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
@@ -61,6 +62,15 @@ sealed class BottomBarScreen(
         hasNews = true,
         badgeCount = null
     )
+    object Maps : BottomBarScreen(
+        route = "maps",
+        title = R.string.maps,
+        selectedIcon = Icons.Filled.LocationOn,
+        unselectedIcon = Icons.Default.LocationOn,
+        hasNews = false,
+        badgeCount = null
+    )
+
 
 }
 

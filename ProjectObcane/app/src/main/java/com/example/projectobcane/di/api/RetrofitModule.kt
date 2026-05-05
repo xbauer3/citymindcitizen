@@ -40,6 +40,14 @@ object RetrofitModule {
         dispatcher.maxRequests = 20
         clientBuilder.dispatcher(dispatcher)
         clientBuilder.connectTimeout(20, TimeUnit.SECONDS)
+
+        clientBuilder.addInterceptor { chain ->
+            val request = chain.request().newBuilder()
+                .addHeader("Authorization", "Bearer YOUR_TOKEN_HERE")
+                .build()
+            chain.proceed(request)
+        }
+
         clientBuilder.addInterceptor(interceptor)
         return clientBuilder.build()
     }

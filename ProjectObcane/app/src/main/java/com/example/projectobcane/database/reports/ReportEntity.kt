@@ -38,7 +38,7 @@ data class ReportEntity(
     @Embedded
     val location: LocationEntity?,
 
-    val entityId: Int = 1942,
+    val entityId: Int = 1932,
 
     val hashedEmail: String? = null,
 
