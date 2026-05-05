@@ -107,7 +107,7 @@ fun OnBoardingScreen1Content(
                 )
                 Spacer(modifier = Modifier.size(10.dp))
                 Text(
-                    text = "CityMind",
+                    text = stringResource(R.string.citymind),
                     style = MaterialTheme.typography.titleLarge,
                     fontWeight = FontWeight.Bold,
                     color = titleColor
@@ -117,7 +117,7 @@ fun OnBoardingScreen1Content(
             Spacer(modifier = Modifier.height(26.dp))
 
             Text(
-                text = "AI agent, novinky a hlášení z vaší obce",
+                text = stringResource(R.string.ai_agent_novinky_a_hlseni_z_vasi_obce),
                 style = MaterialTheme.typography.headlineMedium,
                 fontWeight = FontWeight.Bold,
                 color = titleColor
@@ -126,7 +126,7 @@ fun OnBoardingScreen1Content(
             Spacer(modifier = Modifier.height(12.dp))
 
             Text(
-                text = "Vyberte si obec a budete mít vše přehledně na jednom místě.",
+                text = stringResource(R.string.vyberte_si_obec_a_budete_m_t_v_e_p_ehledn_na_jednom_m_st),
                 style = MaterialTheme.typography.bodyLarge,
                 color = bodyColor
             )
@@ -264,7 +264,7 @@ private fun MunicipalitySheet(
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Text(
-                text = "Zpět",
+                text = stringResource(R.string.zpet),
                 color = MaterialTheme.colorScheme.primary,
                 modifier = Modifier
                     .clip(RoundedCornerShape(10.dp))
@@ -272,7 +272,7 @@ private fun MunicipalitySheet(
                     .padding(horizontal = 10.dp, vertical = 6.dp)
             )
             Text(
-                text = "Vyber obec",
+                text = stringResource(R.string.vyber_obec),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold
             )
@@ -282,7 +282,7 @@ private fun MunicipalitySheet(
         Spacer(modifier = Modifier.height(10.dp))
 
         Text(
-            text = "Podle výběru se přizpůsobí informace a služby.",
+            text = stringResource(R.string.podle_v_b_ru_se_p_izp_sob_informace_a_slu_by),
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
@@ -328,7 +328,7 @@ private fun MunicipalitySheet(
                 .padding(bottom = 18.dp),
             shape = RoundedCornerShape(16.dp)
         ) {
-            Text("Pokračovat")
+            Text(stringResource(R.string.pokracovat))
         }
     }
 }

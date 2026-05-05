@@ -19,11 +19,13 @@ import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.luminance
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.example.projectobcane.R
 
 private val Purple = Color(0xFF7A3CFF)
 
@@ -71,7 +73,7 @@ fun AiChatScreen(
             IconButton(onClick = { viewModel.resetConversation() }) {
                 Icon(
                     imageVector = Icons.Default.Refresh,
-                    contentDescription = "Reset conversation",
+                    contentDescription = stringResource(R.string.reset_conversation),
                     tint = Purple,
                     modifier = Modifier.size(22.dp)
                 )
@@ -82,7 +84,7 @@ fun AiChatScreen(
         Box(modifier = Modifier.weight(1f)) {
             if (ui.items.isEmpty() && !ui.isSending) {
                 HighlightedTitle(
-                    text = "Ahoj, Jak vám mohu pomoci",
+                    text = stringResource(R.string.ahoj_jak_v_m_mohu_pomoci),
                     modifier = Modifier.fillMaxSize()
                 )
             } else {
@@ -146,7 +148,7 @@ private fun AiCard(text: String, isDark: Boolean) {
                         .padding(16.dp),
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    Text("AI", color = Purple, fontWeight = FontWeight.SemiBold)
+                    Text(stringResource(R.string.ai), color = Purple, fontWeight = FontWeight.SemiBold)
                     Text(text = text, color = Color(0xFF2D2D2D))
                 }
             }
@@ -167,7 +169,7 @@ private fun AiCard(text: String, isDark: Boolean) {
 @Composable
 private fun ThinkingLabel(isDark: Boolean) {
     Text(
-        text = "Přemýšlím nad vaší otázkou...",
+        text = stringResource(R.string.p_em_l_m_nad_va_ot_zkou),
         color = if (isDark) Color(0xFFB7AECF) else Color.Gray,
         style = MaterialTheme.typography.bodySmall
     )
@@ -300,7 +302,7 @@ private fun InputRow(
             value = value,
             onValueChange = onValueChange,
             modifier = Modifier.weight(1f),
-            placeholder = { Text("Zeptej se mě...", color = placeholderColor) },
+            placeholder = { Text(stringResource(R.string.zeptej_se_m), color = placeholderColor) },
             colors = TextFieldDefaults.colors(
                 focusedContainerColor = Color.Transparent,
                 unfocusedContainerColor = Color.Transparent,
@@ -337,7 +339,9 @@ private fun HighlightCard(
     content: @Composable ColumnScope.() -> Unit
 ) {
     val base = Color(0xFF1A1526)
-    Box(modifier = modifier.clip(shape).background(base)) {
+    Box(modifier = modifier
+        .clip(shape)
+        .background(base)) {
         Box(
             modifier = Modifier
                 .matchParentSize()

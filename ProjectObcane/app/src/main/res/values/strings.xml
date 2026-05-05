@@ -92,6 +92,20 @@
     <string name="date">Date</string>
     <string name="test_notifications">Test Notifications</string>
     <string name="status_w_value">Status: %1$s</string>
+    <string name="citymind">CityMind</string>
+    <string name="ai_agent_novinky_a_hlseni_z_vasi_obce">AI agent, novinky a hlášení z vaší obce</string>
+    <string name="vyberte_si_obec_a_budete_m_t_v_e_p_ehledn_na_jednom_m_st">Vyberte si obec a budete mít vše přehledně na jednom místě.</string>
+    <string name="zpet">Zpět</string>
+    <string name="vyber_obec">Vyber obec</string>
+    <string name="podle_v_b_ru_se_p_izp_sob_informace_a_slu_by">Podle výběru se přizpůsobí informace a služby.</string>
+    <string name="pokracovat">Pokračovat</string>
+    <string name="ahoj_jak_v_m_mohu_pomoci">Ahoj, Jak vám mohu pomoci</string>
+    <string name="reset_conversation">Reset conversation</string>
+    <string name="p_em_l_m_nad_va_ot_zkou">Přemýšlím nad vaší otázkou...</string>
+    <string name="ai">AI</string>
+    <string name="zeptej_se_m">Zeptej se mě...</string>
+    <string name="p_epnout_na_tmav_vzhled_aplikace">Přepnout na tmavý vzhled aplikace.</string>
+    <string name="dark_mode">Dark mode</string>
 
 
 </resources>

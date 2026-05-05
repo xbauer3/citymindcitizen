@@ -102,9 +102,9 @@ fun SettingsScreenContent(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Column(modifier = Modifier.weight(1f)) {
-                Text(text = "Dark mode", style = MaterialTheme.typography.bodyLarge)
+                Text(text = stringResource(R.string.dark_mode), style = MaterialTheme.typography.bodyLarge)
                 Text(
-                    text = "Přepnout na tmavý vzhled aplikace.",
+                    text = stringResource(R.string.p_epnout_na_tmav_vzhled_aplikace),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )

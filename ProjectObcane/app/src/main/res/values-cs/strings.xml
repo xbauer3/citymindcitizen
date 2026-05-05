@@ -128,6 +128,12 @@
     <string name="test_notifications">Test notifikací</string>
 
     <string name="status_w_value">Status: %1$s</string>
+    <string name="citymind">CityMind</string>
+    <string name="ai_agent_novinky_a_hlseni_z_vasi_obce">AI agent, novinky a hlášení z vaší obce</string>
+    <string name="vyberte_si_obec_a_budete_m_t_v_e_p_ehledn_na_jednom_m_st">Vyberte si obec a budete mít vše přehledně na jednom místě.</string>
+    <string name="zpet">Zpět</string>
+    <string name="vyber_obec">Vyber obec</string>
+    <string name="podle_v_b_ru_se_p_izp_sob_informace_a_slu_by">Podle výběru se přizpůsobí informace a služby.</string>
 
 
 </resources>
