@@ -79,7 +79,7 @@ fun NotificationsScreen(navigation: INavigationRouter, paddingValues: PaddingVal
 
         Spacer(Modifier.height(basicMargin))
 
-        // ... your events list UI below this
+
     }
 }
 

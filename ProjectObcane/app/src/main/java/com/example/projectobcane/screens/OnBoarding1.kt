@@ -55,10 +55,9 @@ fun OnBoardingScreen1Content(
 
     LaunchedEffect(Unit) { viewModel.loadSettings() }
 
-    // ✅ reaguje na app theme (MaterialTheme), ne na systém
     val isDark = MaterialTheme.colorScheme.background.luminance() < 0.5f
 
-    // ✅ Gradient Light/Dark
+
     val gradient = if (!isDark) {
         Brush.verticalGradient(
             colors = listOf(
@@ -147,7 +146,6 @@ fun OnBoardingScreen1Content(
 
             Spacer(modifier = Modifier.weight(1f))
 
-            // ✅ Bottom controls v "safe" zóně (nezakryje se navigačními ikonami)
             BottomControls(
                 supportedLanguages = state.supportedLanguages,
                 selectedLang = LanguageHolder.language,
@@ -202,7 +200,6 @@ private fun BottomControls(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            // ✅ hlavní fix překrytí: safe padding pro nav bary
             .navigationBarsPadding()
             .padding(bottom = 10.dp)
     ) {

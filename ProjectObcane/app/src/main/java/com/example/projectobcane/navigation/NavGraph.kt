@@ -62,9 +62,9 @@ fun NavGraph(
         composable(Destination.PickLocationScreen.route) {
             MapPickerScreen(navRouter)
         }*/
+
+
         //chose location
-
-
 
         composable(
             route = "choose_location_screen?data={data}",

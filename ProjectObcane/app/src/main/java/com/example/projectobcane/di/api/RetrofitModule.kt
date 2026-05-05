@@ -60,7 +60,7 @@ object RetrofitModule {
             // URL adresa musi vzdy koncit lomitkem
             // TODO adresa jako string tady nikdy nesmi byt
 
-            //.baseUrl(""https://user.mendelu.cz/xlanda/electro/"")
+
 
 
 

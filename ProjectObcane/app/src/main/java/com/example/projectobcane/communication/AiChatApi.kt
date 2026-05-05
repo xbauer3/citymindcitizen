@@ -8,10 +8,11 @@ import retrofit2.http.POST
 /**
  * Backend endpoint for AI agent.
  *
- * NOTE: If your backend uses a different path, change it here.
  */
 interface AiChatApi {
 
+
+    //maybe change it to aurora/get
     @POST("get")
     suspend fun chat(@Body request: AiChatRequest): Response<ResponseBody>
 }
