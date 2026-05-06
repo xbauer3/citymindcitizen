@@ -32,6 +32,7 @@ import com.example.projectobcane.R
 import com.example.projectobcane.navigation.INavigationRouter
 import com.example.projectobcane.screens.settings.LanguageHolder
 import com.example.projectobcane.screens.settings.SettingsViewModel
+import com.example.projectobcane.ui.theme.basicMargin
 import com.example.projectobcane.utils.OnboardingPreferences
 import kotlinx.coroutines.launch
 
@@ -40,7 +41,7 @@ private data class Country(val name: String, val cities: List<String>)
 
 private val SUPPORTED_COUNTRIES = listOf(
     Country(
-        name = "stringResource(R.string.ceska_republika)",
+        name = "Česká republika",
         cities = listOf("Brno", "Praha", "Ostrava", "Olomouc", "Zlín", "Plzeň")
     ),
     Country(
@@ -97,28 +98,22 @@ fun OnBoardingScreen1Content(navigation: INavigationRouter) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(horizontal = 24.dp)
-                .padding(top = 20.dp)
+                .padding(horizontal = basicMargin)
         ) {
 
-            Row(verticalAlignment = Alignment.CenterVertically) {
+            Box(
+                modifier = Modifier.fillMaxWidth(),
+                contentAlignment = Alignment.Center
+            ) {
                 Image(
                     painter = painterResource(id = R.drawable.citymindlogo),
                     contentDescription = null,
                     colorFilter = ColorFilter.tint(Color.White),
-                    modifier = Modifier.size(28.dp)
+                    modifier = Modifier.size(100.dp)
                 )
-                /*
-                Spacer(modifier = Modifier.width(10.dp))
-                Text(
-                    text = stringResource(R.string.citymind),
-                    style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.Bold,
-                    color = Color.White
-                )*/
             }
 
-            Spacer(modifier = Modifier.height(32.dp))
+            //Spacer(modifier = Modifier.height(32.dp))
 
 
             Text(
@@ -151,10 +146,9 @@ fun OnBoardingScreen1Content(navigation: INavigationRouter) {
                 contentAlignment = Alignment.Center*/
             ) {
                 Image(
-                    painter = painterResource(id = R.drawable.citymindlogo),
+                    painter = painterResource(id = R.drawable.onboardingfoto),
                     contentDescription = null,
-                    colorFilter = ColorFilter.tint(Color.White.copy(alpha = 0.90f)),
-                    modifier = Modifier.size(100.dp)
+                    modifier = Modifier.size(400.dp)
                 )
             }
 
