@@ -1,6 +1,7 @@
 package com.example.projectobcane.screens
 
 import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
@@ -13,7 +14,9 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.GraphicsLayerScope
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalContext
@@ -29,13 +32,25 @@ import com.example.projectobcane.utils.OnboardingPreferences
 fun SplashScreen(navigation: INavigationRouter) {
     val rotation = remember { Animatable(0f) }
 
+    val scale = remember { Animatable(0.72f) }
+    val alpha = remember { Animatable(0f) }
+
+
+
     var context = LocalContext.current
 
     LaunchedEffect(Unit) {
-        rotation.animateTo(
-            targetValue = 360f,
-            animationSpec = tween(durationMillis = 2000, easing = LinearEasing)
+        scale.animateTo(
+            targetValue = 1f,
+            animationSpec = tween(durationMillis = 600, easing = FastOutSlowInEasing)
         )
+        alpha.animateTo(
+            targetValue = 1f,
+            animationSpec = tween(durationMillis = 500, easing = FastOutSlowInEasing)
+        )
+
+        delay(800L)
+
 
         //if () is true send to splash screen
         //else send him to main screen
@@ -51,21 +66,34 @@ fun SplashScreen(navigation: INavigationRouter) {
 
     }
 
+    val gradient = Brush.verticalGradient(
+        colors = listOf(
+            Color(0xFF7822FF),
+            Color(0xFF151041)
+        )
+    )
+
+
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.White),
+            .background(brush = gradient),
         contentAlignment = Alignment.Center
     ) {
         Image(
-            painter = painterResource(R.drawable.infoobce),
+            painter = painterResource(R.drawable.citymindlogo),
             contentDescription = stringResource(R.string.app_icon),
+            // Tint to white so the logo reads as a clean white mark on the gradient
+            colorFilter = ColorFilter.tint(Color.White),
             modifier = Modifier
-                .size(128.dp)
+                .size(96.dp)
                 .graphicsLayer {
-                    rotationZ = rotation.value
+                    scaleX = scale.value
+                    scaleY = scale.value
+                    this.alpha = alpha.value
                 }
         )
     }
+
 }
 
