@@ -62,7 +62,7 @@ fun AiChatScreen(
                 bottom = paddingValues.calculateBottomPadding()
             )
     ) {
-        // ── Thin header row with reset button ────────────────────────────
+
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -80,11 +80,11 @@ fun AiChatScreen(
             }
         }
 
-        // ── Content: empty state or chat list ────────────────────────────
+
         Box(modifier = Modifier.weight(1f)) {
             if (ui.items.isEmpty() && !ui.isSending) {
                 HighlightedTitle(
-                    text = stringResource(R.string.ahoj_jak_v_m_mohu_pomoci),
+                    text = stringResource(R.string.ai_greeting),
                     modifier = Modifier.fillMaxSize()
                 )
             } else {
@@ -110,7 +110,16 @@ fun AiChatScreen(
             }
         }
 
-        // ── Input bar pinned at bottom ────────────────────────────────────
+        if (ui.faq.isNotEmpty()) {
+            FaqSuggestions(
+                faq = ui.faq,
+                onClick = { question ->
+                    viewModel.onInputChange(question)
+                }
+            )
+        }
+
+
         BottomInputBar(
             value = ui.input,
             onValueChange = viewModel::onInputChange,
@@ -121,7 +130,6 @@ fun AiChatScreen(
     }
 }
 
-// ─── Bubbles ─────────────────────────────────────────────────────────────────
 
 @Composable
 private fun UserBubble(text: String, isDark: Boolean) {
@@ -148,7 +156,7 @@ private fun AiCard(text: String, isDark: Boolean) {
                         .padding(16.dp),
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    Text(stringResource(R.string.ai), color = Purple, fontWeight = FontWeight.SemiBold)
+                    Text(stringResource(R.string.ai_label), color = Purple, fontWeight = FontWeight.SemiBold)
                     Text(text = text, color = Color(0xFF2D2D2D))
                 }
             }
@@ -169,10 +177,37 @@ private fun AiCard(text: String, isDark: Boolean) {
 @Composable
 private fun ThinkingLabel(isDark: Boolean) {
     Text(
-        text = stringResource(R.string.p_em_l_m_nad_va_ot_zkou),
+        text = stringResource(R.string.ai_thinking),
         color = if (isDark) Color(0xFFB7AECF) else Color.Gray,
         style = MaterialTheme.typography.bodySmall
     )
+}
+
+@Composable
+fun FaqSuggestions(
+    faq: List<String>,
+    onClick: (String) -> Unit
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        faq.forEach { item ->
+            Surface(
+                shape = RoundedCornerShape(16.dp),
+                color = Purple.copy(alpha = 0.1f),
+                onClick = { onClick(item) }
+            ) {
+                Text(
+                    text = item,
+                    modifier = Modifier.padding(12.dp),
+                    color = Purple
+                )
+            }
+        }
+    }
 }
 
 @Composable
@@ -239,7 +274,7 @@ private fun DotsRow(alpha1: Float, alpha2: Float, alpha3: Float) {
     }
 }
 
-// ─── Input bar ───────────────────────────────────────────────────────────────
+
 
 @Composable
 private fun BottomInputBar(
@@ -302,7 +337,7 @@ private fun InputRow(
             value = value,
             onValueChange = onValueChange,
             modifier = Modifier.weight(1f),
-            placeholder = { Text(stringResource(R.string.zeptej_se_m), color = placeholderColor) },
+            placeholder = { Text(stringResource(R.string.ai_prompt), color = placeholderColor) },
             colors = TextFieldDefaults.colors(
                 focusedContainerColor = Color.Transparent,
                 unfocusedContainerColor = Color.Transparent,
@@ -315,7 +350,7 @@ private fun InputRow(
             maxLines = 4
         )
 
-        // Send icon: purple when can send, faded purple when disabled — no background ever
+        // Send icon: purple when can send, faded purple when disabled
         IconButton(
             onClick = { if (canSend) onSend() },
             enabled = canSend
@@ -330,7 +365,7 @@ private fun InputRow(
     }
 }
 
-// ─── Shared components ────────────────────────────────────────────────────────
+
 
 @Composable
 private fun HighlightCard(

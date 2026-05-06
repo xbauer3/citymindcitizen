@@ -8,7 +8,7 @@ class AiChatRemoteRepositoryImpl @Inject constructor(
     private val api: AiChatApi
 ) : IAiChatRemoteRepository {
 
-    override suspend fun sendMessage(request: AiChatRequest): CommunicationResult<String> {
+    override suspend fun sendMessage(request: AiChatRequest): CommunicationResult<AiChatResponse> {
         return try {
             val response = api.chat(request)
 
@@ -37,30 +37,50 @@ class AiChatRemoteRepositoryImpl @Inject constructor(
                 )
             )
         }
-    }
+
+}
 
     /**
      * Parses a Server-Sent Events body into a plain string.
      * Lines look like:  data: {"response": "Aho", "id": 1}
      *
      */
-    private fun parseSseResponse(raw: String): String {
-        val sb = StringBuilder()
+    private fun parseSseResponse(raw: String): AiChatResponse {
+        val textBuilder = StringBuilder()
+        val faqList = mutableListOf<String>()
+
         raw.lines().forEach { line ->
             val trimmed = line.trim()
-            if (trimmed.startsWith("data:")) {
-                val json = trimmed.removePrefix("data:").trim()
-                try {
-                    val obj = JSONObject(json)
-                    if (obj.has("response")) {
-                        sb.append(obj.getString("response"))
-                    }
 
-                } catch (_: Exception) {
-                    // skip malformed lines
+            if (!trimmed.startsWith("data:")) return@forEach
+
+            val json = trimmed.removePrefix("data:").trim()
+
+            try {
+                val obj = JSONObject(json)
+
+                // TEXT STREAM
+                if (obj.has("response")) {
+                    textBuilder.append(obj.getString("response"))
                 }
+
+                // FAQ
+                if (obj.has("faq")) {
+                    val arr = obj.getJSONArray("faq")
+                    for (i in 0 until arr.length()) {
+                        faqList.add(arr.getString(i))
+                    }
+                }
+
+            } catch (_: Exception) {
+                // ignore
             }
         }
-        return sb.toString().trim().ifEmpty { "Omlouvám se, nedostal jsem odpověď." }
+
+        return AiChatResponse(
+            text = textBuilder.toString().trim()
+                .ifEmpty { "Omlouvám se, nedostal jsem odpověď." },
+            faq = faqList
+        )
     }
 }

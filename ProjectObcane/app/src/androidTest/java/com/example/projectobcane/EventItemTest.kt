@@ -47,10 +47,10 @@ class EventItemTest {
 
         composeTestRule.waitForIdle()
 
-        // Check exact title
+
         composeTestRule.onNodeWithText("Festival").assertIsDisplayed()
 
-        // Use substring match for subtitle
+
         composeTestRule.onNodeWithText("Park", substring = true).assertIsDisplayed()
     }
 

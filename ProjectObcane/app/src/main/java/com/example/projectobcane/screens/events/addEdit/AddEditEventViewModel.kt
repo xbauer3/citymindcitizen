@@ -34,7 +34,7 @@ class AddEditEventViewModel @Inject constructor (private val repository: IEventL
 
     fun loadEvent(id: Long?) {
 
-        // 🔒 already loaded → DO NOTHING
+
         if (!_addEditEventUIState.value.loading) return
 
         if (id != null) {

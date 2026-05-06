@@ -15,4 +15,9 @@ sealed interface ChatItem {
         val text: String,
         val isThinking: Boolean = false
     ) : ChatItem
+
+    data class Faq(
+        override val id: String = UUID.randomUUID().toString(),
+        val questions: List<String>
+    ) : ChatItem
 }

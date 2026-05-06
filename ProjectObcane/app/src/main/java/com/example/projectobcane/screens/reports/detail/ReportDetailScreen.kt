@@ -143,7 +143,7 @@ fun ReportDetailContent(
 
             if (data.images.isNotEmpty()) {
                 val pagerState = rememberPagerState(initialPage = 0) {
-                    data.images.size // <- this replaces pageCount
+                    data.images.size
                 }
 
                 Column {

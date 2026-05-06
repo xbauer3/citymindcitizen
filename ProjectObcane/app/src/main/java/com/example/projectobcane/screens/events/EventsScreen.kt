@@ -132,12 +132,12 @@ fun EventItem(
                 verticalAlignment = Alignment.CenterVertically
             ) {
 
-                // LEFT CONTENT
+
                 Column(
                     modifier = Modifier.weight(1f)
                 ) {
 
-                    // TOP ROW (Date badge)
+
                     Row(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
@@ -159,7 +159,7 @@ fun EventItem(
 
                     Spacer(modifier = Modifier.height(halfMargin))
 
-                    // TITLE
+
                     Text(
                         text = event.event.title,
                         style = MaterialTheme.typography.titleMedium,
@@ -168,7 +168,7 @@ fun EventItem(
 
                     Spacer(modifier = Modifier.height(halfMargin))
 
-                    // SUBTITLE
+
                     Text(
                         text = "${formatEventTime(event.event.date!!)}, ${event.event.placeName}",
                         style = MaterialTheme.typography.bodySmall,
@@ -176,7 +176,7 @@ fun EventItem(
                     )
                 }
 
-                // RIGHT ARROW
+
                 Icon(
                     imageVector = Icons.Default.ChevronRight,
                     contentDescription = null,

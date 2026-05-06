@@ -44,7 +44,7 @@ class EventsScreenViewModel @Inject constructor(
                     //.filter { it.date != null && it.date!! > System.currentTimeMillis() }
                     //.filter { it.status != "CANCELLED" && it.status != "COMPLETED" }
 
-                // 1️⃣ zobrazíme hned bez počasí
+
                 _uiState.value = EventsScreenUIState(
                     loading = false,
                     events = upcomingEvents.map {

@@ -355,10 +355,10 @@ fun AddEditReportScreenContent(
                 }
 
                 OutlinedTextField(
-                    value = ReportStatus.NEW.label, // always "New"
+                    value = ReportStatus.NEW.label,
                     onValueChange = {},
                     readOnly = true,
-                    enabled = false, // optional: visually disabled
+                    enabled = false,
                     modifier = Modifier.fillMaxWidth(),
                     label = { Text(stringResource(R.string.status)) }
                 )
@@ -373,7 +373,7 @@ fun AddEditReportScreenContent(
 
         //location
 
-        // Location
+
         item {
 
             Row(

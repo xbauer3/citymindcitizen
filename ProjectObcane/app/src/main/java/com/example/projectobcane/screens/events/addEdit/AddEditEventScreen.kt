@@ -303,10 +303,10 @@ fun AddEditReportScreenContent(
                 }
 
                 OutlinedTextField(
-                    value = EventStatus.UPCOMING.name, // always "New"
+                    value = EventStatus.UPCOMING.name,
                     onValueChange = {},
                     readOnly = true,
-                    enabled = false, // optional: visually disabled
+                    enabled = false,
                     modifier = Modifier.fillMaxWidth(),
                     label = { Text(stringResource(R.string.status)) }
                 )

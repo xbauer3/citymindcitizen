@@ -38,7 +38,7 @@ class AddEditReportScreenViewModel @Inject constructor (private val repository: 
 
 
     fun loadReport(id: Long?) {
-        // 🔒 already loaded → DO NOTHING
+
         if (!_addEditReportUIState.value.loading) return
 
         if (id != null) {
@@ -210,10 +210,10 @@ class AddEditReportScreenViewModel @Inject constructor (private val repository: 
                     repository.insertReport(report)
                 }
 
-                // 🔥 Delete old images (important when editing)
+
                 repository.deleteImagesForReport(reportId)
 
-                // 🔥 Insert new images
+
                 val imageEntities = state.images.map { uri ->
                     ReportImageEntity(
                         reportLocalId = reportId,

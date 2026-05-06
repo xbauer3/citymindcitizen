@@ -73,7 +73,7 @@ fun SettingsScreenContent(
         Text(text = " ${stringResource(R.string.app_version)} $versionName")
         Spacer(modifier = Modifier.height(basicMargin))
 
-        // ---------- Language switch (same style as onboarding) ----------
+        //Language switch
         Text(text = stringResource(id = R.string.language))
         Spacer(modifier = Modifier.height(8.dp))
 
@@ -89,8 +89,8 @@ fun SettingsScreenContent(
 
         Spacer(modifier = Modifier.height(22.dp))
 
-        // ---------- Dark mode switch ----------
-        Text(text = "Téma")
+
+        Text(text = stringResource(R.string.theme))
         Spacer(modifier = Modifier.height(8.dp))
 
         Row(
@@ -104,7 +104,7 @@ fun SettingsScreenContent(
             Column(modifier = Modifier.weight(1f)) {
                 Text(text = stringResource(R.string.dark_mode), style = MaterialTheme.typography.bodyLarge)
                 Text(
-                    text = stringResource(R.string.p_epnout_na_tmav_vzhled_aplikace),
+                    text = stringResource(R.string.dark_mode_description),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )

@@ -83,7 +83,8 @@ fun SplashScreen(navigation: INavigationRouter) {
         Image(
             painter = painterResource(R.drawable.citymindlogo),
             contentDescription = stringResource(R.string.app_icon),
-            // Tint to white so the logo reads as a clean white mark on the gradient
+
+
             colorFilter = ColorFilter.tint(Color.White),
             modifier = Modifier
                 .size(96.dp)

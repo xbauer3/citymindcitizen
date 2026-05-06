@@ -129,11 +129,27 @@
 
     <string name="status_w_value">Status: %1$s</string>
     <string name="citymind">CityMind</string>
-    <string name="ai_agent_novinky_a_hlseni_z_vasi_obce">AI agent, novinky a hlášení z vaší obce</string>
-    <string name="vyberte_si_obec_a_budete_m_t_v_e_p_ehledn_na_jednom_m_st">Vyberte si obec a budete mít vše přehledně na jednom místě.</string>
-    <string name="zpet">Zpět</string>
-    <string name="vyber_obec">Vyber obec</string>
-    <string name="podle_v_b_ru_se_p_izp_sob_informace_a_slu_by">Podle výběru se přizpůsobí informace a služby.</string>
+
+
+    <string name="ai_agent_description">AI agent, novinky a hlášení z vaší obce</string>
+    <string name="select_municipality_info">Vyberte si obec a budete mít vše přehledně na jednom místě.</string>
+    <string name="back">Zpět</string>
+    <string name="select_municipality">Vyber obec</string>
+    <string name="selection_affects_content">Podle výběru se přizpůsobí informace a služby.</string>
+    <string name="continue_action">Pokračovat</string>
+    <string name="ai_greeting">Ahoj, jak vám mohu pomoci</string>
+    <string name="reset_conversation">Reset conversation</string>
+    <string name="ai_thinking">Přemýšlím nad vaší otázkou...</string>
+    <string name="ai_label">AI</string>
+    <string name="ai_prompt">Zeptej se mě...</string>
+    <string name="dark_mode_description">Přepnout na tmavý vzhled aplikace.</string>
+    <string name="dark_mode">Dark mode</string>
+    <string name="select_country">Vyber zemi</string>
+    <string name="select_city">Vyber město</string>
+    <string name="change_selection_later">Tento výběr můžeš později měnit</string>
+    <string name="theme">Téma</string>
+    <string name="country_czech_republic">Česká republika</string>
+    <string name="error_no_response">Omlouvám se, nedostal jsem odpověď.</string>
 
 
 </resources>

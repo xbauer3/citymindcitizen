@@ -2,6 +2,7 @@ package com.example.projectobcane.screens.chat
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.projectobcane.R
 import com.example.projectobcane.communication.AiChatRequest
 import com.example.projectobcane.communication.CommunicationResult
 import com.example.projectobcane.communication.IAiChatRemoteRepository
@@ -26,7 +27,8 @@ data class ChatMessage(
 data class AiChatUiState(
     val input: String = "",
     val isSending: Boolean = false,
-    val items: List<ChatMessage> = emptyList()
+    val items: List<ChatMessage> = emptyList(),
+    val faq: List<String> = emptyList()
 )
 
 @HiltViewModel
@@ -66,7 +68,8 @@ class AiChatViewModel @Inject constructor(
         _state.value = _state.value.copy(
             input = "",
             isSending = true,
-            items = _state.value.items + userMsg
+            items = _state.value.items + userMsg,
+            faq = emptyList()
         )
 
         viewModelScope.launch {
@@ -84,7 +87,9 @@ class AiChatViewModel @Inject constructor(
 
             when (val res = repo.sendMessage(req)) {
                 is CommunicationResult.Success -> {
-                    val fullText = res.data.trim().ifEmpty { "Omlouvám se, nedostal jsem odpověď." }
+                    val fullText = res.data.text
+                    //val fullText = res.data.trim().ifEmpty { "" }
+                    val faq = res.data.faq
 
                     val botMsgId = "a_${System.currentTimeMillis()}"
                     val botMsg = ChatMessage(
@@ -98,14 +103,15 @@ class AiChatViewModel @Inject constructor(
                     questions.add(msg)
                     answers.add(fullText)
 
-                    // Add the bubble immediately (empty), hide the thinking dots
+
                     _state.value = _state.value.copy(
                         isSending = false,
-                        items = _state.value.items + botMsg
+                        items = _state.value.items + botMsg,
+                        faq = emptyList()
                     )
 
                     // Type out the characters
-                    typeOutMessage(botMsgId, fullText)
+                    typeOutMessage(botMsgId, fullText, faq)
                 }
 
                 is CommunicationResult.Error -> {
@@ -150,7 +156,7 @@ class AiChatViewModel @Inject constructor(
         }
     }
 
-    private suspend fun typeOutMessage(msgId: String, fullText: String) {
+    private suspend fun typeOutMessage(msgId: String, fullText: String, faq: List<String>) {
         // Chunk characters into small groups so it feels fast but smooth
         // Short texts type faster, long texts slightly faster per chunk
         val chunkSize = if (fullText.length > 200) 3 else 2
@@ -162,6 +168,7 @@ class AiChatViewModel @Inject constructor(
             val revealed = fullText.substring(0, end)
 
             val currentItems = _state.value.items
+
             val updatedItems = currentItems.map { item ->
                 if (item.id == msgId && item is ChatMessage && item.role == ChatRole.Assistant) {
                     item.copy(displayText = revealed, isTyping = end < fullText.length)
@@ -174,6 +181,7 @@ class AiChatViewModel @Inject constructor(
             charIndex = end
             delay(delayMs)
         }
+        _state.value = _state.value.copy(faq = faq)
     }
 
     private fun newConversationId(): Long =
