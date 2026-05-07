@@ -401,12 +401,12 @@ private fun HighlightedTitle(
 ) {
     val isDark = MaterialTheme.colorScheme.background.luminance() < 0.5f
     val glowColor = if (!isDark) Color(0xFF8E77F5).copy(alpha = 0.45f)
-    else Color.White.copy(alpha = 0.18f)
+    else Color(0xFF7822FF).copy(alpha = 0.28f)
 
     Box(modifier = modifier, contentAlignment = Alignment.Center) {
         Box(
             modifier = Modifier
-                .size(360.dp)
+                .size(700.dp)
                 .drawBehind {
                     drawCircle(
                         brush = Brush.radialGradient(

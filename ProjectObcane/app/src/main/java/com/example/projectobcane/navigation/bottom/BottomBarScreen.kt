@@ -59,7 +59,7 @@ sealed class BottomBarScreen(
         title = R.string.reports,
         selectedIcon = Icons.Filled.Build,
         unselectedIcon = Icons.Default.Build,
-        hasNews = true,
+        hasNews = false,
         badgeCount = null
     )
     object Maps : BottomBarScreen(

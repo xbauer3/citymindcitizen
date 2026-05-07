@@ -22,5 +22,18 @@ val GreenLight = Color(0xFFC8E6C9)
 
 
 
+val DarkBackgroundColor = Color(0xFF0D0B1E)
+val DarkSurfaceColor = Color(0xFF161428) //changes navigation colors
+
+
+val LightBackgroundColor = Color(0xFFF5F5F5)
+val LightSurfaceColor = Color(0xFFFFFFFF) //changes navigation colors
+val LightOnBackgroundColor = Color(0xFF1C1B1F)
+val LightOnSurfaceColor = Color(0xFF1C1B1F)
+
+
+val ColorWhite = Color.White
+
+
 //back ground color: 3DB7DC
 //foreground color: FF5600
