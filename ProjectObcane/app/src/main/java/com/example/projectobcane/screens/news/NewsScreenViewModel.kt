@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.projectobcane.communication.CommunicationResult
 import com.example.projectobcane.communication.news.INewsRemoteRepository
 import com.example.projectobcane.models.NewsItemUi
+import com.example.projectobcane.screens.settings.LanguageHolder
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -20,6 +21,9 @@ class NewsScreenViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(NewsScreenUIState())
     val uiState = _uiState.asStateFlow()
 
+    // Track which language was used for the last load so we can detect changes
+    private var lastLoadedLanguage: String = LanguageHolder.language
+
     init {
         loadNews()
     }
@@ -29,30 +33,28 @@ class NewsScreenViewModel @Inject constructor(
 
             _uiState.value = _uiState.value.copy(loading = true)
 
+            val lang = when (LanguageHolder.language) {
+                "cs" -> "cz"   // i have a missmatch between local cs and api's cz
+                "en" -> "en"
+                else -> LanguageHolder.language
+            }
+            lastLoadedLanguage = LanguageHolder.language
+
+
+
+
+            fun <T> Map<String, T>.localized(): T? =
+                this[lang] ?: this["en"] ?: this["cz"] ?: values.firstOrNull()
+
             when (val result = repository.getAllNews()) {
 
                 is CommunicationResult.Success -> {
 
                     Log.d("NEWS_API", "FULL RESPONSE: ${result.data}")
 
-                    result.data.items.forEach {
-                        Log.d(
-                            "NEWS_API_ITEM",
-                            """
-                        ID: ${it.id}
-                        TITLE: ${it.localizedAttributes["cz"]?.title}
-                        IMAGE: ${it.titleImageUrl}
-                        CATEGORY: ${it.category.firstOrNull()?.localizedAttributes?.get("cz")?.name}
-                        FACULTY: ${it.faculty.firstOrNull()?.localizedAttributes?.get("cz")?.name}
-                        """.trimIndent()
-                        )
-                    }
-
                     val items = result.data.items.map { item ->
 
-                        val localized =
-                            item.localizedAttributes["cz"]
-                                ?: item.localizedAttributes["en"]
+                        val localized = item.localizedAttributes.localized()
 
                         NewsItemUi(
                             id = item.id,
@@ -63,11 +65,10 @@ class NewsScreenViewModel @Inject constructor(
                             startDate = item.startDate,
                             endDate = item.endDate,
                             category = item.category.firstOrNull()
-                                ?.localizedAttributes?.get("cz")
+                                ?.localizedAttributes?.localized()
                                 ?.name ?: "",
-
                             faculty = item.faculty.firstOrNull()
-                                ?.localizedAttributes?.get("cz")
+                                ?.localizedAttributes?.localized()
                                 ?.name ?: ""
                         )
                     }
@@ -79,9 +80,7 @@ class NewsScreenViewModel @Inject constructor(
                 }
 
                 is CommunicationResult.Error -> {
-
                     Log.e("NEWS_API", "API ERROR: ${result.error.message}")
-
                     _uiState.value = NewsScreenUIState(
                         loading = false,
                         error = result.error.message
@@ -90,12 +89,29 @@ class NewsScreenViewModel @Inject constructor(
 
                 is CommunicationResult.ConnectionError -> {
                     Log.e("NEWS_API", "CONNECTION ERROR")
+                    _uiState.value = NewsScreenUIState(
+                        loading = false,
+                        error = "Connection error"
+                    )
                 }
 
                 is CommunicationResult.Exception -> {
                     Log.e("NEWS_API", "EXCEPTION", result.exception)
+                    _uiState.value = NewsScreenUIState(
+                        loading = false,
+                        error = result.exception.message
+                    )
                 }
             }
+        }
+    }
+
+    // Call this from the screen when it becomes visible,
+    // so that a language change in Settings triggers a reload
+
+    fun reloadIfLanguageChanged() {
+        if (LanguageHolder.language != lastLoadedLanguage) {
+            loadNews()
         }
     }
 }

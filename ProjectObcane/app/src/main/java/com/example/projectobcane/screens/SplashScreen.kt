@@ -87,7 +87,7 @@ fun SplashScreen(navigation: INavigationRouter) {
 
             colorFilter = ColorFilter.tint(Color.White),
             modifier = Modifier
-                .size(96.dp)
+                .size(196.dp)
                 .graphicsLayer {
                     scaleX = scale.value
                     scaleY = scale.value

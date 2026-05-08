@@ -167,7 +167,7 @@ fun NavGraph(
         }*/
 
 
-//Detail event
+        //Detail event
         composable(route = "${Destination.NewsDetailScreen.route}/{id}",
             arguments = listOf(
                 navArgument("id"){

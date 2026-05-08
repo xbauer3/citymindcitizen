@@ -14,6 +14,11 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 import com.example.projectobcane.BuildConfig
+import com.example.projectobcane.communication.auth.TokenManager
+import javax.inject.Qualifier
+
+
+
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -34,22 +39,44 @@ object RetrofitModule {
 
     @Provides
     @Singleton
-    fun provideOkHttpClient(interceptor: HttpLoggingInterceptor): OkHttpClient {
+    fun provideOkHttpClient(interceptor: HttpLoggingInterceptor, tokenManager: TokenManager): OkHttpClient {
         val clientBuilder = OkHttpClient.Builder()
         val dispatcher = Dispatcher()
         dispatcher.maxRequests = 20
+
         clientBuilder.dispatcher(dispatcher)
         clientBuilder.connectTimeout(20, TimeUnit.SECONDS)
 
         clientBuilder.addInterceptor { chain ->
-            val request = chain.request().newBuilder()
-                .addHeader("Authorization", "Bearer YOUR_TOKEN_HERE")
-                .build()
-            chain.proceed(request)
+
+            val builder = chain.request().newBuilder()
+
+            tokenManager.getToken()?.let {
+                builder.addHeader("Authorization", "Bearer $it")
+            }
+
+            chain.proceed(builder.build())
         }
 
         clientBuilder.addInterceptor(interceptor)
         return clientBuilder.build()
+    }
+
+
+    @Provides
+    @Singleton
+    @AuthRetrofit
+    fun provideAuthRetrofit(moshi: Moshi, interceptor: HttpLoggingInterceptor): Retrofit {
+        val client = OkHttpClient.Builder()
+            .addInterceptor(interceptor)
+            .build()
+
+        return Retrofit.Builder()
+            //.baseUrl(BuildConfig.SERVER_URL)
+            .baseUrl("https://auth.citymind.tech/")
+            .addConverterFactory(MoshiConverterFactory.create(moshi))
+            .client(client)
+            .build()
     }
 
 

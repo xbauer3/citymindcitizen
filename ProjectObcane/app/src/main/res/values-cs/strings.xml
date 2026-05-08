@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">ProjektObcane</string>
+    <string name="app_name">CityMind</string>
     <string name="can_t_be_empty">Nemůže být prázdné</string>
 
 
@@ -150,6 +150,45 @@
     <string name="theme">Téma</string>
     <string name="country_czech_republic">Česká republika</string>
     <string name="error_no_response">Omlouvám se, nedostal jsem odpověď.</string>
+
+    <string name="older">Starší</string>
+    <string name="today">Dnes</string>
+    <string name="yesterday">Včera</string>
+    <string name="upcoming_week">Následující týden</string>
+    <string name="this_week">Tento týden</string>
+
+
+    <string name="all_reports">Všechna hlášení</string>
+    <string name="my_reports">Moje hlášení</string>
+    <string name="no_reports_yet">Zatím nemáte žádná hlášení</string>
+    <string name="create_first_report">Vytvořte své první hlášení</string>
+    <string name="help_improve_university">Pomozte zlepšit svoji univerzitu</string>
+    <string name="report_problem_or_suggestion">Nahlaste problém, nebo pošlete návrh pro zlepšení</string>
+    <string name="new_report">Nové hlášení</string>
+    <string name="anonymous">Anonymní</string>
+    <string name="replying_to">Odpovídáte: %1$s</string>
+    <string name="add_comment">Přidat komentář…</string>
+    <string name="reply_to">Odpovědět %1$s…</string>
+    <string name="reply">Odpovědět</string>
+    <string name="send">Odeslat</string>
+    <string name="status_new">Nové</string>
+    <string name="status_in_progress">V procesu</string>
+    <string name="status_solved">Vyřízeno</string>
+    <string name="status_hidden">Skryto</string>
+    <string name="add_photo_description">Přiložte fotku pomůže k rychlému vyřešení problému</string>
+    <string name="problem_specification">Specifikace problému</string>
+    <string name="problem_specification_placeholder">Stručně specifikujte naléhavý problém</string>
+    <string name="location_placeholder">K jakému místu se hlášení vztahuje?</string>
+    <string name="report_type">Typ hlášení</string>
+    <string name="report_severity">Závažnost hlášení</string>
+    <string name="severity_low">Lehká</string>
+    <string name="severity_medium">Střední</string>
+    <string name="severity_high">Těžká</string>
+    <string name="type_idea">Návrh</string>
+    <string name="type_other">Jiné</string>
+    <string name="type_question">Otázka</string>
+    <string name="type_post">Příspěvek</string>
+    <string name="upvote">Upvote</string>
 
 
 </resources>

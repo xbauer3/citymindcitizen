@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">ProjectObcane</string>
+    <string name="app_name">CityMind</string>
     <string name="can_t_be_empty">Can\'t be empty</string>
 
 
@@ -113,6 +113,45 @@
     <string name="theme">Theme</string>
     <string name="country_czech_republic">Czech Republic</string>
     <string name="error_no_response">Sorry, I did not receive a response.</string>
+
+    <string name="older">Older</string>
+    <string name="today">Today</string>
+    <string name="yesterday">Yesterday</string>
+    <string name="upcoming_week">Upcoming Week</string>
+    <string name="this_week">This Week</string>
+
+
+    <string name="all_reports">All reports</string>
+    <string name="my_reports">My reports</string>
+    <string name="no_reports_yet">You don\'t have any reports yet</string>
+    <string name="create_first_report">Create your first report</string>
+    <string name="help_improve_university">Help improve your university</string>
+    <string name="report_problem_or_suggestion">Report a problem or send a suggestion for improvement</string>
+    <string name="new_report">New report</string>
+    <string name="anonymous">Anonymous</string>
+    <string name="replying_to">Replying to: %1$s</string>
+    <string name="add_comment">Add a comment…</string>
+    <string name="reply_to">Reply to %1$s…</string>
+    <string name="reply">Reply</string>
+    <string name="send">Send</string>
+    <string name="status_new">New</string>
+    <string name="status_in_progress">In progress</string>
+    <string name="status_solved">Resolved</string>
+    <string name="status_hidden">Hidden</string>
+    <string name="add_photo_description">Attaching a photo will help resolve the problem faster</string>
+    <string name="problem_specification">Problem specification</string>
+    <string name="problem_specification_placeholder">Briefly specify the urgent problem</string>
+    <string name="location_placeholder">What location is the report related to?</string>
+    <string name="report_type">Report type</string>
+    <string name="report_severity">Report severity</string>
+    <string name="severity_low">Low</string>
+    <string name="severity_medium">Medium</string>
+    <string name="severity_high">High</string>
+    <string name="type_idea">Suggestion</string>
+    <string name="type_other">Other</string>
+    <string name="type_question">Question</string>
+    <string name="type_post">Post</string>
+    <string name="upvote">Upvote</string>
 
 
 </resources>

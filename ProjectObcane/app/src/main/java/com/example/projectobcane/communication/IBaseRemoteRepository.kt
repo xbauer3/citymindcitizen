@@ -15,24 +15,21 @@ interface IBaseRemoteRepository {
     ): CommunicationResult<T> {
         try {
             val call = request()
-            if (call.isSuccessful){
-                if (call.body() != null){
-                    // request se povedl a mam data
-                    return CommunicationResult.Success(call.body()!!)
-                } else {
-                    return CommunicationResult.Error(
-                        CommunicationError(
-                            code = call.code(),
-                            message = call.errorBody().toString()
-                        )
-                    )
+            return when {
+                call.isSuccessful -> {
+                    val body = call.body()
+                    if (body != null) {
+                        CommunicationResult.Success(body)
+                    } else {
+                        // 201 Created or 204 No Content with empty body — still success
+                        @Suppress("UNCHECKED_CAST")
+                        CommunicationResult.Success(Unit as T)
+                    }
                 }
-
-            } else {
-                return CommunicationResult.Error(
+                else -> CommunicationResult.Error(
                     CommunicationError(
                         code = call.code(),
-                        message = call.errorBody().toString()
+                        message = call.errorBody()?.string()
                     )
                 )
             }

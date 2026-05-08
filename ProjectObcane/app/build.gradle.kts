@@ -22,7 +22,9 @@ android {
     val newsServer = properties.getProperty("newsServer")
 
 
-
+    val auth_username = properties.getProperty("auth_username")
+    val auth_password = properties.getProperty("auth_password")
+    val auth_client_id = properties.getProperty("auth_client_id")
 
     val versionMajor = 0
     val versionMinor = 0
@@ -56,6 +58,11 @@ android {
             buildConfigField(type = "String", name = "SERVER_URL", value = server)
             buildConfigField(type = "String", name = "REPORTS_URL", value = reportsServer)
             buildConfigField(type = "String", name = "NEWS_URL", value = newsServer)
+
+            buildConfigField(type = "String", name = "AUTH_USERNAME", value = "\"$auth_username\"")
+            buildConfigField(type = "String", name = "AUTH_PASSWORD", value = "\"$auth_password\"")
+            buildConfigField(type = "String", name = "AUTH_CLIENT_ID", value = "\"$auth_client_id\"")
+
         }
 
 
@@ -173,7 +180,7 @@ dependencies {
 
 
 
-    implementation("io.coil-kt:coil-compose:2.5.0")
+    implementation("io.coil-kt:coil-compose:2.6.0")
     implementation("androidx.compose.foundation:foundation:1.5.0")
 
 

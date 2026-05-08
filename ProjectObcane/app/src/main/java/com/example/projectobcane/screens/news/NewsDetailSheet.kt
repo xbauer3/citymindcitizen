@@ -4,9 +4,13 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawing
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
@@ -17,10 +21,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.projectobcane.models.NewsItemUi
 import com.example.projectobcane.ui.elements.GlideImage
-import androidx.compose.foundation.layout.navigationBarsPadding
-import androidx.compose.foundation.layout.statusBarsPadding
-
-
+import com.example.projectobcane.ui.theme.basicMargin
+import com.example.projectobcane.ui.theme.chipCornerRadius
+import com.example.projectobcane.ui.theme.detailBottomSpacer
+import com.example.projectobcane.ui.theme.halfMargin
+import com.example.projectobcane.ui.theme.mediumCornerRadius
+import com.example.projectobcane.ui.theme.newsImageHeight
 
 @Composable
 fun NewsDetailSheet(
@@ -30,38 +36,44 @@ fun NewsDetailSheet(
     LazyColumn(
         modifier = Modifier
             .fillMaxWidth()
-            .statusBarsPadding()
+            .windowInsetsPadding(WindowInsets.safeDrawing)
             .navigationBarsPadding()
-    ){
+    ) {
 
         item {
+
+            Spacer(modifier = Modifier.height(halfMargin))
 
             GlideImage(
                 url = news.imageUrl ?: "",
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(260.dp)
+                    .height(newsImageHeight)
             )
 
             Column(
-                modifier = Modifier.padding(16.dp)
+                modifier = Modifier.padding(halfMargin)
             ) {
 
                 Box(
                     modifier = Modifier
                         .background(
                             MaterialTheme.colorScheme.primary,
-                            RoundedCornerShape(50)
+                            RoundedCornerShape(chipCornerRadius)
                         )
-                        .padding(horizontal = 12.dp, vertical = 6.dp)
+                        .padding(
+                            horizontal = basicMargin,
+                            vertical = halfMargin
+                        )
                 ) {
+
                     Text(
                         text = news.category,
                         color = MaterialTheme.colorScheme.onPrimary
                     )
                 }
 
-                Spacer(modifier = Modifier.height(12.dp))
+                Spacer(modifier = Modifier.height(basicMargin))
 
                 Text(
                     text = news.title,
@@ -69,14 +81,14 @@ fun NewsDetailSheet(
                     fontWeight = FontWeight.Bold
                 )
 
-                Spacer(modifier = Modifier.height(8.dp))
+                Spacer(modifier = Modifier.height(halfMargin))
 
                 Text(
                     text = news.faculty,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
 
-                Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(basicMargin))
 
                 Text(
                     text = news.text
@@ -84,7 +96,7 @@ fun NewsDetailSheet(
                     style = MaterialTheme.typography.bodyLarge
                 )
 
-                Spacer(modifier = Modifier.height(100.dp))
+                Spacer(modifier = Modifier.height(detailBottomSpacer))
             }
         }
     }
