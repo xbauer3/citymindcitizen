@@ -55,16 +55,41 @@ object RetrofitModule {
 
     @Provides
     @Singleton
+    @CityMindRetrofit
     fun provideRetrofit(moshi: Moshi, client: OkHttpClient): Retrofit {
         return Retrofit.Builder()
             // URL adresa musi vzdy koncit lomitkem
             // TODO adresa jako string tady nikdy nesmi byt
 
-
-
-
-
             .baseUrl(BuildConfig.SERVER_URL)
+            .addConverterFactory(MoshiConverterFactory.create(moshi))
+            .client(client)
+            .build()
+    }
+
+    // Reports
+    @Provides
+    @Singleton
+    @ReportsRetrofit
+    fun provideReportsRetrofit(moshi: Moshi, client: OkHttpClient): Retrofit {
+        return Retrofit.Builder()
+            .baseUrl(BuildConfig.REPORTS_URL)
+            .addConverterFactory(MoshiConverterFactory.create(moshi))
+            .client(client)
+            .build()
+    }
+
+    // News
+    @Provides
+    @Singleton
+    @NewsRetrofit
+    fun provideNewsRetrofit(moshi: Moshi, interceptor: HttpLoggingInterceptor): Retrofit {
+        val client = OkHttpClient.Builder()
+            .connectTimeout(20, TimeUnit.SECONDS)
+            .addInterceptor(interceptor)
+            .build()
+        return Retrofit.Builder()
+            .baseUrl(BuildConfig.NEWS_URL)
             .addConverterFactory(MoshiConverterFactory.create(moshi))
             .client(client)
             .build()

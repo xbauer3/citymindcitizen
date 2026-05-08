@@ -8,12 +8,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import androidx.navigation.toRoute
 import com.example.projectobcane.screens.OnBoardingScreen1
 import com.example.projectobcane.screens.SplashScreen
 import com.example.projectobcane.screens.chLocation.ChooseLocationScreen
-import com.example.projectobcane.screens.events.addEdit.AddEditEventScreen
-import com.example.projectobcane.screens.events.detail.EventDetailScreen
+import com.example.projectobcane.screens.news.detail.NewsDetailScreen
 import com.example.projectobcane.screens.mainScreen.MainScreenScreen
 import com.example.projectobcane.screens.reports.addEdit.AddEditReportScreen
 import com.example.projectobcane.screens.reports.detail.ReportDetailScreen
@@ -147,15 +145,15 @@ fun NavGraph(
 
 
 
-
+/*
         //ADD Event
         composable(route = Destination.AddEditEventScreen.route) {
             AddEditEventScreen(navigation = navRouter, id = null)
-        }
+        }*/
 
 
         //Edit Event
-
+/*
         composable(route = "${Destination.AddEditEventScreen.route}/{id}",
             arguments = listOf(
                 navArgument("id"){
@@ -166,11 +164,11 @@ fun NavGraph(
         ){
             val id = it.arguments?.getLong("id")
             AddEditEventScreen(navRouter, id)
-        }
+        }*/
 
 
 //Detail event
-        composable(route = "${Destination.EventDetailScreen.route}/{id}",
+        composable(route = "${Destination.NewsDetailScreen.route}/{id}",
             arguments = listOf(
                 navArgument("id"){
                     type = NavType.LongType
@@ -179,7 +177,8 @@ fun NavGraph(
             )
         ){
             val id = it.arguments?.getLong("id")
-            EventDetailScreen(navRouter, id)
+            //NewsDetailScreen(navRouter, id)
+            NewsDetailScreen(navRouter)
         }
 
 

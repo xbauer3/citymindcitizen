@@ -15,7 +15,7 @@ object AiChatModule {
 
     @Provides
     @Singleton
-    fun provideAiChatApi(retrofit: Retrofit): AiChatApi {
+    fun provideAiChatApi(@CityMindRetrofit retrofit: Retrofit): AiChatApi {
         return retrofit.create(AiChatApi::class.java)
     }
 }

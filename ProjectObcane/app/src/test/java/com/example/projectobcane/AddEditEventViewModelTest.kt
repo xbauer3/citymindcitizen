@@ -2,11 +2,10 @@ package com.example.projectobcane
 
 import com.example.projectobcane.database.events.Event
 import com.example.projectobcane.database.events.IEventLocalRepository
-import com.example.projectobcane.screens.events.addEdit.AddEditEventViewModel
+import com.example.projectobcane.screens.news.addEdit.AddEditEventViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOf
 import org.junit.Before
 import kotlin.test.Test
 import kotlin.test.assertEquals

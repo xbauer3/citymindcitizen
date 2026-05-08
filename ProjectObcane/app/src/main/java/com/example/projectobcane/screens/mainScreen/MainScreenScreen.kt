@@ -59,13 +59,15 @@ fun MainScreenScreen(navigation: INavigationRouter) {
                 ) {
                     Icon(Icons.Default.Add, contentDescription = "Add Report")
                 }
-            } else if (currentRoute == BottomBarScreen.News.route) {
+            }
+            /*
+            else if (currentRoute == BottomBarScreen.News.route) {
                 FloatingActionButton(
                     onClick = { navigation.navigateToAddEditEvent(null) }
                 ) {
                     Icon(Icons.Default.Add, contentDescription = "Add Event")
                 }
-            }
+            }*/
         }
     ) { paddingValues ->
         BottomNavGraph(

@@ -129,7 +129,7 @@ class NavigationRouterImpl(private val navController: NavController) : INavigati
     }
 
     override fun navigateToEventDetail(id: Long?) {
-        navController.navigate("${Destination.EventDetailScreen.route}/${id}")
+        navController.navigate("${Destination.NewsDetailScreen.route}/${id}")
 
     }
 

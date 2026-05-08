@@ -18,6 +18,11 @@ android {
     properties.load(project.rootProject.file("local.properties").reader())
 
     val server = properties.getProperty("server")
+    val reportsServer = properties.getProperty("reportsServer")
+    val newsServer = properties.getProperty("newsServer")
+
+
+
 
     val versionMajor = 0
     val versionMinor = 0
@@ -49,6 +54,8 @@ android {
         }
         debug {
             buildConfigField(type = "String", name = "SERVER_URL", value = server)
+            buildConfigField(type = "String", name = "REPORTS_URL", value = reportsServer)
+            buildConfigField(type = "String", name = "NEWS_URL", value = newsServer)
         }
 
 

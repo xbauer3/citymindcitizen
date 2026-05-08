@@ -5,8 +5,8 @@ import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import com.example.projectobcane.database.events.Event
 import com.example.projectobcane.database.reports.LocationEntity
-import com.example.projectobcane.screens.events.EventItem
-import com.example.projectobcane.screens.events.EventWithWeather
+import com.example.projectobcane.screens.news.EventItem
+import com.example.projectobcane.screens.news.EventWithWeather
 import org.junit.Rule
 import org.junit.Test
 
