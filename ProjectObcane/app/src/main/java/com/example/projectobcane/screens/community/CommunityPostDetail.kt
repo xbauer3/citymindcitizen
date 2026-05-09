@@ -24,10 +24,10 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.outlined.ChatBubbleOutline
 import androidx.compose.material.icons.outlined.Person
-import androidx.compose.material.icons.outlined.Star
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -129,10 +129,10 @@ fun PostDetailScreen(
                                 .padding(6.dp)
                         ) {
                             Icon(
-                                if (state.upvotedPostIds.contains(post.id)) Icons.Filled.Star else Icons.Outlined.Star,
+                                if (state.upvotedPostIds.contains(post.id)) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder,
                                 null,
                                 Modifier.size(iconSizeMedium),
-                                tint = if (state.upvotedPostIds.contains(post.id)) Color(0xFFFFC107) else MaterialTheme.colorScheme.onSurfaceVariant
+                                tint = if (state.upvotedPostIds.contains(post.id)) Purple else MaterialTheme.colorScheme.onSurfaceVariant
                             )
                             Text("${post.upvoteCount}", style = MaterialTheme.typography.labelLarge, fontWeight = FontWeight.Bold)
                         }
@@ -216,14 +216,12 @@ fun PostDetailScreen(
             items(state.comments, key = { it.id }) { comment ->
                 CommentItem(
                     comment = comment,
-                    onLike = { viewModel.toggleCommentLike(comment.id) },
                     onReply = { viewModel.startReply(comment) }
                 )
             }
 
             item { Spacer(Modifier.height(80.dp)) }
         }
-
 
         Surface(
             shadowElevation = halfMargin,

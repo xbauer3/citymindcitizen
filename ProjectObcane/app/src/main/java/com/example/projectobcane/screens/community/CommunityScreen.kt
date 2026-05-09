@@ -1,29 +1,20 @@
 package com.example.projectobcane.screens.community
 
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
-import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.outlined.ChatBubbleOutline
 import androidx.compose.material.icons.outlined.Person
-import androidx.compose.material.icons.outlined.Place
-import androidx.compose.material.icons.outlined.Star
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -31,8 +22,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -45,10 +34,6 @@ import com.example.projectobcane.R
 import com.example.projectobcane.models.CommunityPostUi
 import com.example.projectobcane.ui.elements.StatusChip
 import com.example.projectobcane.ui.theme.*
-
-
-import com.example.projectobcane.ui.theme.Purple
-
 
 @Composable
 fun CommunityScreen(paddingValues: PaddingValues) {
@@ -266,10 +251,10 @@ private fun PostCard(
                                 .padding(horizontal = 6.dp, vertical = chipPaddingVertical)
                         ) {
                             Icon(
-                                if (isUpvoted) Icons.Filled.Star else Icons.Outlined.Star,
+                                if (isUpvoted) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder,
                                 stringResource(R.string.upvote),
                                 Modifier.size(basicMargin),
-                                tint = if (isUpvoted) Color(0xFFFFC107) else MaterialTheme.colorScheme.onSurfaceVariant
+                                tint = if (isUpvoted) Purple else MaterialTheme.colorScheme.onSurfaceVariant
                             )
                             Text(post.upvoteCount.toString(), style = MaterialTheme.typography.labelMedium, fontWeight = FontWeight.SemiBold)
                         }
@@ -287,4 +272,3 @@ private fun PostCard(
         }
     }
 }
-

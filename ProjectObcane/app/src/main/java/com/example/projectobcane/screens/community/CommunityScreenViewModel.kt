@@ -9,6 +9,7 @@ import com.example.projectobcane.communication.CommunicationResult
 import com.example.projectobcane.communication.community.*
 import com.example.projectobcane.models.CommunityPostUi
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -22,14 +23,13 @@ data class CommentUi(
     val id: Long,
     val authorName: String,
     val content: String,
-    val createdAt: String,
-    val localLikes: Int = 0,
-    val isLiked: Boolean = false
+    val createdAt: String
 )
 
 @HiltViewModel
 class CommunityScreenViewModel @Inject constructor(
-    private val repository: ICommunityBoardRemoteRepository
+    private val repository: ICommunityBoardRemoteRepository,
+    @ApplicationContext private val context: Context
 ) : ViewModel() {
 
     private val entityId = 1932L
@@ -37,19 +37,33 @@ class CommunityScreenViewModel @Inject constructor(
     private val currentUserEmailHash = sha256(currentUserEmail)
     private val currentUserName = currentUserEmail.substringBefore("@")
 
+    private val prefs = context.getSharedPreferences("community_upvotes", Context.MODE_PRIVATE)
+
+    private fun loadPersistedUpvotes(): Set<Long> {
+        return prefs.getStringSet("upvoted_ids", emptySet())
+            ?.mapNotNull { it.toLongOrNull() }
+            ?.toSet()
+            ?: emptySet()
+    }
+
+    private fun persistUpvotes(ids: Set<Long>) {
+        prefs.edit().putStringSet("upvoted_ids", ids.map { it.toString() }.toSet()).apply()
+    }
+
     private val _state = MutableStateFlow(
-        CommunityScreenUIState(currentUserEmailHash = sha256(BuildConfig.AUTH_USERNAME))
+        CommunityScreenUIState(
+            currentUserEmailHash = sha256(BuildConfig.AUTH_USERNAME),
+            upvotedPostIds = loadPersistedUpvotes()
+        )
     )
     val state = _state.asStateFlow()
 
     fun loadPosts() {
-        Log.d("COMMUNITY_VM", "loadPosts()")
         val preservedUpvotes = _state.value.upvotedPostIds
         viewModelScope.launch {
             _state.value = _state.value.copy(loading = true, error = null)
             when (val result = repository.getPosts(entityId)) {
                 is CommunicationResult.Success -> {
-                    Log.d("COMMUNITY_VM", "got ${result.data.size} posts")
                     val posts = result.data.map { dto ->
                         async {
                             val images = when (val img = repository.getImages(dto.id)) {
@@ -206,17 +220,6 @@ class CommunityScreenViewModel @Inject constructor(
         }
     }
 
-    fun toggleCommentLike(commentId: Long) {
-        _state.value = _state.value.copy(
-            comments = _state.value.comments.map { c ->
-                if (c.id == commentId) {
-                    if (c.isLiked) c.copy(isLiked = false, localLikes = (c.localLikes - 1).coerceAtLeast(0))
-                    else c.copy(isLiked = true, localLikes = c.localLikes + 1)
-                } else c
-            }
-        )
-    }
-
     fun toggleUpvote(post: CommunityPostUi) {
         val livePost = _state.value.posts.find { it.id == post.id }
             ?: _state.value.selectedPost?.takeIf { it.id == post.id }
@@ -224,23 +227,31 @@ class CommunityScreenViewModel @Inject constructor(
         val alreadyUpvoted = _state.value.upvotedPostIds.contains(livePost.id)
         viewModelScope.launch {
             if (alreadyUpvoted) {
-                _state.value = _state.value.copy(upvotedPostIds = _state.value.upvotedPostIds - livePost.id)
+                val newIds = _state.value.upvotedPostIds - livePost.id
+                _state.value = _state.value.copy(upvotedPostIds = newIds)
+                persistUpvotes(newIds)
                 updatePostInList(livePost.id) { it.copy(upvoteCount = (it.upvoteCount - 1).coerceAtLeast(0)) }
                 when (repository.removeUpvote(UpvoteRequest(livePost.id, currentUserEmailHash))) {
                     is CommunicationResult.Success -> Log.d("COMMUNITY_VM", "removeUpvote SUCCESS")
                     else -> {
-                        _state.value = _state.value.copy(upvotedPostIds = _state.value.upvotedPostIds + livePost.id)
+                        val rolledBack = _state.value.upvotedPostIds + livePost.id
+                        _state.value = _state.value.copy(upvotedPostIds = rolledBack)
+                        persistUpvotes(rolledBack)
                         updatePostInList(livePost.id) { it.copy(upvoteCount = it.upvoteCount + 1) }
                         Log.e("COMMUNITY_VM", "removeUpvote FAILED, rolled back")
                     }
                 }
             } else {
-                _state.value = _state.value.copy(upvotedPostIds = _state.value.upvotedPostIds + livePost.id)
+                val newIds = _state.value.upvotedPostIds + livePost.id
+                _state.value = _state.value.copy(upvotedPostIds = newIds)
+                persistUpvotes(newIds)
                 updatePostInList(livePost.id) { it.copy(upvoteCount = it.upvoteCount + 1) }
                 when (repository.createUpvote(UpvoteRequest(livePost.id, currentUserEmailHash))) {
                     is CommunicationResult.Success -> Log.d("COMMUNITY_VM", "createUpvote SUCCESS")
                     else -> {
-                        _state.value = _state.value.copy(upvotedPostIds = _state.value.upvotedPostIds - livePost.id)
+                        val rolledBack = _state.value.upvotedPostIds - livePost.id
+                        _state.value = _state.value.copy(upvotedPostIds = rolledBack)
+                        persistUpvotes(rolledBack)
                         updatePostInList(livePost.id) { it.copy(upvoteCount = (it.upvoteCount - 1).coerceAtLeast(0)) }
                         Log.e("COMMUNITY_VM", "createUpvote FAILED, rolled back")
                     }

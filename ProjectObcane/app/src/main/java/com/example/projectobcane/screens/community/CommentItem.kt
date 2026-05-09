@@ -4,15 +4,12 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -22,7 +19,6 @@ import com.example.projectobcane.ui.theme.*
 @Composable
 fun CommentItem(
     comment: CommentUi,
-    onLike: () -> Unit,
     onReply: () -> Unit
 ) {
     val isReply = comment.content.startsWith("@")
@@ -62,27 +58,15 @@ fun CommentItem(
             Text(comment.content, style = MaterialTheme.typography.bodyMedium)
         }
         Spacer(Modifier.height(6.dp))
-        Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(basicMargin)) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(quarterMargin),
-                modifier = Modifier.clip(RoundedCornerShape(6.dp)).clickable { onLike() }.padding(horizontal = quarterMargin, vertical = 2.dp)
-            ) {
-                Icon(
-                    if (comment.isLiked) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
-                    null,
-                    Modifier.size(iconSizeSmall),
-                    tint = if (comment.isLiked) Color.Red else MaterialTheme.colorScheme.onSurfaceVariant
-                )
-                Text("${comment.localLikes}", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
-            }
-            Text(
-                stringResource(R.string.reply),
-                style = MaterialTheme.typography.labelSmall,
-                color = Purple,
-                modifier = Modifier.clip(RoundedCornerShape(6.dp)).clickable { onReply() }.padding(horizontal = quarterMargin, vertical = 2.dp)
-            )
-        }
+        Text(
+            stringResource(R.string.reply),
+            style = MaterialTheme.typography.labelSmall,
+            color = Purple,
+            modifier = Modifier
+                .clip(RoundedCornerShape(6.dp))
+                .clickable { onReply() }
+                .padding(horizontal = quarterMargin, vertical = 2.dp)
+        )
         HorizontalDivider(modifier = Modifier.padding(top = halfMargin), color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.4f))
     }
 }
