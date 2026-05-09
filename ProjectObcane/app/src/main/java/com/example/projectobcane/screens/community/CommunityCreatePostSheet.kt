@@ -68,8 +68,12 @@ import com.example.projectobcane.ui.theme.photoPickerHeight
 import com.example.projectobcane.ui.theme.quarterMargin
 import com.example.projectobcane.ui.theme.smallCornerRadius
 import com.example.projectobcane.ui.theme.Purple
-
-
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.safeDrawing
+import androidx.compose.foundation.layout.statusBars
+import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.foundation.layout.statusBarsPadding
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -99,11 +103,12 @@ fun CreatePostBottomSheet(
     ModalBottomSheet(
         onDismissRequest = { viewModel.hideCreateDialog() },
         sheetState = sheetState,
-        containerColor = MaterialTheme.colorScheme.surface
+        containerColor = MaterialTheme.colorScheme.surface,
+        contentWindowInsets = { WindowInsets.statusBars }
     ) {
         Column(
             modifier = Modifier
-                .fillMaxWidth()
+                .fillMaxSize()
                 .background(MaterialTheme.colorScheme.surface)
                 .padding(horizontal = 20.dp)
                 .padding(bottom = doubleMargin)
@@ -234,7 +239,7 @@ fun CreatePostBottomSheet(
                         .fillMaxWidth()
                         .clip(RoundedCornerShape(smallCornerRadius))
                         .clickable { viewModel.onCreateSeverityChange(severityKeys[index]) }
-                        .padding(vertical = 2.dp),
+                        .padding(vertical = 1.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     RadioButton(
