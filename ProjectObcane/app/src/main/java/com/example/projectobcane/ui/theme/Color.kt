@@ -33,7 +33,7 @@ val LightOnSurfaceColor = Color(0xFF1C1B1F)
 
 
 val ColorWhite = Color.White
-
+val Purple = Color(0xFF7822FF)
 
 //back ground color: 3DB7DC
 //foreground color: FF5600

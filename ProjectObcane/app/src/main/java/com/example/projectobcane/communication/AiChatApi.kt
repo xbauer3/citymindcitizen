@@ -12,7 +12,7 @@ import retrofit2.http.POST
 interface AiChatApi {
 
 
-    //maybe change it to aurora/get
+
     @POST("get")
     suspend fun chat(@Body request: AiChatRequest): Response<ResponseBody>
 }
