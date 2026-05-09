@@ -72,8 +72,7 @@ object RetrofitModule {
             .build()
 
         return Retrofit.Builder()
-            //.baseUrl(BuildConfig.SERVER_URL)
-            .baseUrl("https://auth.citymind.tech/")
+            .baseUrl(BuildConfig.AUTH_URL)
             .addConverterFactory(MoshiConverterFactory.create(moshi))
             .client(client)
             .build()

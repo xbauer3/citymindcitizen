@@ -10,9 +10,9 @@ import com.example.projectobcane.navigation.INavigationRouter
 
 import com.example.projectobcane.screens.chat.AiChatScreen
 import com.example.projectobcane.screens.community.CommunityScreen
-import com.example.projectobcane.screens.maps.MapsScreen
+
 import com.example.projectobcane.screens.news.NewsScreen
-import com.example.projectobcane.screens.reports.ReportsScreen
+
 
 
 @Composable
@@ -52,13 +52,13 @@ fun BottomNavGraph(
                 paddingValues = paddingValues*/
             )
         }
-
+/*
         composable(BottomBarScreen.Maps.route) {
             MapsScreen(
                 bottomNav = bottomNavRouter,
                 rootNav = rootNavRouter,
                 paddingValues = paddingValues
             )
-        }
+        }*/
     }
 }

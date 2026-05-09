@@ -3,7 +3,7 @@ package com.example.projectobcane.navigation
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import com.example.projectobcane.constants.Constants
-import com.example.projectobcane.database.reports.LocationEntity
+
 
 import com.example.projectobcane.navigation.bottom.BottomBarScreen
 import com.squareup.moshi.JsonAdapter
@@ -18,10 +18,10 @@ class NavigationRouterImpl(private val navController: NavController) : INavigati
     override fun navigateToSettingsScreen() {
         navController.navigate(Destination.SettingsScreen.route)
     }
-
+/*
     override fun navigateToReportDetail(id: Long?) {
         navController.navigate("${Destination.ReportDetailScreen.route}/${id}")
-    }
+    }*/
 
 
     override fun getNavController(): NavController {
@@ -31,7 +31,7 @@ class NavigationRouterImpl(private val navController: NavController) : INavigati
 
 
 
-
+/*
     override fun navigateToAddEditReport(id: Long?) {
         if (id != null) {
             navController.navigate("${Destination.AddEditReportScreen.route}/${id}")
@@ -41,7 +41,7 @@ class NavigationRouterImpl(private val navController: NavController) : INavigati
         }
 
 
-    }
+    }*/
 /*
     override fun navigateToPickLocation() {
         navController.navigate(Destination.PickLocationScreen.route)
@@ -94,7 +94,7 @@ class NavigationRouterImpl(private val navController: NavController) : INavigati
 
 
 
-
+/*
     override fun navigateToChoseLocation(
         latitude: Double?,
         longitude: Double?,
@@ -105,10 +105,10 @@ class NavigationRouterImpl(private val navController: NavController) : INavigati
         val json = adapter.toJson(ChooseLocationDestination(latitude, longitude))
         val encoded = URLEncoder.encode(json, "UTF-8")
         navController.navigate("choose_location_screen?data=$encoded")
-    }
+    }*/
 
 
-
+/*
     override fun returnFromMap(latitude: Double, longitude: Double) {
         val moshi: Moshi = Moshi.Builder().build()
         val jsonAdapter: JsonAdapter<LocationEntity> = moshi.adapter(LocationEntity::class.java)
@@ -117,8 +117,8 @@ class NavigationRouterImpl(private val navController: NavController) : INavigati
             ?.savedStateHandle
             ?.set(Constants.LOCATION, jsonAdapter.toJson(LocationEntity(latitude, longitude)))
         returnBack()
-    }
-
+    }*/
+/*
     override fun navigateToAddEditEvent(id: Long?) {
         if (id != null) {
             navController.navigate("${Destination.AddEditEventScreen.route}/${id}")
@@ -131,7 +131,7 @@ class NavigationRouterImpl(private val navController: NavController) : INavigati
     override fun navigateToEventDetail(id: Long?) {
         navController.navigate("${Destination.NewsDetailScreen.route}/${id}")
 
-    }
+    }*/
 
 
 }

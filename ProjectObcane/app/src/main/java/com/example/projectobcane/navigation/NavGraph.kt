@@ -10,11 +10,8 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.projectobcane.screens.OnBoardingScreen1
 import com.example.projectobcane.screens.SplashScreen
-import com.example.projectobcane.screens.chLocation.ChooseLocationScreen
-import com.example.projectobcane.screens.news.detail.NewsDetailScreen
 import com.example.projectobcane.screens.mainScreen.MainScreenScreen
-import com.example.projectobcane.screens.reports.addEdit.AddEditReportScreen
-import com.example.projectobcane.screens.reports.detail.ReportDetailScreen
+
 
 
 import com.example.projectobcane.screens.settings.SettingsScreen
@@ -64,6 +61,7 @@ fun NavGraph(
 
         //chose location
 
+        /*
         composable(
             route = "choose_location_screen?data={data}",
             arguments = listOf(
@@ -89,7 +87,7 @@ fun NavGraph(
             }
         }
 
-
+*/
 
 
 
@@ -106,15 +104,15 @@ fun NavGraph(
         }
 
 
-
+/*
         //ADD Report
         composable(route = Destination.AddEditReportScreen.route) {
             AddEditReportScreen(navigation = navRouter, id = null)
-        }
+        }*/
 
 
         //Edit Report
-
+/*
         composable(route = "${Destination.AddEditReportScreen.route}/{id}",
             arguments = listOf(
                 navArgument("id"){
@@ -126,8 +124,8 @@ fun NavGraph(
             val id = it.arguments?.getLong("id")
             AddEditReportScreen(navRouter, id)
         }
-
-
+*/
+/*
 //Detail report
         composable(route = "${Destination.ReportDetailScreen.route}/{id}",
             arguments = listOf(
@@ -140,7 +138,7 @@ fun NavGraph(
             val id = it.arguments?.getLong("id")
             ReportDetailScreen(navRouter, id)
         }
-
+*/
 
 
 
@@ -166,7 +164,7 @@ fun NavGraph(
             AddEditEventScreen(navRouter, id)
         }*/
 
-
+/*
         //Detail event
         composable(route = "${Destination.NewsDetailScreen.route}/{id}",
             arguments = listOf(
@@ -180,7 +178,7 @@ fun NavGraph(
             //NewsDetailScreen(navRouter, id)
             NewsDetailScreen(navRouter)
         }
-
+*/
 
     }
 

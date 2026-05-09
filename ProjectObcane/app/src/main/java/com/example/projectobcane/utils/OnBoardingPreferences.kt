@@ -13,18 +13,16 @@ object OnboardingPreferences {
 
     private val COMPLETED_KEY = booleanPreferencesKey("onboarding_completed")
 
-    /**
-     * Marks onboarding as completed so it won't be shown again.
-     */
+
+    //completed onboarding dont show again
     suspend fun setCompleted(context: Context) {
         context.dataStore.edit { prefs ->
             prefs[COMPLETED_KEY] = true
         }
     }
 
-    /**
-     * Returns true if user already completed onboarding.
-     */
+
+    //true if you completed onboarding
     suspend fun isCompleted(context: Context): Boolean {
         return context.dataStore.data
             .map { it[COMPLETED_KEY] ?: false }
@@ -32,9 +30,8 @@ object OnboardingPreferences {
     }
 
 
-    /**
-     * Resets onboarding so i can see changes to the screens.
-     */
+
+    //Resets onboarding so i can see changes to the screens.
     suspend fun reset(context: Context) {
         context.dataStore.edit { prefs ->
             prefs[COMPLETED_KEY] = false

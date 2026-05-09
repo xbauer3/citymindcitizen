@@ -17,16 +17,19 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.projectobcane.models.NewsItemUi
-import com.example.projectobcane.ui.elements.GlideImage
+
 import com.example.projectobcane.ui.theme.basicMargin
 import com.example.projectobcane.ui.theme.chipCornerRadius
 import com.example.projectobcane.ui.theme.detailBottomSpacer
 import com.example.projectobcane.ui.theme.halfMargin
 import com.example.projectobcane.ui.theme.mediumCornerRadius
 import com.example.projectobcane.ui.theme.newsImageHeight
+import coil.compose.AsyncImage
+
 
 @Composable
 fun NewsDetailSheet(
@@ -44,11 +47,13 @@ fun NewsDetailSheet(
 
             Spacer(modifier = Modifier.height(halfMargin))
 
-            GlideImage(
-                url = news.imageUrl ?: "",
+            AsyncImage(
+                model = news.imageUrl ?: "",
+                contentDescription = null,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(newsImageHeight)
+                    .height(newsImageHeight),
+                contentScale = ContentScale.Crop
             )
 
             Column(

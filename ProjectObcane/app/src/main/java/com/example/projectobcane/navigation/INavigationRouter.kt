@@ -8,21 +8,21 @@ interface INavigationRouter {
     //other
 
     fun navigateToSettingsScreen()
-    fun navigateToReportDetail(id: Long?)
+    //fun navigateToReportDetail(id: Long?)
     fun getNavController(): NavController
 
 
 
-    fun navigateToAddEditReport(id: Long?)
+    //fun navigateToAddEditReport(id: Long?)
 
    //fun navigateToPickLocation()
 
 
-    fun navigateToChoseLocation(latitude: Double?, longitude: Double?)
-    fun returnFromMap(latitude: Double, longitude: Double)
+    //fun navigateToChoseLocation(latitude: Double?, longitude: Double?)
+    //fun returnFromMap(latitude: Double, longitude: Double)
 
-    fun navigateToAddEditEvent(id: Long?)
-    fun navigateToEventDetail(id: Long?)
+    //fun navigateToAddEditEvent(id: Long?)
+    //fun navigateToEventDetail(id: Long?)
 
     //both
     fun returnBack()

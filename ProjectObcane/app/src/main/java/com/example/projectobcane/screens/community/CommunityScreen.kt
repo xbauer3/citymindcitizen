@@ -32,6 +32,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -324,13 +325,19 @@ private fun PostDetailScreen(
                         }
                     }
                 } else {
-                    Box(modifier = Modifier.padding(horizontal = basicMargin).padding(bottom = halfMargin).fillMaxWidth().height(detailImageHeight).clip(RoundedCornerShape(mediumCornerRadius)).background(MaterialTheme.colorScheme.surfaceVariant)) {
-                        Row(modifier = Modifier.align(Alignment.BottomCenter).padding(bottom = halfMargin), horizontalArrangement = Arrangement.spacedBy(quarterMargin)) {
-                            repeat(3) { i ->
-                                Box(modifier = Modifier.size(if (i == 0) dotSizeActive else dotSizeInactive).clip(CircleShape).background(if (i == 0) MaterialTheme.colorScheme.onSurfaceVariant else MaterialTheme.colorScheme.onSurfaceVariant.copy(0.3f)))
-                            }
-                        }
-                    }
+                    AsyncImage(
+                        model = "https://picsum.photos/seed/${post.id}/800/400",
+                        contentDescription = null,
+                        modifier = Modifier
+                            .padding(horizontal = basicMargin)
+                            .padding(bottom = halfMargin)
+                            .fillMaxWidth()
+                            .height(detailImageHeight)
+                            .clip(RoundedCornerShape(mediumCornerRadius)),
+                        contentScale = ContentScale.Crop,
+                        error = painterResource(android.R.drawable.ic_menu_gallery),
+                        fallback = painterResource(android.R.drawable.ic_menu_gallery)
+                    )
                 }
 
                 if (state.commentsLoading) {

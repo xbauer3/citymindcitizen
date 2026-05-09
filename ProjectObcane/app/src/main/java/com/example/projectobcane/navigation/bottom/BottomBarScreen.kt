@@ -15,7 +15,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.compose.runtime.getValue
 import com.example.projectobcane.R
-import com.example.projectobcane.navigation.EventLocation
+
 import com.example.projectobcane.navigation.INavigationRouter
 import androidx.compose.ui.res.stringResource
 
@@ -33,7 +33,7 @@ sealed class BottomBarScreen(
 
 ) {
 
-    /** Novinky */
+    //news
     object News : BottomBarScreen(
         route = "news",
         title = R.string.news,
@@ -43,7 +43,7 @@ sealed class BottomBarScreen(
         badgeCount = null
     )
 
-    /** AI Agent (chat) */
+    //ai chat
     object AiAgent : BottomBarScreen(
         route = "ai_agent",
         title = R.string.ai_agent,
@@ -53,7 +53,7 @@ sealed class BottomBarScreen(
         badgeCount = null
     )
 
-    /** Hlášení */
+    //community
     object Reports : BottomBarScreen(
         route = "reports",
         title = R.string.reports,
@@ -62,6 +62,7 @@ sealed class BottomBarScreen(
         hasNews = false,
         badgeCount = null
     )
+    /*
     object Maps : BottomBarScreen(
         route = "maps",
         title = R.string.maps,
@@ -69,7 +70,7 @@ sealed class BottomBarScreen(
         unselectedIcon = Icons.Default.LocationOn,
         hasNews = false,
         badgeCount = null
-    )
+    )*/
 
 
 }

@@ -16,14 +16,16 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.projectobcane.models.NewsItemUi
 import com.example.projectobcane.navigation.INavigationRouter
-import com.example.projectobcane.ui.elements.GlideImage
+
 import com.example.projectobcane.ui.theme.*
 import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import androidx.compose.foundation.lazy.items
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
+import coil.compose.AsyncImage
 import com.example.projectobcane.R
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -110,7 +112,8 @@ fun NewsItem(news: NewsItemUi, onClick: () -> Unit) {
         elevation = CardDefaults.cardElevation(defaultElevation = quarterMargin)
     ) {
         Box {
-            GlideImage(url = news.imageUrl ?: "https://picsum.photos/400", modifier = Modifier.fillMaxWidth().height(newsCardHeight))
+            AsyncImage(model = news.imageUrl ?: "https://picsum.photos/400", contentDescription = null, modifier = Modifier.fillMaxWidth().height(newsCardHeight), contentScale = ContentScale.Crop)
+
             Box(modifier = Modifier.fillMaxWidth().height(newsCardHeight).background(Brush.verticalGradient(colors = listOf(MaterialTheme.colorScheme.primary.copy(alpha = 0.1f), MaterialTheme.colorScheme.primary.copy(alpha = 0.8f)))))
             Column(modifier = Modifier.align(Alignment.BottomStart).padding(basicMargin)) {
                 Box(modifier = Modifier.background(MaterialTheme.colorScheme.secondary, RoundedCornerShape(chipCornerRadius)).padding(horizontal = chipPaddingHorizontal, vertical = chipPaddingVertical)) {

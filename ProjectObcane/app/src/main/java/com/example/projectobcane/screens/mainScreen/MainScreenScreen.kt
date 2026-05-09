@@ -35,7 +35,7 @@ fun MainScreenScreen(navigation: INavigationRouter) {
         BottomBarScreen.Reports.route -> R.string.reports
         BottomBarScreen.News.route -> R.string.news
         BottomBarScreen.AiAgent.route -> R.string.ai_agent
-        BottomBarScreen.Maps.route -> R.string.ai_agent
+        //BottomBarScreen.Maps.route -> R.string.ai_agent
         else -> R.string.app_name
     }
 

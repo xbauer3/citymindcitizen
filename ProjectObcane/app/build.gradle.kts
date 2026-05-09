@@ -20,6 +20,7 @@ android {
     val server = properties.getProperty("server")
     val reportsServer = properties.getProperty("reportsServer")
     val newsServer = properties.getProperty("newsServer")
+    val authServer = properties.getProperty("authServer")
 
 
     val auth_username = properties.getProperty("auth_username")
@@ -58,10 +59,11 @@ android {
             buildConfigField(type = "String", name = "SERVER_URL", value = server)
             buildConfigField(type = "String", name = "REPORTS_URL", value = reportsServer)
             buildConfigField(type = "String", name = "NEWS_URL", value = newsServer)
+            buildConfigField(type = "String", name = "AUTH_URL", value = authServer)
 
-            buildConfigField(type = "String", name = "AUTH_USERNAME", value = "\"$auth_username\"")
-            buildConfigField(type = "String", name = "AUTH_PASSWORD", value = "\"$auth_password\"")
-            buildConfigField(type = "String", name = "AUTH_CLIENT_ID", value = "\"$auth_client_id\"")
+            buildConfigField(type = "String", name = "AUTH_USERNAME", value = auth_username)
+            buildConfigField(type = "String", name = "AUTH_PASSWORD", value = auth_password)
+            buildConfigField(type = "String", name = "AUTH_CLIENT_ID", value = auth_client_id)
 
         }
 
@@ -139,9 +141,6 @@ dependencies {
     implementation(libs.compose.colorpicker)
 
     implementation(libs.appcompat)
-
-    implementation("com.github.bumptech.glide:glide:4.16.0")
-    ksp( "com.github.bumptech.glide:compiler:4.16.0" )// if you're using annotation processing
 
 
 
