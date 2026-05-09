@@ -1,16 +1,34 @@
 package com.example.projectobcane.ui.elements
 
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextAlign
+import com.example.projectobcane.ui.theme.ColorWhite
+import com.example.projectobcane.ui.theme.Purple
+import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.dp
+import com.example.projectobcane.R
+import com.example.projectobcane.ui.theme.halfMargin
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -29,8 +47,10 @@ fun BaseScreen(
     Scaffold(
         topBar = {
             if (showTopBar) {
-                TopAppBar(
-                    title = { Text(text = topBarText) },
+                CenterAlignedTopAppBar(
+                    title = {
+                        Text(text = topBarText)
+                    },
                     navigationIcon = {
                         if (onBackClick != null) {
                             IconButton(onClick = onBackClick) {
@@ -39,9 +59,21 @@ fun BaseScreen(
                                     contentDescription = null
                                 )
                             }
+                        } else {
+                            Image(
+                                painter = painterResource(id = R.drawable.citymindicon),
+                                contentDescription = null,
+                                modifier = Modifier.size(40.dp).padding(start = halfMargin),
+                            )
                         }
                     },
-                    actions = actions
+                    actions = actions,
+                    colors = TopAppBarDefaults.topAppBarColors(
+                        containerColor = Purple,
+                        titleContentColor = ColorWhite,
+                        navigationIconContentColor = ColorWhite,
+                        actionIconContentColor = ColorWhite
+                    )
                 )
             }
         },

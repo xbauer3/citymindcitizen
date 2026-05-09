@@ -64,14 +64,12 @@ fun SettingsScreenContent(
                 top = paddingValues.calculateTopPadding(),
                 bottom = paddingValues.calculateBottomPadding()
             )
+            .background(MaterialTheme.colorScheme.surface)
             .fillMaxSize()
-    ) {
-        val versionName = context.packageManager
-            .getPackageInfo(context.packageName, 0)
-            .versionName
 
-        Text(text = " ${stringResource(R.string.app_version)} $versionName")
-        Spacer(modifier = Modifier.height(basicMargin))
+    ) {
+
+        Spacer(modifier = Modifier.height(22.dp))
 
         //Language switch
         Text(text = stringResource(id = R.string.language))
@@ -85,6 +83,7 @@ fun SettingsScreenContent(
                     activity.recreate()
                 }
             }
+
         )
 
         Spacer(modifier = Modifier.height(22.dp))
@@ -97,7 +96,7 @@ fun SettingsScreenContent(
             modifier = Modifier
                 .fillMaxWidth()
                 .clip(RoundedCornerShape(16.dp))
-                .background(MaterialTheme.colorScheme.surface)
+                .background(MaterialTheme.colorScheme.background)
                 .padding(horizontal = 14.dp, vertical = 14.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -116,7 +115,17 @@ fun SettingsScreenContent(
             )
         }
 
+
+
         Spacer(modifier = Modifier.height(22.dp))
+
+        val versionName = context.packageManager
+            .getPackageInfo(context.packageName, 0)
+            .versionName
+
+        Text(text = " ${stringResource(R.string.app_version)} $versionName")
+
+        Spacer(modifier = Modifier.height(basicMargin))
 
         Button(
             onClick = {
@@ -138,7 +147,7 @@ private fun LanguagePillSwitch(
     Row(
         modifier = Modifier
             .clip(RoundedCornerShape(14.dp))
-            .background(MaterialTheme.colorScheme.surface)
+            .background(MaterialTheme.colorScheme.background)
             .padding(4.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
