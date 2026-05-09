@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.projectobcane.R
+import com.example.projectobcane.utils.parseMarkdownLinks
 
 private val Purple = Color(0xFF7A3CFF)
 
@@ -39,7 +40,10 @@ fun AiChatScreen(
     val isDark = MaterialTheme.colorScheme.background.luminance() < 0.5f
 
     val totalItemCount = ui.items.size + if (ui.isSending) 2 else 0
-    LaunchedEffect(totalItemCount) {
+    val isTyping = ui.items.any { it.isTyping }
+    val lastFaqSize = ui.items.lastOrNull()?.faq?.size ?: 0
+
+    LaunchedEffect(totalItemCount, isTyping, lastFaqSize) {
         if (totalItemCount > 0) listState.animateScrollToItem(totalItemCount - 1)
     }
 
@@ -99,7 +103,20 @@ fun AiChatScreen(
                     items(ui.items, key = { it.id }) { m ->
                         when (m.role) {
                             ChatRole.User -> UserBubble(m.displayText, isDark)
-                            ChatRole.Assistant -> AiCard(m.displayText, isDark)
+                            ChatRole.Assistant -> {
+                                Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                                    AiCard(
+                                        text = m.displayText,
+                                        isDark = isDark
+                                    )
+                                    if (m.faq.isNotEmpty()) {
+                                        FaqChips(
+                                            faq = m.faq,
+                                            onFaqClick = { question -> viewModel.onInputChange(question) }
+                                        )
+                                    }
+                                }
+                            }
                         }
                     }
                     if (ui.isSending) {
@@ -110,6 +127,8 @@ fun AiChatScreen(
             }
         }
 
+        /*
+
         if (ui.faq.isNotEmpty()) {
             FaqSuggestions(
                 faq = ui.faq,
@@ -118,7 +137,7 @@ fun AiChatScreen(
                 }
             )
         }
-
+*/
 
         BottomInputBar(
             value = ui.input,
@@ -149,30 +168,77 @@ private fun AiCard(text: String, isDark: Boolean) {
     val shape = RoundedCornerShape(20.dp)
     Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Start) {
         if (!isDark) {
-            Surface(color = Color.White, shape = shape, shadowElevation = 6.dp) {
-                Column(
-                    modifier = Modifier
-                        .widthIn(max = 300.dp)
-                        .padding(16.dp),
-                    verticalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    Text(stringResource(R.string.ai_label), color = Purple, fontWeight = FontWeight.SemiBold)
-                    Text(text = text, color = Color(0xFF2D2D2D))
-                }
-            }
-        } else {
-            HighlightCard(modifier = Modifier.widthIn(max = 300.dp), shape = shape) {
+            Surface(
+                color = Color.White,
+                shape = shape,
+                shadowElevation = 6.dp,
+                modifier = Modifier.widthIn(min = 120.dp, max = 300.dp)
+            ) {
                 Column(
                     modifier = Modifier.padding(16.dp),
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    Text("AI", color = Purple, fontWeight = FontWeight.SemiBold)
-                    Text(text = text, color = Color(0xFFF1ECFF))
+                    Text(
+                        stringResource(R.string.ai_label),
+                        color = Purple,
+                        fontWeight = FontWeight.SemiBold
+                    )
+                    Text(
+                        text = parseMarkdownLinks(text, linkColor = Purple),
+                        color = Color(0xFF2D2D2D)
+                    )
+                }
+            }
+        } else {
+            HighlightCard(
+                modifier = Modifier.widthIn(min = 120.dp, max = 300.dp),
+                shape = shape
+            ) {
+                Column(
+                    modifier = Modifier.padding(16.dp),
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    Text(stringResource(R.string.ai_label), color = Purple, fontWeight = FontWeight.SemiBold)
+                    Text(
+                        text = parseMarkdownLinks(text, linkColor = Color(0xFFB89CFF)),
+                        color = Color(0xFFF1ECFF)
+                    )
                 }
             }
         }
     }
 }
+
+@Composable
+private fun FaqChips(
+    faq: List<String>,
+    onFaqClick: (String) -> Unit
+) {
+    Column(
+        verticalArrangement = Arrangement.spacedBy(4.dp),
+        modifier = Modifier.widthIn(max = 300.dp)
+    ) {
+        faq.forEach { question ->
+            Surface(
+                shape = RoundedCornerShape(20.dp),
+                color = Purple.copy(alpha = 0.08f),
+                border = androidx.compose.foundation.BorderStroke(
+                    width = 1.dp,
+                    color = Purple.copy(alpha = 0.20f)
+                ),
+                onClick = { onFaqClick(question) }
+            ) {
+                Text(
+                    text = question,
+                    modifier = Modifier.padding(horizontal = 12.dp, vertical = 4.dp),
+                    color = Purple,
+                    style = MaterialTheme.typography.labelMedium
+                )
+            }
+        }
+    }
+}
+
 
 @Composable
 private fun ThinkingLabel(isDark: Boolean) {
@@ -183,32 +249,7 @@ private fun ThinkingLabel(isDark: Boolean) {
     )
 }
 
-@Composable
-fun FaqSuggestions(
-    faq: List<String>,
-    onClick: (String) -> Unit
-) {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp)
-    ) {
-        faq.forEach { item ->
-            Surface(
-                shape = RoundedCornerShape(16.dp),
-                color = Purple.copy(alpha = 0.1f),
-                onClick = { onClick(item) }
-            ) {
-                Text(
-                    text = item,
-                    modifier = Modifier.padding(12.dp),
-                    color = Purple
-                )
-            }
-        }
-    }
-}
+
 
 @Composable
 private fun AnimatedDotsBubble(isDark: Boolean) {

@@ -1,23 +1,13 @@
 package com.example.projectobcane.screens.chat
 
-import java.util.UUID
 
-sealed interface ChatItem {
-    val id: String
+enum class ChatRole { User, Assistant }
 
-    data class User(
-        override val id: String = UUID.randomUUID().toString(),
-        val text: String
-    ) : ChatItem
-
-    data class Assistant(
-        override val id: String = UUID.randomUUID().toString(),
-        val text: String,
-        val isThinking: Boolean = false
-    ) : ChatItem
-
-    data class Faq(
-        override val id: String = UUID.randomUUID().toString(),
-        val questions: List<String>
-    ) : ChatItem
-}
+data class ChatMessage(
+    val id: String,
+    val role: ChatRole,
+    val text: String,           // full final text
+    val displayText: String = "",  // what's currently shown (drives the typing effect)
+    val isTyping: Boolean = false,
+    val faq: List<String> = emptyList()
+)

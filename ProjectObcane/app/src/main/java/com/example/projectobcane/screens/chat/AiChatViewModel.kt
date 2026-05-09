@@ -2,7 +2,6 @@ package com.example.projectobcane.screens.chat
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.projectobcane.R
 import com.example.projectobcane.communication.AiChatRequest
 import com.example.projectobcane.communication.CommunicationResult
 import com.example.projectobcane.communication.IAiChatRemoteRepository
@@ -14,22 +13,9 @@ import kotlinx.coroutines.launch
 import kotlin.random.Random
 import javax.inject.Inject
 
-enum class ChatRole { User, Assistant }
 
-data class ChatMessage(
-    val id: String,
-    val role: ChatRole,
-    val text: String,           // full final text
-    val displayText: String = "",  // what's currently shown (drives the typing effect)
-    val isTyping: Boolean = false
-)
 
-data class AiChatUiState(
-    val input: String = "",
-    val isSending: Boolean = false,
-    val items: List<ChatMessage> = emptyList(),
-    val faq: List<String> = emptyList()
-)
+
 
 @HiltViewModel
 class AiChatViewModel @Inject constructor(
@@ -68,8 +54,7 @@ class AiChatViewModel @Inject constructor(
         _state.value = _state.value.copy(
             input = "",
             isSending = true,
-            items = _state.value.items + userMsg,
-            faq = emptyList()
+            items = _state.value.items.map { it.copy(faq = emptyList()) } + userMsg,
         )
 
         viewModelScope.launch {
@@ -107,7 +92,6 @@ class AiChatViewModel @Inject constructor(
                     _state.value = _state.value.copy(
                         isSending = false,
                         items = _state.value.items + botMsg,
-                        faq = emptyList()
                     )
 
                     // Type out the characters
@@ -181,7 +165,12 @@ class AiChatViewModel @Inject constructor(
             charIndex = end
             delay(delayMs)
         }
-        _state.value = _state.value.copy(faq = faq)
+        _state.value = _state.value.copy(
+            items = _state.value.items.map { item ->
+                if (item.id == msgId) item.copy(faq = faq, isTyping = false)
+                else item
+            }
+        )
     }
 
     private fun newConversationId(): Long =

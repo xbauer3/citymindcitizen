@@ -34,7 +34,7 @@ import com.example.projectobcane.navigation.INavigationRouter
 
 import com.example.projectobcane.ui.theme.basicMargin
 import com.example.projectobcane.ui.theme.halfMargin
-import com.example.projectobcane.ui.theme.heighOfARow
+
 import kotlin.math.ceil
 import com.example.projectobcane.R
 
