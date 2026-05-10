@@ -19,6 +19,7 @@ import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.luminance
+import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -30,6 +31,7 @@ import com.example.projectobcane.utils.parseMarkdownLinks
 
 private val Purple = Color(0xFF7A3CFF)
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun AiChatScreen(
     paddingValues: PaddingValues,
@@ -57,13 +59,20 @@ fun AiChatScreen(
         )
     }
 
+
+    val imeVisible = WindowInsets.isImeVisible
+    val imeBottom = WindowInsets.ime.asPaddingValues().calculateBottomPadding()
+    val navBottom = paddingValues.calculateBottomPadding()
+    val bottomPad = maxOf(imeBottom, navBottom)
+
+
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(bg)
             .padding(
                 top = paddingValues.calculateTopPadding(),
-                bottom = paddingValues.calculateBottomPadding()
+                bottom = bottomPad
             )
     ) {
 

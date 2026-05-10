@@ -12,6 +12,8 @@ import androidx.compose.runtime.getValue
 import com.example.projectobcane.navigation.Destination
 import com.example.projectobcane.navigation.NavGraph
 import android.Manifest
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import com.example.projectobcane.screens.settings.LanguageHolder
 import com.example.projectobcane.screens.settings.LanguagePreferences
 import com.example.projectobcane.utils.LocalizedContextWrapper
@@ -41,6 +43,11 @@ class MainActivity : ComponentActivity() {
         }
 
         enableEdgeToEdge()
+
+
+        WindowCompat.setDecorFitsSystemWindows(window, false)
+        val controller = WindowInsetsControllerCompat(window, window.decorView)
+        controller.isAppearanceLightStatusBars = false  // false = white icons
 
         setContent {
             val isDark by ThemePreferences.isDarkFlow(this).collectAsState(initial = false)
