@@ -1,10 +1,13 @@
 package com.example.projectobcane.screens
 
 import android.app.Activity
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.SizeTransform
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -33,9 +36,9 @@ import com.example.projectobcane.navigation.INavigationRouter
 import com.example.projectobcane.screens.settings.LanguageHolder
 import com.example.projectobcane.screens.settings.SettingsViewModel
 import com.example.projectobcane.ui.theme.basicMargin
+import com.example.projectobcane.utils.CityPreferences
 import com.example.projectobcane.utils.OnboardingPreferences
 import kotlinx.coroutines.launch
-
 
 private data class Country(val name: String, val cities: List<String>)
 
@@ -53,13 +56,6 @@ private val SUPPORTED_COUNTRIES = listOf(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun OnBoardingScreen1(navigation: INavigationRouter) {
-    OnBoardingScreen1Content(navigation = navigation)
-}
-
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun OnBoardingScreen1Content(navigation: INavigationRouter) {
     val viewModel = hiltViewModel<SettingsViewModel>()
     val state by viewModel.settingsScreenUIState.collectAsStateWithLifecycle()
 
@@ -67,19 +63,14 @@ fun OnBoardingScreen1Content(navigation: INavigationRouter) {
     val activity = context as Activity
     val scope = rememberCoroutineScope()
 
-
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val showSheet = remember { mutableStateOf(false) }
-
-
     val selectedCountry = remember { mutableStateOf<Country?>(null) }
     val selectedCity = remember { mutableStateOf<String?>(null) }
-
-
-    val sheetStep = remember { mutableStateOf(0) } // 0 = country, 1 = city
+    // 0 = country step, 1 = city step
+    val sheetStep = remember { mutableIntStateOf(0) }
 
     LaunchedEffect(Unit) { viewModel.loadSettings() }
-
 
     val gradient = Brush.verticalGradient(
         colorStops = arrayOf(
@@ -95,12 +86,13 @@ fun OnBoardingScreen1Content(navigation: INavigationRouter) {
             .background(gradient)
             .statusBarsPadding()
     ) {
+
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(horizontal = basicMargin)
+                .padding(bottom = 96.dp)
         ) {
-
             Box(
                 modifier = Modifier.fillMaxWidth(),
                 contentAlignment = Alignment.Center
@@ -113,9 +105,6 @@ fun OnBoardingScreen1Content(navigation: INavigationRouter) {
                 )
             }
 
-            //Spacer(modifier = Modifier.height(32.dp))
-
-
             Text(
                 text = stringResource(R.string.ai_agent_description),
                 style = MaterialTheme.typography.headlineMedium,
@@ -126,7 +115,6 @@ fun OnBoardingScreen1Content(navigation: INavigationRouter) {
 
             Spacer(modifier = Modifier.height(14.dp))
 
-
             Text(
                 text = stringResource(R.string.select_municipality_info),
                 style = MaterialTheme.typography.bodyLarge,
@@ -135,85 +123,87 @@ fun OnBoardingScreen1Content(navigation: INavigationRouter) {
 
             Spacer(modifier = Modifier.height(32.dp))
 
-
-            Box(
-                /*
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(240.dp)
-                    .clip(RoundedCornerShape(28.dp))
-                    .background(Color.White.copy(alpha = 0.10f)),
-                contentAlignment = Alignment.Center*/
-            ) {
-                Image(
-                    painter = painterResource(id = R.drawable.onboardingfoto),
-                    contentDescription = null,
-                    modifier = Modifier.size(400.dp)
-                )
-            }
-
-            Spacer(modifier = Modifier.weight(1f))
-
-
-
-            BottomControls(
-                supportedLanguages = state.supportedLanguages,
-                selectedLang = LanguageHolder.language,
-                onSelectLang = { locale ->
-                    viewModel.updateLanguage(locale) { scope.launch { activity.recreate() } }
-                },
-                onContinue = {
-                    sheetStep.value = 0
-                    selectedCountry.value = null
-                    selectedCity.value = null
-                    showSheet.value = true
-                }
+            Image(
+                painter = painterResource(id = R.drawable.onboardingfoto),
+                contentDescription = null,
+                modifier = Modifier.size(400.dp)
             )
         }
 
-        
+
+        BottomControls(
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+                .navigationBarsPadding()
+                .padding(horizontal = basicMargin, vertical = 16.dp),
+            supportedLanguages = state.supportedLanguages,
+            selectedLang = LanguageHolder.language,
+            onSelectLang = { locale ->
+                viewModel.updateLanguage(locale) { scope.launch { activity.recreate() } }
+            },
+            onContinue = {
+                sheetStep.intValue = 0
+                selectedCountry.value = null
+                selectedCity.value = null
+                showSheet.value = true
+            }
+        )
+
+
         if (showSheet.value) {
             ModalBottomSheet(
                 onDismissRequest = { showSheet.value = false },
                 sheetState = sheetState,
                 containerColor = MaterialTheme.colorScheme.surface
             ) {
-                AnimatedVisibility(
-                    visible = sheetStep.value == 0,
-                    enter = fadeIn() + slideInVertically { it / 6 },
-                    exit = fadeOut()
-                ) {
-                    CountrySheet(
-                        selected = selectedCountry.value,
-                        onSelect = { selectedCountry.value = it },
-                        onBack = { showSheet.value = false },
-                        onContinue = {
-                            if (selectedCountry.value != null) {
-                                selectedCity.value = null
-                                sheetStep.value = 1
-                            }
-                        }
-                    )
-                }
 
-                AnimatedVisibility(
-                    visible = sheetStep.value == 1,
-                    enter = fadeIn() + slideInVertically { it / 6 },
-                    exit = fadeOut()
-                ) {
-                    CitySheet(
-                        country = selectedCountry.value,
-                        selected = selectedCity.value,
-                        onSelect = { selectedCity.value = it },
-                        onBack = { sheetStep.value = 0 },
-                        onContinue = {
-                            scope.launch {
-                                OnboardingPreferences.setCompleted(context)
-                                showSheet.value = false
-                                navigation.navigateToMainScreen()
+                AnimatedContent(
+                    targetState = sheetStep.intValue,
+                    transitionSpec = {
+                        val enter = slideInHorizontally(
+                            animationSpec = tween(300, easing = FastOutSlowInEasing),
+                            initialOffsetX = { if (targetState > initialState) it else -it }
+                        )
+                        val exit = slideOutHorizontally(
+                            animationSpec = tween(300, easing = FastOutSlowInEasing),
+                            targetOffsetX = { if (targetState > initialState) -it else it }
+                        )
+                        enter togetherWith exit using SizeTransform(clip = true)
+                    },
+                    label = "onboarding_sheet_step"
+                ) { step ->
+                    when (step) {
+                        0 -> CountrySheet(
+                            selected = selectedCountry.value,
+                            onSelect = { selectedCountry.value = it },
+                            onBack = { showSheet.value = false },
+                            onContinue = {
+                                if (selectedCountry.value != null) {
+                                    selectedCity.value = null
+                                    sheetStep.intValue = 1
+                                }
                             }
-                        }
-                    )
+                        )
+                        1 -> CitySheet(
+                            country = selectedCountry.value,
+                            selected = selectedCity.value,
+                            onSelect = { selectedCity.value = it },
+                            onBack = { sheetStep.intValue = 0 },
+                            onContinue = {
+                                scope.launch {
+
+                                    selectedCountry.value?.let { country ->
+                                        selectedCity.value?.let { city ->
+                                            CityPreferences.save(context, country.name, city)
+                                        }
+                                    }
+                                    OnboardingPreferences.setCompleted(context)
+                                    showSheet.value = false
+                                    navigation.navigateToMainScreen()
+                                }
+                            }
+                        )
+                    }
                 }
             }
         }
@@ -223,20 +213,18 @@ fun OnBoardingScreen1Content(navigation: INavigationRouter) {
 
 @Composable
 private fun BottomControls(
+    modifier: Modifier = Modifier,
     supportedLanguages: List<java.util.Locale>,
     selectedLang: String,
     onSelectLang: (java.util.Locale) -> Unit,
     onContinue: () -> Unit
 ) {
     Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .navigationBarsPadding()
-            .padding(bottom = 16.dp),
+        modifier = modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
-
+        // Language pill
         Row(
             modifier = Modifier
                 .clip(RoundedCornerShape(16.dp))
@@ -259,7 +247,6 @@ private fun BottomControls(
                 Box(
                     modifier = Modifier
                         .clip(RoundedCornerShape(12.dp))
-                        .background(if (isSelected) Color.Transparent else Color.Transparent)
                         .clickable { onSelectLang(locale) }
                         .padding(horizontal = 14.dp, vertical = 8.dp)
                 ) {
@@ -273,7 +260,6 @@ private fun BottomControls(
             }
         }
 
-        
         Button(
             onClick = onContinue,
             colors = ButtonDefaults.buttonColors(containerColor = Color.White),
@@ -290,6 +276,7 @@ private fun BottomControls(
     }
 }
 
+
 @Composable
 private fun CountrySheet(
     selected: Country?,
@@ -303,44 +290,10 @@ private fun CountrySheet(
             .padding(horizontal = 20.dp)
             .padding(bottom = 24.dp)
     ) {
-        
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Icon(
-                imageVector = Icons.AutoMirrored.Filled.KeyboardArrowLeft,
-                contentDescription = stringResource(R.string.back),
-                tint = MaterialTheme.colorScheme.primary,
-                modifier = Modifier
-                    .clip(RoundedCornerShape(10.dp))
-                    .clickable { onBack() }
-                    .padding(4.dp)
-                    .size(24.dp)
-            )
-            Spacer(modifier = Modifier.width(4.dp))
-            Text(
-                text = stringResource(R.string.back),
-                color = MaterialTheme.colorScheme.primary,
-                style = MaterialTheme.typography.bodyMedium,
-                modifier = Modifier
-                    .clip(RoundedCornerShape(8.dp))
-                    .clickable { onBack() }
-                    .padding(horizontal = 4.dp, vertical = 4.dp)
-            )
-
-            Spacer(modifier = Modifier.weight(1f))
-
-            Text(
-                
-                text = stringResource(R.string.select_municipality),
-                style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.Bold
-            )
-
-            Spacer(modifier = Modifier.weight(1f))
-            Spacer(modifier = Modifier.width(60.dp))
-        }
+        SheetHeader(
+            title = stringResource(R.string.select_country),
+            onBack = onBack
+        )
 
         Spacer(modifier = Modifier.height(10.dp))
 
@@ -353,27 +306,11 @@ private fun CountrySheet(
         Spacer(modifier = Modifier.height(20.dp))
 
         SUPPORTED_COUNTRIES.forEach { country ->
-            val isSelected = selected == country
-            Surface(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 5.dp)
-                    .clip(RoundedCornerShape(14.dp))
-                    .clickable { onSelect(country) },
-                color = if (isSelected) MaterialTheme.colorScheme.primaryContainer
-                else MaterialTheme.colorScheme.surface,
-                tonalElevation = if (isSelected) 0.dp else 1.dp
-            ) {
-                Text(
-                    text = country.name,
-                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 16.dp),
-                    fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Normal,
-                    color = if (isSelected) MaterialTheme.colorScheme.onPrimaryContainer
-                    else MaterialTheme.colorScheme.onSurface,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
-                )
-            }
+            SelectionRow(
+                label = country.name,
+                isSelected = selected == country,
+                onClick = { onSelect(country) }
+            )
         }
 
         Spacer(modifier = Modifier.height(20.dp))
@@ -381,15 +318,10 @@ private fun CountrySheet(
         Button(
             onClick = onContinue,
             enabled = selected != null,
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(52.dp),
+            modifier = Modifier.fillMaxWidth().height(52.dp),
             shape = RoundedCornerShape(18.dp)
         ) {
-            Text(
-                text = stringResource(R.string.continue_action),
-                fontWeight = FontWeight.Bold
-            )
+            Text(text = stringResource(R.string.continue_action), fontWeight = FontWeight.Bold)
         }
     }
 }
@@ -409,49 +341,14 @@ private fun CitySheet(
             .padding(horizontal = 20.dp)
             .padding(bottom = 24.dp)
     ) {
-        
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Icon(
-                imageVector = Icons.AutoMirrored.Filled.KeyboardArrowLeft,
-                contentDescription = stringResource(R.string.back),
-                tint = MaterialTheme.colorScheme.primary,
-                modifier = Modifier
-                    .clip(RoundedCornerShape(10.dp))
-                    .clickable { onBack() }
-                    .padding(4.dp)
-                    .size(24.dp)
-            )
-            Spacer(modifier = Modifier.width(4.dp))
-            Text(
-                text = stringResource(R.string.back),
-                color = MaterialTheme.colorScheme.primary,
-                style = MaterialTheme.typography.bodyMedium,
-                modifier = Modifier
-                    .clip(RoundedCornerShape(8.dp))
-                    .clickable { onBack() }
-                    .padding(horizontal = 4.dp, vertical = 4.dp)
-            )
-
-            Spacer(modifier = Modifier.weight(1f))
-
-            Text(
-               
-                text = stringResource(R.string.select_city),
-                style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.Bold
-            )
-
-            Spacer(modifier = Modifier.weight(1f))
-            Spacer(modifier = Modifier.width(60.dp))
-        }
+        SheetHeader(
+            title = stringResource(R.string.select_city),
+            onBack = onBack
+        )
 
         Spacer(modifier = Modifier.height(10.dp))
 
         Text(
-            
             text = stringResource(R.string.change_selection_later),
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant
@@ -459,30 +356,12 @@ private fun CitySheet(
 
         Spacer(modifier = Modifier.height(20.dp))
 
-        val cities = country?.cities ?: emptyList()
-
-        cities.forEach { city ->
-            val isSelected = selected == city
-            Surface(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 5.dp)
-                    .clip(RoundedCornerShape(14.dp))
-                    .clickable { onSelect(city) },
-                color = if (isSelected) MaterialTheme.colorScheme.primaryContainer
-                else MaterialTheme.colorScheme.surface,
-                tonalElevation = if (isSelected) 0.dp else 1.dp
-            ) {
-                Text(
-                    text = city,
-                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 16.dp),
-                    fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Normal,
-                    color = if (isSelected) MaterialTheme.colorScheme.onPrimaryContainer
-                    else MaterialTheme.colorScheme.onSurface,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
-                )
-            }
+        country?.cities?.forEach { city ->
+            SelectionRow(
+                label = city,
+                isSelected = selected == city,
+                onClick = { onSelect(city) }
+            )
         }
 
         Spacer(modifier = Modifier.height(20.dp))
@@ -490,15 +369,71 @@ private fun CitySheet(
         Button(
             onClick = onContinue,
             enabled = selected != null,
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(52.dp),
+            modifier = Modifier.fillMaxWidth().height(52.dp),
             shape = RoundedCornerShape(18.dp)
         ) {
-            Text(
-                text = stringResource(R.string.continue_action),
-                fontWeight = FontWeight.Bold
-            )
+            Text(text = stringResource(R.string.continue_action), fontWeight = FontWeight.Bold)
         }
+    }
+}
+
+@Composable
+private fun SheetHeader(title: String, onBack: () -> Unit) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Icon(
+            imageVector = Icons.AutoMirrored.Filled.KeyboardArrowLeft,
+            contentDescription = stringResource(R.string.back),
+            tint = MaterialTheme.colorScheme.primary,
+            modifier = Modifier
+                .clip(RoundedCornerShape(10.dp))
+                .clickable { onBack() }
+                .padding(4.dp)
+                .size(24.dp)
+        )
+        Spacer(modifier = Modifier.width(4.dp))
+        Text(
+            text = stringResource(R.string.back),
+            color = MaterialTheme.colorScheme.primary,
+            style = MaterialTheme.typography.bodyMedium,
+            modifier = Modifier
+                .clip(RoundedCornerShape(8.dp))
+                .clickable { onBack() }
+                .padding(horizontal = 4.dp, vertical = 4.dp)
+        )
+        Spacer(modifier = Modifier.weight(1f))
+        Text(
+            text = title,
+            style = MaterialTheme.typography.titleMedium,
+            fontWeight = FontWeight.Bold
+        )
+        Spacer(modifier = Modifier.weight(1f))
+        Spacer(modifier = Modifier.width(60.dp))
+    }
+}
+
+@Composable
+private fun SelectionRow(label: String, isSelected: Boolean, onClick: () -> Unit) {
+    Surface(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 5.dp)
+            .clip(RoundedCornerShape(14.dp))
+            .clickable { onClick() },
+        color = if (isSelected) MaterialTheme.colorScheme.primaryContainer
+        else MaterialTheme.colorScheme.surface,
+        tonalElevation = if (isSelected) 0.dp else 1.dp
+    ) {
+        Text(
+            text = label,
+            modifier = Modifier.padding(horizontal = 16.dp, vertical = 16.dp),
+            fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Normal,
+            color = if (isSelected) MaterialTheme.colorScheme.onPrimaryContainer
+            else MaterialTheme.colorScheme.onSurface,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis
+        )
     }
 }

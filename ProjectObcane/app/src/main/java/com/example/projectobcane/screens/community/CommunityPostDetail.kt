@@ -71,7 +71,7 @@ import androidx.compose.foundation.layout.ime
 import androidx.compose.foundation.layout.isImeVisible
 
 
-@OptIn(ExperimentalLayoutApi::class)
+//@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun PostDetailScreen(
     state: CommunityScreenUIState,
@@ -80,7 +80,7 @@ fun PostDetailScreen(
 ) {
     val post = state.selectedPost ?: return
 
-    val imeVisible = WindowInsets.isImeVisible
+    //val imeVisible = WindowInsets.isImeVisible
     val imeBottom = WindowInsets.ime.asPaddingValues().calculateBottomPadding()
     val navBottom = paddingValues.calculateBottomPadding()
     val bottomPad = maxOf(imeBottom, navBottom)

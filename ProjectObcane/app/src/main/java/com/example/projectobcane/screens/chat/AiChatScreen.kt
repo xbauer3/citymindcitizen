@@ -31,7 +31,7 @@ import com.example.projectobcane.utils.parseMarkdownLinks
 
 private val Purple = Color(0xFF7A3CFF)
 
-@OptIn(ExperimentalLayoutApi::class)
+//@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun AiChatScreen(
     paddingValues: PaddingValues,
@@ -60,7 +60,7 @@ fun AiChatScreen(
     }
 
 
-    val imeVisible = WindowInsets.isImeVisible
+    //val imeVisible = WindowInsets.isImeVisible
     val imeBottom = WindowInsets.ime.asPaddingValues().calculateBottomPadding()
     val navBottom = paddingValues.calculateBottomPadding()
     val bottomPad = maxOf(imeBottom, navBottom)

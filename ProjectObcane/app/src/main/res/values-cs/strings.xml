@@ -115,7 +115,7 @@
     <string name="report_information">Informace o reportu</string>
     <string name="add_photo">Přidata foto</string>
     <string name="continue_button">Pokračovat</string>
-    <string name="pick_your_language">Vybers si jazyk</string>
+    <string name="pick_your_language">Vyber si jazyk</string>
     <string name="category">Kategorie</string>
     <string name="reset_onboarding">Resetovat Onboarding</string>
     <string name="welcome_to_obecinfo_app">Vítejte v aplikaci ObecInfo</string>
@@ -135,6 +135,7 @@
     <string name="select_municipality_info">Vyberte si obec a budete mít vše přehledně na jednom místě.</string>
     <string name="back">Zpět</string>
     <string name="select_municipality">Vyber obec</string>
+    <string name="municipality">Obec</string>
     <string name="selection_affects_content">Podle výběru se přizpůsobí informace a služby.</string>
     <string name="continue_action">Pokračovat</string>
     <string name="ai_greeting">Ahoj, jak vám mohu pomoci</string>
@@ -177,7 +178,7 @@
     <string name="status_hidden">Skryto</string>
     <string name="add_photo_description">Přiložte fotku pomůže k rychlému vyřešení problému</string>
     <string name="problem_specification">Specifikace problému</string>
-    <string name="problem_specification_placeholder">Stručně specifikujte naléhavý problém</string>
+    <string name="problem_specification_placeholder">Stručně specifikujte problém</string>
     <string name="location_placeholder">K jakému místu se hlášení vztahuje?</string>
     <string name="report_type">Typ hlášení</string>
     <string name="report_severity">Závažnost hlášení</string>
@@ -190,5 +191,6 @@
     <string name="type_post">Příspěvek</string>
     <string name="upvote">Upvote</string>
 
+    <string name="location_saved">Nová lokace uložena</string>
 
 </resources>

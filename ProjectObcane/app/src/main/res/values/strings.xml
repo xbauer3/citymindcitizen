@@ -98,6 +98,7 @@
     <string name="select_municipality_info">Select a municipality and have everything clearly in one place.</string>
     <string name="back">Back</string>
     <string name="select_municipality">Select municipality</string>
+    <string name="municipality">Municipality</string>
     <string name="selection_affects_content">Your selection will customize information and services.</string>
     <string name="continue_action">Continue</string>
     <string name="ai_greeting">Hello, how can I help you?</string>
@@ -140,7 +141,7 @@
     <string name="status_hidden">Hidden</string>
     <string name="add_photo_description">Attaching a photo will help resolve the problem faster</string>
     <string name="problem_specification">Problem specification</string>
-    <string name="problem_specification_placeholder">Briefly specify the urgent problem</string>
+    <string name="problem_specification_placeholder">Briefly specify the problem</string>
     <string name="location_placeholder">What location is the report related to?</string>
     <string name="report_type">Report type</string>
     <string name="report_severity">Report severity</string>
@@ -152,6 +153,9 @@
     <string name="type_question">Question</string>
     <string name="type_post">Post</string>
     <string name="upvote">Upvote</string>
+
+    <string name="location_saved">New location saved</string>
+
 
 
 </resources>

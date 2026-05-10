@@ -6,5 +6,7 @@ data class SettingsUIState(
     val loading: Boolean = true,
     val selectedLanguage: String = "en",
     val supportedLanguages: List<Locale> = listOf(Locale("en"), Locale("cs")),
-    val darkModeEnabled: Boolean = false
+    val darkModeEnabled: Boolean = false,
+    val selectedCountry: String? = null,
+    val selectedCity: String? = null
 )
