@@ -22,11 +22,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.view.WindowInsetsControllerCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
@@ -161,6 +163,15 @@ fun CommunityScreen(paddingValues: PaddingValues) {
     }
 
     if (state.showCreateDialog) {
+        val view = LocalView.current
+        DisposableEffect(Unit) {
+            val window = (view.context as android.app.Activity).window
+            val controller = WindowInsetsControllerCompat(window, window.decorView)
+            controller.isAppearanceLightStatusBars = false
+            onDispose {
+                controller.isAppearanceLightStatusBars = false
+            }
+        }
         CreatePostBottomSheet(state = state, viewModel = viewModel)
     }
 }

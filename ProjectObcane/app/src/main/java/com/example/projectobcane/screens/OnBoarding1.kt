@@ -154,7 +154,7 @@ fun OnBoardingScreen1(navigation: INavigationRouter) {
             ModalBottomSheet(
                 onDismissRequest = { showSheet.value = false },
                 sheetState = sheetState,
-                containerColor = MaterialTheme.colorScheme.surface
+                containerColor = MaterialTheme.colorScheme.surface,
             ) {
 
                 AnimatedContent(

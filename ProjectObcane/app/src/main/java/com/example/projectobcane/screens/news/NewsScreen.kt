@@ -24,7 +24,9 @@ import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import androidx.compose.foundation.lazy.items
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
+import androidx.core.view.WindowInsetsControllerCompat
 import coil.compose.AsyncImage
 import com.example.projectobcane.R
 
@@ -107,11 +109,21 @@ fun NewsScreen(
                 }
 
                 selectedNews?.let { news ->
+                    val view = LocalView.current
+                    DisposableEffect(Unit) {
+                        val window = (view.context as android.app.Activity).window
+                        val controller = WindowInsetsControllerCompat(window, window.decorView)
+                        controller.isAppearanceLightStatusBars = false
+                        onDispose {
+                            controller.isAppearanceLightStatusBars = false
+                        }
+                    }
+
                     ModalBottomSheet(
                         onDismissRequest = { selectedNews = null },
                         contentWindowInsets = { WindowInsets.statusBars },
                         sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
-                        containerColor = MaterialTheme.colorScheme.surface
+                        containerColor = MaterialTheme.colorScheme.surface,
                     ) {
                         NewsDetailSheet(news = news)
                     }
@@ -169,13 +181,13 @@ fun NewsItem(news: NewsItemUi, onClick: () -> Unit) {
                 Text(
                     text = news.title,
                     style = MaterialTheme.typography.titleMedium,
-                    color = MaterialTheme.colorScheme.onPrimary,
+                    color = ColorWhite,
                     fontWeight = FontWeight.Bold
                 )
                 Spacer(modifier = Modifier.height(halfMargin))
                 Text(
                     text = news.startDate ?: "Completed",
-                    color = MaterialTheme.colorScheme.onPrimary,
+                    color = ColorWhite,
                     style = MaterialTheme.typography.bodySmall
                 )
             }

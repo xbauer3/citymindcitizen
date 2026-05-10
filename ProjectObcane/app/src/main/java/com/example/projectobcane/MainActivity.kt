@@ -43,21 +43,29 @@ class MainActivity : ComponentActivity() {
         }
 
         enableEdgeToEdge()
-
-
         WindowCompat.setDecorFitsSystemWindows(window, false)
-        val controller = WindowInsetsControllerCompat(window, window.decorView)
-        controller.isAppearanceLightStatusBars = false  // false = white icons
+        WindowInsetsControllerCompat(window, window.decorView).isAppearanceLightStatusBars = false
 
         setContent {
             val isDark by ThemePreferences.isDarkFlow(this).collectAsState(initial = false)
 
             ProjectObcaneTheme(
                 darkTheme = isDark,
-                dynamicColor = false // necháváme konzistentní barvy
+                dynamicColor = false
             ) {
                 NavGraph(startDestination = Destination.SplashScreen.route)
             }
         }
+    }
+
+
+    override fun onAttachedToWindow() {
+        super.onAttachedToWindow()
+        WindowInsetsControllerCompat(window, window.decorView).isAppearanceLightStatusBars = false
+    }
+
+    override fun onWindowFocusChanged(hasFocus: Boolean) {
+        super.onWindowFocusChanged(hasFocus)
+        WindowInsetsControllerCompat(window, window.decorView).isAppearanceLightStatusBars = false
     }
 }
