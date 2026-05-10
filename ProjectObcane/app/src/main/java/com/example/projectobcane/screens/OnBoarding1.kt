@@ -2,9 +2,6 @@ package com.example.projectobcane.screens
 
 import android.app.Activity
 import androidx.compose.animation.AnimatedContent
-import androidx.compose.animation.SizeTransform
-import androidx.compose.animation.core.FastOutSlowInEasing
-import androidx.compose.animation.core.tween
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.togetherWith
@@ -154,21 +151,17 @@ fun OnBoardingScreen1(navigation: INavigationRouter) {
             ModalBottomSheet(
                 onDismissRequest = { showSheet.value = false },
                 sheetState = sheetState,
-                containerColor = MaterialTheme.colorScheme.surface,
+                containerColor = MaterialTheme.colorScheme.surface
             ) {
 
                 AnimatedContent(
                     targetState = sheetStep.intValue,
                     transitionSpec = {
-                        val enter = slideInHorizontally(
-                            animationSpec = tween(300, easing = FastOutSlowInEasing),
-                            initialOffsetX = { if (targetState > initialState) it else -it }
-                        )
-                        val exit = slideOutHorizontally(
-                            animationSpec = tween(300, easing = FastOutSlowInEasing),
-                            targetOffsetX = { if (targetState > initialState) -it else it }
-                        )
-                        enter togetherWith exit using SizeTransform(clip = true)
+                        if (targetState > initialState) {
+                            slideInHorizontally { it } togetherWith slideOutHorizontally { -it }
+                        } else {
+                            slideInHorizontally { -it } togetherWith slideOutHorizontally { it }
+                        }
                     },
                     label = "onboarding_sheet_step"
                 ) { step ->
