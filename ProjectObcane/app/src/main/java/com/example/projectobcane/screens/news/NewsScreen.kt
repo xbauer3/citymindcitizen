@@ -159,8 +159,8 @@ fun NewsItem(news: NewsItemUi, onClick: () -> Unit) {
                     .background(
                         Brush.verticalGradient(
                             colors = listOf(
-                                MaterialTheme.colorScheme.primary.copy(alpha = 0.1f),
-                                MaterialTheme.colorScheme.primary.copy(alpha = 0.8f)
+                                MaterialTheme.colorScheme.primary.copy(alpha = 0.0f),
+                                MaterialTheme.colorScheme.primary.copy(alpha = 0.2f)
                             )
                         )
                     )

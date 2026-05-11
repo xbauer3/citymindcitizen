@@ -177,7 +177,8 @@ fun SettingsScreenContent(
 
         // For debug and showcase only
 
-        Spacer(modifier = Modifier.height(140.dp))
+        /*
+        Spacer(modifier = Modifier.height(40.dp))
 
 
         val versionName = context.packageManager
@@ -202,7 +203,7 @@ fun SettingsScreenContent(
                 color = Color.White,
                 fontWeight = FontWeight.Bold
             )
-        }
+        }*/
     }
 }
 
